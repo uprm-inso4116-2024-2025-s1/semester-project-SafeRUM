@@ -1,4 +1,4 @@
-# semester-project-saferum
+# Semester-Project-Saferum
 # - NOT FINAL!
 
 # SafeRUM - Campus Safety Notification System
