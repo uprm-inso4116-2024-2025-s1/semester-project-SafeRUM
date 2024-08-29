@@ -7,6 +7,15 @@
 
 SafeRUM is a mobile app designed to enhance emergency communication and campus safety at the University of Puerto Rico, Mayagüez Campus (UPRM). The current method of disseminating safety alerts via email can result in delays and unreliable notifications. SafeRUM addresses these issues by offering a centralized platform for delivering timely, location-specific safety information and resources to the campus community.
 
+The project is structured as follows:
+- **Managers:** Evand Sánchez and Yanishka Ruiz
+- **Documentation Leader:** Lex Feliciano
+- **Teams Dedicated to Features:**
+  - Sign In/Log In Team
+  - Admin Interface Team
+  - Location Management Team
+  - Trust System Team
+
 # Key Features
 
     Real-time Emergency Alerts: SafeRUM delivers push notifications, SMS, and in-app alerts to users based on their location, ensuring they receive urgent safety information during emergencies.
