@@ -16,6 +16,31 @@ The project is structured as follows:
   - Location Management Team
   - Trust System Team
 
+# How to run?
+Windows
+	1.Make sure to have node.js installed if not sure open a cmd and type "npm --version" to see if the command is recognized, if command is not recognized install latest version from node.js website
+	2.cd into safe-rum folder
+	3.run "npm install" on terminal
+	4.run "npx expo start" on terminal
+Macos
+	1.Make sure homebrew is installed on ur computer if u do not have it follow official instructions here https://brew.sh/
+	2.If u do not have npm installed run these commands 
+	3.run "brew install node@22"
+		# verifies the right Node.js version is in the environment
+	4.run "node -v" # should print `v22.8.0`
+		# verifies the right npm version is in the environment
+	5.run "npm -v"  # should print `10.8.2`'
+	6.cd into safe-rum folder
+	7.run "npm install"
+	8.run "npm start"
+Linux
+	1.if node js or npm is not installed run this commands
+	2.run "sudo apt update"
+	3.run "sudo apt install nodejs npm"
+	4.cd into safe-rum folder
+	5.run "npm install"
+	6.run "npm start"
+
 # Key Features
 
     Real-time Emergency Alerts: SafeRUM delivers push notifications, SMS, and in-app alerts to users based on their location, ensuring they receive urgent safety information during emergencies.
