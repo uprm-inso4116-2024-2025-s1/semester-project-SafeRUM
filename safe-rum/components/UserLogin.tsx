@@ -4,10 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface UserLoginScreenProps {
   toggleUserAuthScreen: () => void;
-  
 }
 
-export default function LoginScreen({ toggleUserAuthScreen }: UserLoginScreenProps) {
+export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps) {
   const [rememberMe, setRememberMe] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');

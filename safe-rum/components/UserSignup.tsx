@@ -6,7 +6,7 @@ interface SignUpScreenProps {
   toggleUserAuthScreen: () => void;
 }
 
-export default function SignUpScreen({ toggleUserAuthScreen }: SignUpScreenProps) {
+export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');

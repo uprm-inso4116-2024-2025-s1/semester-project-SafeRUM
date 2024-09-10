@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
-import SignUpScreen from '@/components/UserSignup';
-import LoginScreen from '@/components/UserLogin';
+import UserSignup from '@/components/UserSignup';
+import UserLogin from '@/components/UserLogin';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get('window');
@@ -30,10 +30,10 @@ export default function UserAuthScreen() {
       <View style={[styles.formWrapper, { width: formWidth, height: formHeight }]}>
         <Animated.View style={[styles.animatedForm, animatedStyle, { width: formWidth * 2 }]}>
           <View style={[styles.formContent, { width: formWidth }]}>
-            <SignUpScreen toggleUserAuthScreen={toggleUserAuthScreen} />
+            <UserSignup toggleUserAuthScreen={toggleUserAuthScreen} />
           </View>
           <View style={[styles.formContent, { width: formWidth }]}>
-            <LoginScreen toggleUserAuthScreen={toggleUserAuthScreen} />
+            <UserLogin toggleUserAuthScreen={toggleUserAuthScreen} />
           </View>
         </Animated.View>
       </View>
