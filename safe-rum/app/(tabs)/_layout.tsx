@@ -5,7 +5,7 @@ export default () => {
         <Tabs>
             <Tabs.Screen name="home" />
             <Tabs.Screen name="ReportMap" />
-            <Tabs.Screen name="ProfileManagementPage"/>
+            <Tabs.Screen name="Profile"/>
         </Tabs>
     )
 }
