@@ -1,4 +1,7 @@
-import { Text, View } from "react-native";
+
+import { View, Text} from 'react-native';
+import ProfilePicture from '@/components/ProfilePicture';
+import UserDetails from '@/components/UserDetails';
 
 export default function Index() {
   return (
@@ -9,7 +12,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>This is the profile management page</Text>
+      <ProfilePicture/>
+      <UserDetails/>
+
     </View>
   );
 }
