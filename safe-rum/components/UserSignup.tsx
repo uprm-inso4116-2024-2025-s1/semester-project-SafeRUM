@@ -15,16 +15,6 @@ export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-  const validateEmail = (email: string) => {
-    return email.endsWith('@upr.edu');
-  };
-
-  const validatePassword = (password: string) => {
-    // Check if password has at least 6 characters, containing at least one number, and one capital letter
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    return passwordRegex.test(password);
-  };
-
   const clearSignUpItems = () => {
     setFirstName('');
     setLastName('');
@@ -35,25 +25,8 @@ export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) 
   }
 
   const handleRegister = () => {
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.')
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid UPR email ending with @upr.edu');
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      Alert.alert('Invalid Password', 'Password must contain at least 6 characters, one capital letter, and one number.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Password Mismatch', 'Passwords do not match.');
-      return;
-    }
+    
+    // TODO: Input validation logic here
 
     Alert.alert('Success', 'Account created successfully!');
 
