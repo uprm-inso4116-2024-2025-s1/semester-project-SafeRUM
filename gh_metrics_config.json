@@ -1,0 +1,16 @@
+{
+    "version": "2.0",
+    "projectName": "semester-project-saferum",
+    "managers": ["YanehRuiz", "evnd04"],
+    "milestones": {
+      "Milestone 1": {
+        "startDate": "2024-08-23",
+        "endDate": "2024-09-20",
+        "projectedGroupGrade": 100.0
+      }
+    },
+    "lectureTopicTaskQuota": 0,
+    "countOpenIssues": false,
+    "sprints": 2,
+    "minTasksPerSprint": 2
+  }
