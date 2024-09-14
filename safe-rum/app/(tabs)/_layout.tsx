@@ -11,8 +11,8 @@ export default () => {
                 name="userAuthScreen"
                 options={{
                     title: 'Authentication',
-                    tabBarIcon: ({ color, focused }) => (
-                        <TabBarIcon name={focused ? 'log-in' : 'log-in-outline'} color={color} />
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name='log-in' color={color} size={size}/>
                     ),
                 }}
             />
