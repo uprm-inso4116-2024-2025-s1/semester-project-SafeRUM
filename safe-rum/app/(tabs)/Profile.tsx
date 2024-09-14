@@ -1,11 +1,14 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, Settings } from 'react-native';
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import SettingsPage from '../Settings';
 
 export default function Index() {
   const navigation = useNavigation();
+
+  const [settingsState, setSettingsState] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -13,14 +16,24 @@ export default function Index() {
     });
   }, [navigation]);
 
+  if (settingsState) {
+    return <SettingsPage setSettingsState={setSettingsState}/>;
+  }
   return (
     <SafeAreaView style={styles.container}>
 
       {/* Background Image */}
+
       <View style={styles.profileSection}>
-        <View style={styles.gearIcon}>
+        <TouchableOpacity
+          style={styles.gearIcon}
+          onPress={() => {
+            console.log("Gear icon clicked");
+            setSettingsState(prevState => !prevState);
+          }}
+        >
           <FontAwesome name="gear" size={30} color="black" />
-        </View>
+        </TouchableOpacity>
         <Image
           source={require('../../assets/images/UPRM-logo.png')}
           style={styles.backgroundImage}
@@ -75,8 +88,9 @@ const styles = StyleSheet.create({
   },
   gearIcon: {
     position: 'absolute',
-    top: 10,     
-    right: 10, 
+    top: 10,
+    right: 10,
+    zIndex: 1,
   },
   profileHeader:{
     flexDirection: 'row', 
