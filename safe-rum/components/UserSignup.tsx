@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     width: '100%',
-    backgroundColor: '#327136',
+    backgroundColor: '#009A44',
     paddingVertical: 12,
     marginTop: 20,
     borderRadius: 8,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   linkText: {
-    color: '#327136',
+    color: '#009A44',
     fontWeight: 'bold',
     fontSize: 14,
   },

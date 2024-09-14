@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '100%',
-    backgroundColor: '#327136',
+    backgroundColor: '#009A44',
     paddingVertical: 15,
     borderRadius: 8,
     marginTop: 20,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   linkText: {
-    color: '#327136',
+    color: '#009A44',
     fontWeight: 'bold',
   },
 });

@@ -1,8 +1,8 @@
-import { Tabs } from "expo-router"
+import { Tabs } from "expo-router";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default () => {
-    return(
+    return (
         <Tabs>
             <Tabs.Screen name="home" />
             <Tabs.Screen name="ReportMap" />
@@ -11,6 +11,7 @@ export default () => {
                 name="userAuthScreen"
                 options={{
                     title: 'Authentication',
+                    headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name='log-in' color={color} size={size}/>
                     ),
