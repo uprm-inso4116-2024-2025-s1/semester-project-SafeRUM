@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS "reports" (
     "creator_id" BIGINT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
+    "category" TEXT NOT NULL,
     "location" VARCHAR(255) NOT NULL,
     "latitude" FLOAT(53) NOT NULL,
     "longitude" FLOAT(53) NOT NULL,
