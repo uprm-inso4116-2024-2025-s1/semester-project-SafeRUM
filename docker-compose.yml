@@ -1,0 +1,10 @@
+services:
+  db:
+    container_name: safe_rum_postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+    env_file:
+      - "dev.env"
