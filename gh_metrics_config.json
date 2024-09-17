@@ -1,16 +1,26 @@
 {
     "version": "2.0",
-    "projectName": "semester-project-saferum",
+    "projectName": "SafeRUM",
     "managers": ["YanehRuiz", "evnd04"],
     "milestones": {
-      "Milestone 1": {
-        "startDate": "2024-08-23",
+      "Milestone #1": {
+        "startDate": "2024-08-30",
         "endDate": "2024-09-20",
+        "projectedGroupGrade": 100.0
+      },
+      "Milestone #2": {
+        "startDate": "2024-09-21",
+        "endDate": "2024-10-25",
+        "projectedGroupGrade": 100.0
+      },
+      "Milestone #3": {
+        "startDate": "2024-10-26",
+        "endDate": "2024-11-27",
         "projectedGroupGrade": 100.0
       }
     },
-    "lectureTopicTaskQuota": 0,
+    "lectureTopicTaskQuota": 4,
     "countOpenIssues": false,
     "sprints": 2,
-    "minTasksPerSprint": 2
+    "minTasksPerSprint": 1
   }
