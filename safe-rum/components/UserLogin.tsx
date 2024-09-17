@@ -27,8 +27,6 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userAuthenticated, setUserAuthenticated] = useState(false); 
-  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false); 
-  const [resetEmail, setResetEmail] = useState(''); 
 
   const validateEmail = (email: string) => {
     return email.endsWith('@upr.edu');
@@ -67,7 +65,6 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
         clearLogInItems();
       })
       .catch((error) => {
-      
         Alert.alert('Authentication Error', error.message);
       });
   };
@@ -87,6 +84,7 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
         Alert.alert('Error', error.message);
       });
   };
+
 
   return (
     <View style={styles.formContainer}>
