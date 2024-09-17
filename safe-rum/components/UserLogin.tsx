@@ -1,6 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { initializeApp } from '@firebase/app';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
+  authDomain: "saferum-fcc4b.firebaseapp.com",
+  projectId: "saferum-fcc4b",
+  storageBucket: "saferum-fcc4b.appspot.com",
+  messagingSenderId: "11200525932",
+  appId: "1:11200525932:web:4e741499413e43017e4a49",
+  measurementId: "G-6M83VVM4YY"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 interface UserLoginScreenProps {
   toggleUserAuthScreen: () => void;
@@ -11,6 +26,7 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userAuthenticated, setUserAuthenticated] = useState(false); 
 
   const validateEmail = (email: string) => {
     return email.endsWith('@upr.edu');
@@ -33,7 +49,7 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
 
   const handleLogin = () => {
     if (!email || !password) {
-      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.')
+      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.');
       return;
     }
 
@@ -42,13 +58,31 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
       return;
     }
 
-    // Handle backend password logic here
-
-    Alert.alert('Success', 'You have logged in successfully!');
-
-    clearLogInItems();
-
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      
+        setUserAuthenticated(true); 
+        Alert.alert('Success', 'You have logged in successfully!');
+        clearLogInItems();
+      })
+      .catch((error) => {
+        
+        Alert.alert('Authentication Error', error.message);
+      });
   };
+
+  useEffect(() => {
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserAuthenticated(true);
+      } else {
+        setUserAuthenticated(false); 
+      }
+    });
+
+    return unsubscribe; 
+  }, []);
 
   return (
     <View style={styles.formContainer}>
@@ -95,6 +129,10 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Log In</Text>
       </TouchableOpacity>
+
+      {userAuthenticated && (
+        <Text style={styles.successMessage}>User Authenticated</Text> 
+      )}
 
       <View style={styles.toggleTextContainer}>
         <Text style={styles.toggleText}>Don't have an account? </Text>
@@ -160,6 +198,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  successMessage: {
+    color: 'green',
+    marginTop: 15,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   toggleTextContainer: {
     flexDirection: 'row',
