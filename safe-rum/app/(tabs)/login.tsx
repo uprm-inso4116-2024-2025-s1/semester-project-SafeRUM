@@ -45,7 +45,7 @@ export default function Login() {
 
       {/* Foreground content */}
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Welcome to SafeRum</Text>
+        <Text style={styles.title}>Welcome to SafeRUM</Text>
 
         <TextInput
           style={styles.input}
