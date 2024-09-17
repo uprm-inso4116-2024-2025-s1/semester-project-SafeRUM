@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { initializeApp } from '@firebase/app';
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
+  authDomain: "saferum-fcc4b.firebaseapp.com",
+  projectId: "saferum-fcc4b",
+  storageBucket: "saferum-fcc4b.appspot.com",
+  messagingSenderId: "11200525932",
+  appId: "1:11200525932:web:4e741499413e43017e4a49",
+  measurementId: "G-6M83VVM4YY"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 interface UserLoginScreenProps {
   toggleUserAuthScreen: () => void;
@@ -11,6 +26,9 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userAuthenticated, setUserAuthenticated] = useState(false); 
+  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false); 
+  const [resetEmail, setResetEmail] = useState(''); 
 
   const validateEmail = (email: string) => {
     return email.endsWith('@upr.edu');
@@ -33,7 +51,7 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
 
   const handleLogin = () => {
     if (!email || !password) {
-      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.')
+      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.');
       return;
     }
 
@@ -42,12 +60,32 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
       return;
     }
 
-    // Handle backend password logic here
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUserAuthenticated(true); 
+        Alert.alert('Success', 'You have logged in successfully!');
+        clearLogInItems();
+      })
+      .catch((error) => {
+      
+        Alert.alert('Authentication Error', error.message);
+      });
+  };
 
-    Alert.alert('Success', 'You have logged in successfully!');
+  const handleForgotPassword = () => {
+    if (!resetEmail) {
+      Alert.alert('Empty Email', 'Please enter your email to reset your password.');
+      return;
+    }
 
-    clearLogInItems();
-
+    sendPasswordResetEmail(auth, resetEmail)
+      .then(() => {
+        Alert.alert('Success', 'Password reset email sent successfully.');
+        setForgotPasswordModalVisible(false); 
+      })
+      .catch((error) => {
+        Alert.alert('Error', error.message);
+      });
   };
 
   return (
@@ -96,12 +134,47 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
         <Text style={styles.loginButtonText}>Log In</Text>
       </TouchableOpacity>
 
+      {userAuthenticated && (
+        <Text style={styles.successMessage}>User Authenticated</Text> 
+      )}
+
       <View style={styles.toggleTextContainer}>
         <Text style={styles.toggleText}>Don't have an account? </Text>
         <TouchableOpacity onPress={toggleUserAuthScreen}>
           <Text style={styles.linkText}>Sign up</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity onPress={() => setForgotPasswordModalVisible(true)}>
+        <Text style={styles.linkText}>Forgot Password?</Text>
+      </TouchableOpacity>
+
+      <Modal
+        visible={forgotPasswordModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setForgotPasswordModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Reset Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              placeholderTextColor="#888"
+              value={resetEmail}
+              onChangeText={setResetEmail}
+              keyboardType="email-address"
+            />
+            <TouchableOpacity style={styles.resetButton} onPress={handleForgotPassword}>
+              <Text style={styles.resetButtonText}>Send Reset Email</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setForgotPasswordModalVisible(false)}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -161,6 +234,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  successMessage: {
+    color: 'green',
+    marginTop: 15,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   toggleTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -171,6 +250,44 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   linkText: {
+    color: '#009A44',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  resetButton: {
+    width: '100%',
+    backgroundColor: '#009A44',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  closeButton: {
+    marginTop: 10,
+  },
+  closeButtonText: {
     color: '#009A44',
     fontWeight: 'bold',
   },
