@@ -18,7 +18,6 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
 
   const [infoVisible, setInfoVisible] = useState(false);
   const [infoString] = useState("Enable/Disable SOS Notifications\n\nEnable/Disable Panic Alert Notifications\n\nEnable/Disable Immediate Help Notifiactions\n\nEnable/Disable Response Time additional alert after first notification wasn't answered.");
-const [isToggled, setIsToggled] = useState(false);
 
 const handleToggle = (settingType: string) => {
   switch (settingType) {
@@ -35,7 +34,6 @@ const handleToggle = (settingType: string) => {
       setResponseTime((prevState) => !prevState);
       break;
     default:
-      break;
   }
 };
 
