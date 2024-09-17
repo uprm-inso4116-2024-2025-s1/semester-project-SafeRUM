@@ -28,7 +28,6 @@ export default function Index() {
         <TouchableOpacity
           style={styles.gearIcon}
           onPress={() => {
-            console.log("Gear icon clicked");
             setSettingsState(prevState => !prevState);
           }}
         >

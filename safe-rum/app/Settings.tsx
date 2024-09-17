@@ -17,7 +17,28 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
   const [responseTime, setResponseTime] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState(false);
-  const [infoString, setInfoString] = useState("Enable/Disable SOS Notifications\n\nEnable/Disable Panic Alert Notifications\n\nEnable/Disable Immediate Help Notifiactions\n\nEnable/Disable Response Time additional alert after first notification wasn't answered.");
+  const [infoString] = useState("Enable/Disable SOS Notifications\n\nEnable/Disable Panic Alert Notifications\n\nEnable/Disable Immediate Help Notifiactions\n\nEnable/Disable Response Time additional alert after first notification wasn't answered.");
+const [isToggled, setIsToggled] = useState(false);
+
+const handleToggle = (settingType: string) => {
+  switch (settingType) {
+    case 'sos':
+      setSos((prevState) => !prevState);
+      break;
+    case 'panicAlert':
+      setPanicAlert((prevState) => !prevState);
+      break;
+    case 'immediateHelp':
+      setImmediateHelp((prevState) => !prevState);
+      break;
+    case 'responseTime':
+      setResponseTime((prevState) => !prevState);
+      break;
+    default:
+      break;
+  }
+};
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -67,21 +88,28 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
 
             <View style={styles.settingRow}>
             <Text style={styles.settingLabel}>SOS</Text>
-            <Switch value={sos} onValueChange={setSos} trackColor={{ false: "#FFFFFF", true: "#2C2C2C" }} />
+              <TouchableOpacity onPress={() => handleToggle('sos')} style={[styles.toggleButton, sos ? styles.on : styles.off]}>
+                <Text style={styles.buttonText}>{sos ? 'ON' : 'OFF'}</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.settingRow}>
             <Text style={styles.settingLabel}>Panic Alert</Text>
-            <Switch value={panicAlert} onValueChange={setPanicAlert} trackColor={{ false: "#FFFFFF", true: "#2C2C2C" }} />
+              <TouchableOpacity onPress={() => handleToggle('panicAlert')} style={[styles.toggleButton, panicAlert ? styles.on : styles.off]}>
+                <Text style={styles.buttonText}>{panicAlert ? 'ON' : 'OFF'}</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.settingRow}>
             <Text style={styles.settingLabel}>Immediate Help</Text>
-            <Switch value={immediateHelp} onValueChange={setImmediateHelp} trackColor={{ false: "#FFFFFF", true: "#2C2C2C" }} />
+              <TouchableOpacity onPress={() => handleToggle('immediateHelp')} style={[styles.toggleButton, immediateHelp ? styles.on : styles.off]}>
+                <Text style={styles.buttonText}>{immediateHelp ? 'ON' : 'OFF'}</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.settingRow}>
             <Text style={styles.settingLabel}>Response Time</Text>
-            <Switch value={responseTime} onValueChange={setResponseTime} trackColor={{ false: "#FFFFFF", true: "#2C2C2C" }} />
+              <TouchableOpacity onPress={() => handleToggle('responseTime')} style={[styles.toggleButton, responseTime ? styles.on : styles.off]}>
+                <Text style={styles.buttonText}>{responseTime ? 'ON' : 'OFF'}</Text>
+              </TouchableOpacity>
             </View>
-
             <View style={styles.authButtonRow}>
             <TouchableOpacity style={styles.authButton}>
                 <Text style={styles.authButtonText}>2-Factor Auth</Text>
@@ -246,6 +274,24 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 18,
     color: '#fff',
+  },
+  toggleButton: {
+    padding: 6,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#454545',
+  },
+  on: {
+    backgroundColor: 'green',
+    paddingHorizontal: 10,
+  },
+  off: {
+    backgroundColor: 'red',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   authButtonRow: {
     flexDirection: 'row',
