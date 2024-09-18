@@ -22,5 +22,5 @@
     "lectureTopicTaskQuota": 4,
     "countOpenIssues": true,
     "sprints": 2,
-    "minTasksPerSprint": 0
+    "minTasksPerSprint": 1
   }
