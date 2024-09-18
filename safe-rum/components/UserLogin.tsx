@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
@@ -60,29 +60,31 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-      
         setUserAuthenticated(true); 
         Alert.alert('Success', 'You have logged in successfully!');
         clearLogInItems();
       })
       .catch((error) => {
-        
         Alert.alert('Authentication Error', error.message);
       });
   };
 
-  useEffect(() => {
-    
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserAuthenticated(true);
-      } else {
-        setUserAuthenticated(false); 
-      }
-    });
+  const handleForgotPassword = () => {
+    if (!resetEmail) {
+      Alert.alert('Empty Email', 'Please enter your email to reset your password.');
+      return;
+    }
 
-    return unsubscribe; 
-  }, []);
+    sendPasswordResetEmail(auth, resetEmail)
+      .then(() => {
+        Alert.alert('Success', 'Password reset email sent successfully.');
+        setForgotPasswordModalVisible(false); 
+      })
+      .catch((error) => {
+        Alert.alert('Error', error.message);
+      });
+  };
+
 
   return (
     <View style={styles.formContainer}>
@@ -140,6 +142,37 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
           <Text style={styles.linkText}>Sign up</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity onPress={() => setForgotPasswordModalVisible(true)}>
+        <Text style={styles.linkText}>Forgot Password?</Text>
+      </TouchableOpacity>
+
+      <Modal
+        visible={forgotPasswordModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setForgotPasswordModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Reset Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              placeholderTextColor="#888"
+              value={resetEmail}
+              onChangeText={setResetEmail}
+              keyboardType="email-address"
+            />
+            <TouchableOpacity style={styles.resetButton} onPress={handleForgotPassword}>
+              <Text style={styles.resetButtonText}>Send Reset Email</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setForgotPasswordModalVisible(false)}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -215,6 +248,44 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   linkText: {
+    color: '#009A44',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  resetButton: {
+    width: '100%',
+    backgroundColor: '#009A44',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  closeButton: {
+    marginTop: 10,
+  },
+  closeButtonText: {
     color: '#009A44',
     fontWeight: 'bold',
   },
