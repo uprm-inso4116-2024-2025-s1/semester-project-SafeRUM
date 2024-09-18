@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, Settings } from 'react-native';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import SettingsPage from '../Settings';
+import EditProfile from '../EditProfile';
 
 export default function Index() {
   const navigation = useNavigation();
 
   const [settingsState, setSettingsState] = useState<boolean>(false);
+  const [editState, setEditState] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -19,6 +21,9 @@ export default function Index() {
   if (settingsState) {
     return <SettingsPage setSettingsState={setSettingsState}/>;
   }
+  if (editState) {
+    return <EditProfile setEditState={setEditState}/>;
+  }
   return (
     <SafeAreaView style={styles.container}>
 
@@ -28,7 +33,6 @@ export default function Index() {
         <TouchableOpacity
           style={styles.gearIcon}
           onPress={() => {
-            console.log("Gear icon clicked");
             setSettingsState(prevState => !prevState);
           }}
         >
@@ -57,7 +61,7 @@ export default function Index() {
           <Text style={styles.profileName}>Yadriel Calderon Montalvo</Text>
           <Text style={styles.profileRole}>General Supervisor</Text>
           <Text style={styles.profileEmail}>yadriel.calderon@upr.edu</Text>
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity style={styles.editButton} onPress={() => setEditState((prevState) => !prevState)}>
           <Image
             source={require('../../assets/images/pencil-icon.png')}
           />
