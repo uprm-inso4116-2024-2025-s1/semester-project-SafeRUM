@@ -53,6 +53,68 @@ The project is structured as follows:
 	"npm start" or "npm expo start"
  3. Application should load
 
+# How to Install Android Studio
+- Windows
+1. Download Android Studio.
+2. Open Android Studio Setup. Under Select components to install, select Android Studio and Android Virtual Device. Then, click Next.
+3. In the Android Studio Setup Wizard, under Install Type, select Standard and click Next.
+4. The Android Studio Setup Wizard will ask you to verify the settings, such as the version of Android SDK, platform-tools, and so on. Click Next after you have verified.
+5. In the next window, accept licenses for all available components.
+6. After the tools installation is complete, configure the ANDROID_HOME environment variable. Go to Windows Control Panel > User Accounts > User Accounts (again) > Change my environment variables and click New to create a new ANDROID_HOME user variable. The value of this variable will point to the path to your Android SDK:
+7. To verify that the new environment variable is loaded, open PowerShell, and copy and paste the following command:
+"Get-ChildItem -Path Env:" The command will output all user environment variables. In this list, see if ANDROID_HOME has been added
+8. To add platform-tools to the Path, go to Windows Control Panel > User Accounts > User Accounts (again) > Change my environment variables > Path > Edit > New and add the path to the platform-tools to the list.
+9. Finally, make sure that you can run adb from the PowerShell. For example, run the adb --version to see which version of the adb your system is running.
+
+Now once u have those steps completed u can go ahead and set up an android emulator with this steps ,also if you run into any issues during installation u can refer to this page https://docs.expo.dev/get-started/set-up-your-environment/?platform=android&device=simulated
+
+- Android simulator Windows
+1. On the Android Studio main screen, click More Actions, then Virtual Device Manager in the dropdown.
+2. Click the Create device button.
+3. Under Select Hardware, choose the type of hardware you'd like to emulate. We recommend testing against a variety of devices.
+4. Select an OS version to load on the emulator (probably one of the system images in the Recommended tab), and download the image.
+5. Change any other settings you'd like, and press Finish to create the emulator. You can now run this emulator anytime by pressing the Play button in the AVD Manager window.
+
+-Macos
+1. Download and install Android Studio.
+2. Open the Android Studio app, click More Actions and select SDK Manager.
+3. Open Android Studio, go to Settings > Languages & Frameworks > Android SDK. From the SDK Platforms tab, select the latest Android version (API level).
+	Then, click on the SDK Tools tab and make sure you have at least one version of the Android SDK Build-Tools and Android Emulator installed.
+4. Copy or remember the path listed in the box that says Android SDK Location.
+5. Click Apply and OK to install the Android SDK and related build tools.
+6. If you are on macOS or Linux, add an environment variable pointing to the Android SDK location in ~/.bash_profile (or ~/.zshrc if you use Zsh). For example: export ANDROID_HOME=/your/path/here.
+Add the following lines to your /.zprofile or ~/.zshrc (if you are using bash, then ~/.bash_profile or ~/.bashrc) config file:
+"export ANDROID_HOME=$HOME/Library/Android/sdk"
+"export PATH=$PATH:$ANDROID_HOME/emulator"
+"export PATH=$PATH:$ANDROID_HOME/platform-tools"
+7. Reload the path environment variables in your current shell:
+"source $HOME/.zshrc"
+"source $HOME/.bashrc"
+8. Finally, make sure that you can run adb from your terminal.
+
+- Android Simulator Macos
+
+1. On the Android Studio main screen, click More Actions, then Virtual Device Manager in the dropdown.
+2. Click the Create device button.
+3. Under Select Hardware, choose the type of hardware you'd like to emulate. We recommend testing against a variety of devices.
+4. Select an OS version to load on the emulator (probably one of the system images in the Recommended tab), and download the image.
+5. Change any other settings you'd like, and press Finish to create the emulator. You can now run this emulator anytime by pressing the Play button in the AVD Manager window.
+
+# Set up an iOS Simulator with Expo Go
+1. Install Xcode
+Open up the Mac App Store, search for Xcode, and click Install (or Update if you have it already).
+2. Install Xcode Command Line Tools
+Open Xcode, choose Settings... from the Xcode menu (or press cmd ⌘ + ,). Go to the Locations and install the tools by selecting the most recent version in the Command Line Tools dropdown.
+3. Install Watchman
+Watchman is a tool for watching changes in the filesystem. Installing it will result in better performance. You can install it with:
+
+"brew update"
+"brew install watchman"
+
+-How to Use
+When you start a development server with npx expo start on the start developing page, press i to open the iOS Simulator. Expo CLI will install Expo Go automatically.
+
+
 # Key Features
 
     Real-time Emergency Alerts: SafeRUM delivers push notifications, SMS, and in-app alerts to users based on their location, ensuring they receive urgent safety information during emergencies.
