@@ -26,7 +26,9 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userAuthenticated, setUserAuthenticated] = useState(false); 
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
+  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false); 
+  const [resetEmail, setResetEmail] = useState(''); 
 
   const validateEmail = (email: string) => {
     return email.endsWith('@upr.edu');
