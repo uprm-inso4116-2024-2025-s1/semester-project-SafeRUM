@@ -1,43 +1,58 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
+
 interface EditPageProps {
   setEditState: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserProfile: React.Dispatch<React.SetStateAction<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  }>>;
+  userProfile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+  };
 }
 
-export default function EditPage({ setEditState }: EditPageProps) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function EditPage({ setEditState, userProfile, setUserProfile }: EditPageProps) {
+  const [firstName, setFirstName] = useState(userProfile.firstName);
+  const [lastName, setLastName] = useState(userProfile.lastName);
+  const [email, setEmail] = useState(userProfile.email);
 
   const handleSaveChanges = () => {
-    console.log({ firstName, lastName, email, password });
+    setUserProfile({
+      firstName,
+      lastName,
+      email,
+      role: userProfile.role,
+    });
+    setEditState(false);
   };
 
   const handleCancel = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
     setEditState(false);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
-        <TouchableOpacity onPress={() => setEditState((prevState) => !prevState)}>
+        <TouchableOpacity onPress={handleCancel}>
           <Image
-              source={require('../assets/images/arrowLeft.png')}
-              style={styles.arrowIcon}
-              />
+            source={require('../assets/images/arrowLeft.png')}
+            style={styles.arrowIcon}
+          />
         </TouchableOpacity>    
         <Text style={styles.title}>Edit Profile</Text>
       </View>
+
       {/* Profile Image Section */}
       <View style={styles.profileSection}>
         <Image source={require('../assets/images/no-profile.png')} style={styles.profileImage} />
-        <Text style={styles.profileName}>Admin Name</Text>
-        <Text style={styles.profileRole}>General Supervisor</Text>
+        <Text style={styles.profileName}>{`${firstName} ${lastName}`}</Text>
+        <Text style={styles.profileRole}>{userProfile.role}</Text>
       </View>
 
       {/* Input fields for profile info */}
@@ -63,15 +78,6 @@ export default function EditPage({ setEditState }: EditPageProps) {
           value={email}
           onChangeText={setEmail}
         />
-        <Text style={styles.fieldTitle}>New Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter New Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Text style={styles.passwordHint}>Password should be at least 8 characters</Text>
       </View>
 
       {/* Save and Cancel buttons */}

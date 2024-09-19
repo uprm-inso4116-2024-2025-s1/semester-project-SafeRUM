@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, Settings } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +12,14 @@ export default function Index() {
   const [settingsState, setSettingsState] = useState<boolean>(false);
   const [editState, setEditState] = useState<boolean>(false);
 
+  // Initial profile state
+  const [userProfile, setUserProfile] = useState({
+    firstName: 'Yadriel',
+    lastName: 'Calderon Montalvo',
+    email: 'yadriel.calderon@upr.edu',
+    role: 'General Supervisor',
+  });
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false, 
@@ -22,13 +30,11 @@ export default function Index() {
     return <SettingsPage setSettingsState={setSettingsState}/>;
   }
   if (editState) {
-    return <EditProfile setEditState={setEditState}/>;
+    return <EditProfile userProfile={userProfile} setUserProfile={setUserProfile} setEditState={setEditState}/>;
   }
+
   return (
     <SafeAreaView style={styles.container}>
-
-      {/* Background Image */}
-
       <View style={styles.profileSection}>
         <TouchableOpacity
           style={styles.gearIcon}
@@ -43,43 +49,41 @@ export default function Index() {
           style={styles.backgroundImage}
         />
         <View style={styles.profileCard}>
-          {/* Profile Image and Name */}
           <View style={styles.profileHeader}>
-          <Image
-          source={require('../../assets/images/UPRM-paw.png')}
-          style={styles.pawIcon}
-          />
-          <Image
-          source={require('../../assets/images/UPRM-paw.png')}
-          style={styles.pawIcon}
-          />
-           </View>
+            <Image
+              source={require('../../assets/images/UPRM-paw.png')}
+              style={styles.pawIcon}
+            />
+            <Image
+              source={require('../../assets/images/UPRM-paw.png')}
+              style={styles.pawIcon}
+            />
+          </View>
           <Image
             source={require('../../assets/images/no-profile.png')}
             style={styles.profileImage}
           />
-          <Text style={styles.profileName}>Yadriel Calderon Montalvo</Text>
-          <Text style={styles.profileRole}>General Supervisor</Text>
-          <Text style={styles.profileEmail}>yadriel.calderon@upr.edu</Text>
+          <Text style={styles.profileName}>{`${userProfile.firstName} ${userProfile.lastName}`}</Text>
+          <Text style={styles.profileRole}>{userProfile.role}</Text>
+          <Text style={styles.profileEmail}>{userProfile.email}</Text>
           <TouchableOpacity style={styles.editButton} onPress={() => setEditState((prevState) => !prevState)}>
-          <Image
-            source={require('../../assets/images/pencil-icon.png')}
-          />
+            <Image
+              source={require('../../assets/images/pencil-icon.png')}
+            />
             <Text style={styles.editButtonText}> Edit profile</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.reportsSection}>
-      <View style={styles.reportsHeader}>
-        <Image
-          source={require('../../assets/images/clock-icon.png')}
-          style={styles.icon} 
-        />
-        <Text style={styles.reportsTitle}>Recent reports</Text>
-      </View>
-      
-      <Text style={styles.noReportsText}>No recent reports</Text>
+        <View style={styles.reportsHeader}>
+          <Image
+            source={require('../../assets/images/clock-icon.png')}
+            style={styles.icon} 
+          />
+          <Text style={styles.reportsTitle}>Recent reports</Text>
+        </View>
+        <Text style={styles.noReportsText}>No recent reports</Text>
       </View>
     </SafeAreaView>
   );
