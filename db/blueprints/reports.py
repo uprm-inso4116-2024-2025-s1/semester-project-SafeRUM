@@ -52,7 +52,7 @@ def get_reports():
 
 @reports_bp.route('/<int:report_id>', methods=['GET'])
 def get_report(report_id):
-    """ Get a specific report (by its id). """
+    """ Get a report (by its id). """
 
     report = db.session.query(Report).filter_by(id=report_id).first()
 
@@ -64,7 +64,7 @@ def get_report(report_id):
 
 @reports_bp.route('/<int:report_id>', methods=['PUT'])
 def update_report(report_id):
-    """ Update a specific report (by its id). """
+    """ Update a report (by its id). """
     
     data = request.get_json()
 
@@ -100,14 +100,19 @@ def update_report(report_id):
     return jsonify({"message": f"Report {report_id} not found"}), 200
 
 
-# @app.route('/reports/<int:report_id>', methods=['DELETE'])
-# def delete_report(report_id):
-#     conn = connect_db()
-#     cur = conn.cursor()
-#     cur.execute("DELETE FROM reports WHERE id = %s;", (report_id,))
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-#     return jsonify({"message": "Report deleted successfully"}), 200
+@reports_bp.route('/<int:report_id>', methods=['DELETE'])
+def delete_report(report_id):
+    """ Delete a report (by its id) """
+
+    report = db.session.query(Report).filter_by(id=report_id).first()
+
+    if report:
+        db.session.delete(report)
+        db.session.commit()
+        return jsonify({"message": f"Report {report_id} deleted successfully"}), 200
+    
+    return jsonify({"message": f"Report {report_id} not found"}), 200
+    
+
 
 
