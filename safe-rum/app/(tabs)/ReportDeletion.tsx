@@ -39,14 +39,14 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
           <Text style={styles.infoText}>Flooded Parking Lot</Text>
         </View>
 
-        <Text style={styles.label}>Location</Text>
+        <Text style={styles.label}></Text>
         <View style={styles.field}>
-          <Text style={styles.infoText}>Stefani</Text>
+          <Text style={styles.infoText}></Text>
         </View>
 
         <Text style={styles.label}>Date</Text>
         <View style={styles.field}>
-          <Text style={styles.infoText}>9/20/2024</Text>
+          <Text style={styles.infoText}></Text>
         </View>
       </View>
 
