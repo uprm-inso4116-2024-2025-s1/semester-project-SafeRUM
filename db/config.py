@@ -1,7 +1,7 @@
 #TODO: Add real database credentials
 db_config = {
-    "DB_NAME" : 'saferum',
-    "DB_USER" : 'smguerra',
+    "DB_NAME" : 'placeholder',
+    "DB_USER" : 'placeholder',
     "DB_PASSWORD" : '12345',
     "DB_HOST" : 'localhost',
     "DB_PORT" : '5432'
