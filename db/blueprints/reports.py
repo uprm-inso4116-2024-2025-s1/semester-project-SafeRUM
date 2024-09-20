@@ -1,5 +1,6 @@
 # blueprints/auth.py
 from flask import Blueprint, request, jsonify
+from sqlalchemy import select
 from models import db, Report
 
 reports_bp = Blueprint('reports', __name__)
@@ -37,15 +38,28 @@ def create_report():
                     "report_id" : new_report.id}), 201
 
 
-# @app.route('/reports', methods=['GET'])
-# def get_reports():
-#     conn = connect_db()
-#     cur = conn.cursor()
-#     cur.execute("SELECT * FROM reports;")
-#     rows = cur.fetchall()
-#     cur.close()
-#     conn.close()
-#     return jsonify(rows)
+@reports_bp.route('/all', methods=['GET'])
+def get_reports():
+    reports = db.session.query(Report).all()
+
+    result = []
+    for report in reports:
+        result.append(
+            {'id' : report.id,
+             'creator_id' : report.creator_id,
+             'title' : report.title,
+             'description' : report.description,
+             'category' : report.category,
+             'location' : report.location,
+             'latitude' : report.latitude,
+             'longitude' : report.longitude,
+             'status' : report.status,
+             'created_at' : report.created_at
+             }
+        )
+
+    return result
+    
 
 # @app.route('/reports/<int:report_id>', methods=['GET'])
 # def get_report(report_id):
