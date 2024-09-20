@@ -5,6 +5,7 @@ from models import db, Report
 
 reports_bp = Blueprint('reports', __name__)
 
+
 @reports_bp.route('/new', methods=['POST'])
 def create_report():
     """ Create a new report. """
@@ -40,6 +41,8 @@ def create_report():
 
 @reports_bp.route('/all', methods=['GET'])
 def get_reports():
+    """ Get all reports. """
+
     reports = db.session.query(Report).all()
     result = []
     for report in reports:
@@ -49,6 +52,8 @@ def get_reports():
 
 @reports_bp.route('/<int:report_id>', methods=['GET'])
 def get_report(report_id):
+    """ Get a specific report (by its id). """
+
     report = db.session.query(Report).filter_by(id=report_id).first()
 
     if report:
@@ -56,23 +61,44 @@ def get_report(report_id):
     else:
         return jsonify({"error": "Report not found"}), 404
 
-# @app.route('/reports/<int:report_id>', methods=['PUT'])
-# def update_report(report_id):
-#     data = request.json
-#     conn = connect_db()
-#     cur = conn.cursor()
-#     cur.execute(
-#         """
-#         UPDATE reports SET title = %s, description = %s, category = %s, location = %s, latitude = %s, longitude = %s, status = %s
-#         WHERE id = %s;
-#         """,
-#         (data['title'], data['description'], data['category'], data['location'], 
-#          data['latitude'], data['longitude'], data['status'], report_id)
-#     )
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-#     return jsonify({"message": "Report updated successfully"}), 200
+
+@reports_bp.route('/<int:report_id>', methods=['PUT'])
+def update_report(report_id):
+    """ Update a specific report (by its id). """
+    
+    data = request.get_json()
+
+    title = data.get('title')
+    description = data.get('description')
+    category = data.get('category')
+    location = data.get('location')
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+    status = data.get('status')
+
+    report = db.session.query(Report).filter_by(id=report_id).first()
+
+    if report:
+        if title:
+            report.title = title
+        if description:
+            report.description = description
+        if category:
+            report.category = category
+        if location:
+            report.location = location
+        if latitude:
+            report.latitude = latitude
+        if longitude:
+            report.longitude = longitude
+        if status:
+            report.status = status
+    
+        db.session.commit()
+        return jsonify({"message": f"Report {report_id} updated successfully"}), 200
+    
+    return jsonify({"message": f"Report {report_id} not found"}), 200
+
 
 # @app.route('/reports/<int:report_id>', methods=['DELETE'])
 # def delete_report(report_id):
