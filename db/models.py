@@ -47,3 +47,16 @@ class Report(db.Model):
     status = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())  # Auto timestamp
 
+    def map(self):
+        return {'id' : self.id,
+             'creator_id' : self.creator_id,
+             'title' : self.title,
+             'description' : self.description,
+             'category' : self.category,
+             'location' : self.location,
+             'latitude' : self.latitude,
+             'longitude' : self.longitude,
+             'status' : self.status,
+             'created_at' : self.created_at
+        }
+

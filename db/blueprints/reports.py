@@ -41,38 +41,20 @@ def create_report():
 @reports_bp.route('/all', methods=['GET'])
 def get_reports():
     reports = db.session.query(Report).all()
-
     result = []
     for report in reports:
-        result.append(
-            {'id' : report.id,
-             'creator_id' : report.creator_id,
-             'title' : report.title,
-             'description' : report.description,
-             'category' : report.category,
-             'location' : report.location,
-             'latitude' : report.latitude,
-             'longitude' : report.longitude,
-             'status' : report.status,
-             'created_at' : report.created_at
-             }
-        )
-
+        result.append(report.map())
     return result
     
 
-# @app.route('/reports/<int:report_id>', methods=['GET'])
-# def get_report(report_id):
-#     conn = connect_db()
-#     cur = conn.cursor()
-#     cur.execute("SELECT * FROM reports WHERE id = %s;", (report_id,))
-#     row = cur.fetchone()
-#     cur.close()
-#     conn.close()
-#     if row:
-#         return jsonify(row)
-#     else:
-#         return jsonify({"error": "Report not found"}), 404
+@reports_bp.route('/<int:report_id>', methods=['GET'])
+def get_report(report_id):
+    report = db.session.query(Report).filter_by(id=report_id).first()
+
+    if report:
+        return jsonify(report.map())
+    else:
+        return jsonify({"error": "Report not found"}), 404
 
 # @app.route('/reports/<int:report_id>', methods=['PUT'])
 # def update_report(report_id):
