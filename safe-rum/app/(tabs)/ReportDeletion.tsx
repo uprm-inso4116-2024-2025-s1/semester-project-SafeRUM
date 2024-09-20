@@ -39,7 +39,7 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
           <Text style={styles.infoText}></Text>
         </View>
 
-        <Text style={styles.label}></Text>
+        <Text style={styles.label}>Location</Text>
         <View style={styles.field}>
           <Text style={styles.infoText}></Text>
         </View>
