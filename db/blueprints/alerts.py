@@ -33,3 +33,15 @@ def create_alert():
 
     return jsonify({"message" : "Alert created successfully",
                     "alert_id" : new_alert.id}), 201
+
+@alerts_bp.route('/all', methods=['GET'])
+def get_alerts():
+    """ Get all alerts. """
+
+    alerts = db.session.query(Alert).all()
+    result = []
+    for alert in alerts:
+        result.append(alert.map())
+    return result
+
+
