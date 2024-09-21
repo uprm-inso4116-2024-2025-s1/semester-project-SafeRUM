@@ -44,4 +44,13 @@ def get_alerts():
         result.append(alert.map())
     return result
 
+@alerts_bp.route('/<int:alert_id>', methods=['GET'])
+def get_alert(alert_id):
+    """ Get an alert (by its id). """
+
+    alert = db.session.query(Alert).filter_by(id=alert_id).first()
+
+    if alert:
+        return jsonify(alert.map())
+    return jsonify({"error": "Alert not found"}), 404
 
