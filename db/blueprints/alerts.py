@@ -90,3 +90,19 @@ def update_alert(alert_id):
         return jsonify({"message": f"Alert {alert_id} updated successfully"}), 200
     
     return jsonify({"message": f"Alert {alert_id} not found"}), 200
+
+
+@alerts_bp.route('/<int:alert_id>', methods=['DELETE'])
+def delete_alert(alert_id):
+    """ Delete an alert (by its id). """
+
+    alert = db.session.query(Alert).filter_by(id=alert_id).first()
+
+    if alert:
+        db.session.delete(alert)
+        db.session.commit()
+        return jsonify({"message": f"Alert {alert_id} deleted successfully"}), 200
+    
+    return jsonify({"message": f"Alert {alert_id} not found"}), 200
+
+
