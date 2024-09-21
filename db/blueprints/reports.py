@@ -1,10 +1,10 @@
-# blueprints/auth.py
+# blueprints/reports.py
+
 from flask import Blueprint, request, jsonify
 from sqlalchemy import select
 from models import db, Report
 
 reports_bp = Blueprint('reports', __name__)
-
 
 @reports_bp.route('/new', methods=['POST'])
 def create_report():
@@ -112,7 +112,4 @@ def delete_report(report_id):
         return jsonify({"message": f"Report {report_id} deleted successfully"}), 200
     
     return jsonify({"message": f"Report {report_id} not found"}), 200
-    
-
-
 

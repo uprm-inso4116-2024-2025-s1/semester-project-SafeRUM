@@ -12,7 +12,6 @@ def is_valid_email(email):
 def is_valid_password(password):
     return password
 
-
 # Create a new user account
 @auth_bp.route('/register', methods=['POST'])
 def register():
