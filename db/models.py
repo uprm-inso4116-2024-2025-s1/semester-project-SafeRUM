@@ -2,10 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
-from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -32,6 +29,42 @@ class User(db.Model):
     def check_password(self, password):
         return password
     
+    def map(self):
+        return {
+            'id' : self.id,
+            'first_name' : self.first_name,
+            'last_name' : self.last_name,
+            'email' : self.email,
+            'phone_number' : self.phone_number,
+            'password_hash' : self.password_hash,
+            'namebigint' : self.namebigint,
+            'profile_phote_url' : self.profile_photo_url,
+            'trust_level' : self.trust_level,
+            'account_locked' : self.account_locked,
+            'created_at' : self.created_at
+        }
+
+
+class Admin(db.Model):
+    __tablename__ = 'admins'
+
+    id = mapped_column(Integer, primary_key=True)
+    user_id = mapped_column(ForeignKey("users.id"))
+    role = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())  # Auto timestamp
+
+    def map(self):
+        return {
+            'id' : self.id,
+            'admin_id' : self.admin_id,
+            'alert_type' : self.alert_type,
+            'message' : self.message,
+            'location' : self.location,
+            'latitude' : self.latitude,
+            'longitude' : self.longitude,
+            'created_at' : self.created_at
+        }
+
 
 class Report(db.Model):
     __tablename__ = 'reports'
@@ -48,15 +81,41 @@ class Report(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now())  # Auto timestamp
 
     def map(self):
-        return {'id' : self.id,
-             'creator_id' : self.creator_id,
-             'title' : self.title,
-             'description' : self.description,
-             'category' : self.category,
-             'location' : self.location,
-             'latitude' : self.latitude,
-             'longitude' : self.longitude,
-             'status' : self.status,
-             'created_at' : self.created_at
+        return {
+            'id' : self.id,
+            'creator_id' : self.creator_id,
+            'title' : self.title,
+            'description' : self.description,
+            'category' : self.category,
+            'location' : self.location,
+            'latitude' : self.latitude,
+            'longitude' : self.longitude,
+            'status' : self.status,
+            'created_at' : self.created_at
+        }
+
+
+class Alert(db.Model):
+    __tablename__ = 'alerts'
+
+    id = mapped_column(Integer, primary_key=True)
+    admin_id = mapped_column(ForeignKey("admins.id"))
+    alert_type = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float(53), nullable=False)
+    longitude = db.Column(db.Float(53), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())  # Auto timestamp
+
+    def map(self):
+        return {
+            'id' : self.id,
+            'admin_id' : self.admin_id,
+            'alert_type' : self.alert_type,
+            'message' : self.message,
+            'location' : self.location,
+            'latitude' : self.latitude,
+            'longitude' : self.longitude,
+            'created_at' : self.created_at
         }
 
