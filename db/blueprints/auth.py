@@ -15,6 +15,7 @@ def is_valid_password(password):
 # Create a new user account
 @auth_bp.route('/register', methods=['POST'])
 def register():
+    """ Create a new user. """
 
     data = request.get_json()
 
@@ -78,12 +79,3 @@ def login():
 def logout():
     pass
 
-
-#TODO: User profile management viewing
-def profile():
-    pass
-
-
-#TODO: User profile updating
-def update():
-    pass
