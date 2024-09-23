@@ -6,8 +6,6 @@ from models import db, User
 
 users_bp = Blueprint('users', __name__)
 
-
-#TODO: User profile management viewing
 @users_bp.route('/profile/<int:user_id>', methods=['GET'])
 def profile(user_id):
     """ Get a specific user (by their id). """
@@ -18,10 +16,40 @@ def profile(user_id):
     return jsonify({"error": "User not found"}), 404
 
 
-#TODO: User profile updating
-def update():
+@users_bp.route('/profile/<int:user_id>', methods=['PUT'])
+def update(user_id):
     """" Update a specific user (by their id). """
-    pass
+    
+    data = request.get_json()
+
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    email = data.get('email')
+    phone_number = data.get('phone_number')
+    password = data.get('password')
+    password_confirmation = data.get('password_confirmation')
+
+    user = db.session.query(User).filter_by(id=user_id).first()
+
+    if user:
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if email:
+            user.email = email
+        if phone_number:
+            user.phone_number = phone_number
+        if password:
+            if not password_confirmation or password != password_confirmation:
+                return jsonify({"error" : "Passwords do not match"}), 400
+            else:
+                user.set_password(password)
+    
+        db.session.commit()
+        return jsonify({"message": f"User {user_id} updated successfully"}), 200
+    
+    return jsonify({"message": f"User {user_id} not found"}), 200
 
 
 def get_users():
