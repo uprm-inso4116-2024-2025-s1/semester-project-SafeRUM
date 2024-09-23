@@ -51,9 +51,11 @@ def update(user_id):
     
     return jsonify({"message": f"User {user_id} not found"}), 200
 
+
 @users_bp.route('/all', methods=['GET'])
 def get_users():
     """ ADMIN-EXCLUSIVE: Get all users. """
+
     users = db.session.query(User).all()
     result = []
     for user in users:
@@ -61,6 +63,15 @@ def get_users():
     return result
 
 
-def delete_user():
+@users_bp.route('/delete/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
     """ Delete a user's account. """
-    pass
+
+    user = db.session.query(User).filter_by(id=user_id).first()
+
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": f"User {user_id} deleted successfully"}), 200
+    
+    return jsonify({"message": f"User {user_id} not found"}), 200
