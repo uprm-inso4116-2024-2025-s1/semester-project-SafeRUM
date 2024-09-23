@@ -51,10 +51,14 @@ def update(user_id):
     
     return jsonify({"message": f"User {user_id} not found"}), 200
 
-
+@users_bp.route('/all', methods=['GET'])
 def get_users():
     """ ADMIN-EXCLUSIVE: Get all users. """
-    pass
+    users = db.session.query(User).all()
+    result = []
+    for user in users:
+        result.append(user.map())
+    return result
 
 
 def delete_user():
