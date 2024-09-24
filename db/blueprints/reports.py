@@ -1,7 +1,6 @@
 # blueprints/reports.py
 
 from flask import Blueprint, request, jsonify
-from sqlalchemy import select
 from models import db, Report
 
 reports_bp = Blueprint('reports', __name__)
@@ -58,8 +57,7 @@ def get_report(report_id):
 
     if report:
         return jsonify(report.map())
-    else:
-        return jsonify({"error": "Report not found"}), 404
+    return jsonify({"error": "Report not found"}), 404
 
 
 @reports_bp.route('/<int:report_id>', methods=['PUT'])

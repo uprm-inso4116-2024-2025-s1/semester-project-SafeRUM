@@ -1,7 +1,6 @@
 # blueprints/alerts.py
 
 from flask import Blueprint, request, jsonify
-from sqlalchemy import select
 from models import db, Alert
 
 alerts_bp = Blueprint('alerts', __name__)
