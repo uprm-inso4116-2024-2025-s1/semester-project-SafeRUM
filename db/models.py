@@ -56,12 +56,8 @@ class Admin(db.Model):
     def map(self):
         return {
             'id' : self.id,
-            'admin_id' : self.admin_id,
-            'alert_type' : self.alert_type,
-            'message' : self.message,
-            'location' : self.location,
-            'latitude' : self.latitude,
-            'longitude' : self.longitude,
+            'user_id' : self.user_id,
+            'role' : self.role,
             'created_at' : self.created_at
         }
 
