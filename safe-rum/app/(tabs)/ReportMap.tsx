@@ -1,13 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
+import HelpButton from '../../components/HelpButton';
 
-export default function App() {
+export default function ReportMap() {
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}
-      // TODO: Change this to user location
-      // TODO: Set up map boundaries inside UPRM 
+      <MapView
+        style={styles.map}
         initialRegion={{
           latitude: 18.2106,
           longitude: -67.1396,
@@ -15,6 +15,7 @@ export default function App() {
           longitudeDelta: 0.009,
         }}
       />
+      <HelpButton />
     </View>
   );
 }
