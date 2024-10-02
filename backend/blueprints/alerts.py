@@ -1,22 +1,23 @@
 # blueprints/alerts.py
 
-from backend import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify
 from models import db, Alert
 
-alerts_bp = Blueprint('alerts', __name__)
+alerts_bp = Blueprint("alerts", __name__)
 
-@alerts_bp.route('/new', methods=['POST'])
+
+@alerts_bp.route("/new", methods=["POST"])
 def create_alert():
-    """ Create a new alert. """
+    """Create a new alert."""
 
     data = request.get_json()
 
-    admin_id = data.get('admin_id')
-    alert_type = data.get('alert_type')
-    message = data.get('message')
-    location = data.get('location')
-    latitude = data.get('latitude')
-    longitude = data.get('longitude')
+    admin_id = data.get("admin_id")
+    alert_type = data.get("alert_type")
+    message = data.get("message")
+    location = data.get("location")
+    latitude = data.get("latitude")
+    longitude = data.get("longitude")
 
     new_alert = Alert(
         admin_id=admin_id,
@@ -24,19 +25,21 @@ def create_alert():
         message=message,
         location=location,
         latitude=latitude,
-        longitude=longitude
+        longitude=longitude,
     )
 
     db.session.add(new_alert)
     db.session.commit()
 
-    return jsonify({"message" : "Alert created successfully",
-                    "alert_id" : new_alert.id}), 201
+    return (
+        jsonify({"message": "Alert created successfully", "alert_id": new_alert.id}),
+        201,
+    )
 
 
-@alerts_bp.route('/all', methods=['GET'])
+@alerts_bp.route("/all", methods=["GET"])
 def get_alerts():
-    """ Get all alerts. """
+    """Get all alerts."""
 
     alerts = db.session.query(Alert).all()
     result = []
@@ -45,9 +48,9 @@ def get_alerts():
     return result
 
 
-@alerts_bp.route('/<int:alert_id>', methods=['GET'])
+@alerts_bp.route("/<int:alert_id>", methods=["GET"])
 def get_alert(alert_id):
-    """ Get an alert (by its id). """
+    """Get an alert (by its id)."""
 
     alert = db.session.query(Alert).filter_by(id=alert_id).first()
 
@@ -56,18 +59,18 @@ def get_alert(alert_id):
     return jsonify({"error": "Alert not found"}), 404
 
 
-@alerts_bp.route('/<int:alert_id>', methods=['PUT'])
+@alerts_bp.route("/<int:alert_id>", methods=["PUT"])
 def update_alert(alert_id):
-    """ Update an alert (by its id). """
+    """Update an alert (by its id)."""
 
     data = request.get_json()
 
-    admin_id = data.get('admin_id')
-    alert_type = data.get('alert_type')
-    message = data.get('message')
-    location = data.get('location')
-    latitude = data.get('latitude')
-    longitude = data.get('longitude')
+    admin_id = data.get("admin_id")
+    alert_type = data.get("alert_type")
+    message = data.get("message")
+    location = data.get("location")
+    latitude = data.get("latitude")
+    longitude = data.get("longitude")
 
     alert = db.session.query(Alert).filter_by(id=alert_id).first()
 
@@ -87,13 +90,13 @@ def update_alert(alert_id):
 
         db.session.commit()
         return jsonify({"message": f"Alert {alert_id} updated successfully"}), 200
-    
+
     return jsonify({"message": f"Alert {alert_id} not found"}), 200
 
 
-@alerts_bp.route('/<int:alert_id>', methods=['DELETE'])
+@alerts_bp.route("/<int:alert_id>", methods=["DELETE"])
 def delete_alert(alert_id):
-    """ Delete an alert (by its id). """
+    """Delete an alert (by its id)."""
 
     alert = db.session.query(Alert).filter_by(id=alert_id).first()
 
@@ -101,7 +104,5 @@ def delete_alert(alert_id):
         db.session.delete(alert)
         db.session.commit()
         return jsonify({"message": f"Alert {alert_id} deleted successfully"}), 200
-    
+
     return jsonify({"message": f"Alert {alert_id} not found"}), 200
-
-
