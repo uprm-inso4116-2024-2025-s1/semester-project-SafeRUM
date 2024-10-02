@@ -1,13 +1,14 @@
 # blueprints/users.py
 
-from backend import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify
 from models import db, User
 
-users_bp = Blueprint('users', __name__)
+users_bp = Blueprint("users", __name__)
 
-@users_bp.route('/profile/<int:user_id>', methods=['GET'])
+
+@users_bp.route("/profile/<int:user_id>", methods=["GET"])
 def profile(user_id):
-    """ Get a specific user (by their id). """
+    """Get a specific user (by their id)."""
     user = db.session.query(User).filter_by(id=user_id).first()
 
     if user:
@@ -15,18 +16,18 @@ def profile(user_id):
     return jsonify({"error": "User not found"}), 404
 
 
-@users_bp.route('/profile/<int:user_id>', methods=['PUT'])
+@users_bp.route("/profile/<int:user_id>", methods=["PUT"])
 def update(user_id):
-    """" Update a specific user (by their id). """
-    
+    """ " Update a specific user (by their id)."""
+
     data = request.get_json()
 
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    email = data.get('email')
-    phone_number = data.get('phone_number')
-    password = data.get('password')
-    password_confirmation = data.get('password_confirmation')
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+    email = data.get("email")
+    phone_number = data.get("phone_number")
+    password = data.get("password")
+    password_confirmation = data.get("password_confirmation")
 
     user = db.session.query(User).filter_by(id=user_id).first()
 
@@ -41,19 +42,19 @@ def update(user_id):
             user.phone_number = phone_number
         if password:
             if not password_confirmation or password != password_confirmation:
-                return jsonify({"error" : "Passwords do not match"}), 400
+                return jsonify({"error": "Passwords do not match"}), 400
             else:
                 user.set_password(password)
-    
+
         db.session.commit()
         return jsonify({"message": f"User {user_id} updated successfully"}), 200
-    
+
     return jsonify({"message": f"User {user_id} not found"}), 200
 
 
-@users_bp.route('/all', methods=['GET'])
+@users_bp.route("/all", methods=["GET"])
 def get_users():
-    """ ADMIN-EXCLUSIVE: Get all users. """
+    """ADMIN-EXCLUSIVE: Get all users."""
 
     users = db.session.query(User).all()
     result = []
@@ -62,9 +63,9 @@ def get_users():
     return result
 
 
-@users_bp.route('/delete/<int:user_id>', methods=['DELETE'])
+@users_bp.route("/delete/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
-    """ Delete a user's account. """
+    """Delete a user's account."""
 
     user = db.session.query(User).filter_by(id=user_id).first()
 
@@ -72,5 +73,5 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         return jsonify({"message": f"User {user_id} deleted successfully"}), 200
-    
+
     return jsonify({"message": f"User {user_id} not found"}), 200
