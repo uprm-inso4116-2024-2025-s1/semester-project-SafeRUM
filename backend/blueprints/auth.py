@@ -1,6 +1,6 @@
 # blueprints/auth.py
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 from models import db, User
 
 auth_bp = Blueprint("auth", __name__)
@@ -67,6 +67,8 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
+    # TODO: Create EmailVerificationToken with uuid4 for user
+
     # Return a confirmation message
     return (
         jsonify(
@@ -84,6 +86,7 @@ def register():
 
 
 # TODO: User login and session opening
+# TODO: Check if user email is verified before login
 def login():
     pass
 
