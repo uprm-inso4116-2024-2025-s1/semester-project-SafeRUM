@@ -1,6 +1,6 @@
 # blueprints/alerts.py
 
-from flask import Blueprint, request, jsonify
+from backend import Blueprint, request, jsonify
 from models import db, Alert
 
 alerts_bp = Blueprint('alerts', __name__)

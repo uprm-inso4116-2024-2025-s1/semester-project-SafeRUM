@@ -1,6 +1,6 @@
 # blueprints/admins.py
 
-from flask import Blueprint, request, jsonify
+from backend import Blueprint, request, jsonify
 from models import db, Admin
 
 admins_bp = Blueprint('admins', __name__)
