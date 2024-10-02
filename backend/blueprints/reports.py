@@ -1,6 +1,6 @@
 # blueprints/reports.py
 
-from flask import Blueprint, request, jsonify
+from backend import Blueprint, request, jsonify
 from models import db, Report
 
 reports_bp = Blueprint('reports', __name__)
