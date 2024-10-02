@@ -9,7 +9,7 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
+  
   const API_URL = 'http://<your-ip>:3000'; 
 
   const handleLogin = async () => {
@@ -31,25 +31,65 @@ export default function Login() {
         Alert.alert('Login Successful', 'Redirecting...');
         router.push('/home');
       } else {
-        Alert.alert('Login Failed', data.error || 'Invalid credentials');
+        Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
+          {
+            text: 'Forgot Password?',
+            onPress: handleForgotPassword,
+          },
+          {
+            text: 'OK',
+          },
+        ]);
       }
     } catch (error) {
-      Alert.alert('Login Failed', 'Something went wrong');
+      Alert.alert('Login Failed', 'Something went wrong', [
+        {
+          text: 'Forgot Password?',
+          onPress: handleForgotPassword,
+        },
+        {
+          text: 'OK',
+        },
+      ]);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!username) {
+      Alert.alert('Error', 'Please enter your username or email to reset your password.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      if (response.ok) {
+        Alert.alert('Password Reset', 'An email has been sent with a reset link.');
+      } else {
+        Alert.alert('Error', 'Unable to send the password reset email.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong with the reset process.');
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Full-size logo on top */}
       <Image source={SafeRumLogo} style={styles.logo} />
-
-      {/* Foreground content */}
       <View style={styles.formContainer}>
         <Text style={styles.title}>Welcome to SafeRUM!</Text>
 
         <TextInput
           style={styles.input}
-          placeholder="Username"
+          placeholder="Username or Email"
           value={username}
           onChangeText={setUsername}
           placeholderTextColor="#7E7E7E"
@@ -81,20 +121,20 @@ const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start', // Align items from top to bottom
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingTop: 50, // Add padding to push content down
+    paddingTop: 50,
   },
   logo: {
-    width: width * 0.7, // 70% of the screen width for a bigger logo
-    height: height * 0.25, // 25% of the screen height for good visibility
-    resizeMode: 'contain', // Makes sure the logo retains its aspect ratio and is not cropped
-    marginBottom: 30, // Space between the logo and the title
+    width: width * 0.7,
+    height: height * 0.25,
+    resizeMode: 'contain',
+    marginBottom: 30,
   },
   formContainer: {
     width: '90%',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent white background
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
