@@ -9,7 +9,7 @@ DB_PORT="5432"  # default is 5432 for PostgreSQL
 SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 # Set the current working directory to the script's location
-cd $SCRIPT_DIR/sql
+cd "$SCRIPT_DIR/sql"
 
 # Export password for psql
 export PGPASSWORD=$DB_PASSWORD
