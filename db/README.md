@@ -6,6 +6,7 @@ This document outlines the steps to set up the PostgreSQL dummy database for the
 
 Before you begin, ensure you have the following installed on your system:
 
+- [PostgreSQL](https://www.postgresql.org/download/)
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
