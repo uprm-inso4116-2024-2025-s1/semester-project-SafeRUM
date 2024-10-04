@@ -15,7 +15,6 @@ const RoleSelection = () => {
   const [selectedRole, setSelectedRole] = useState < string | null > (null); // role initially undefined, until role is selected
 
   const onRoleSelect = async (role: string) => {
-    console.log(role);
     setSelectedRole(role);  // Set the selected role
     await AsyncStorage.setItem("selectedRole", role);
     router.push("/userAuthScreen");
