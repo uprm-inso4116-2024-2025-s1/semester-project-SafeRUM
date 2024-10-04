@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { TouchableOpacity, Text, Modal, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, Modal, View, StyleSheet, Image} from 'react-native';
 
 const HelpButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,12 +14,22 @@ const HelpButton = () => {
   const modalContent = (
     <>
       <Text style={styles.modalHeader}>Color Guide</Text>
-      <Text style={styles.modalText}>1st Image</Text>
-      <Text style={styles.modalText}>Description of the 1st Color</Text>
-      <Text style={styles.modalText}>2nd Image</Text>
-      <Text style={styles.modalText}>Description of the 2nd Color</Text>
-      <Text style={styles.modalText}>3rd Image</Text>
-      <Text style={styles.modalText}>Description of the 3rd Color</Text>
+      <Image 
+        source={require('../assets/images/DangerPointer.png')} 
+        style={styles.DangerImage} 
+      />
+      <Text style={styles.modalText}>"Emergency area: High Priority alerts, avoid route due to potential events"</Text>
+      <Image 
+        source={require('../assets/images/CautionPointer.png')} 
+        style={styles.CautionImage} 
+      />
+      <Text style={styles.modalText}>"Incoming Zone: Medium alerts. Proceed with caution as there may be potential issues"</Text>
+
+      <Image 
+        source={require('../assets/images/SafePointer.png')} 
+        style={styles.SafeImage} 
+      />
+      <Text style={styles.modalText}>"Secured Zone: Low alerts. No immediate issues expected"</Text>
     </>
   );
 
@@ -81,6 +91,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontStyle: "italic",
     textAlign: "center",
+  },
+  CautionImage: {
+    width: 65,
+    height: 65,
+    alignSelf: 'center',
+    marginBottom: 15,
+  },
+  SafeImage: {
+    width: 65,
+    height: 65,
+    alignSelf: 'center',
+    marginBottom: 15,
+  },
+  DangerImage: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    marginBottom: 15,
   },
   helpButton: {
     position: 'absolute',
