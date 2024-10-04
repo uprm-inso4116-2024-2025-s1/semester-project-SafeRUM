@@ -11,6 +11,22 @@ const RoleSelection = () => {
   const [scaleValueAdmin] = useState(new Animated.Value(1));
   const router = useRouter();
 
+  const onPressIn = (scaleValue: Animated.Value) => {
+    Animated.timing(scaleValue, {
+      toValue: 0.85,
+      duration: 80,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const onPressOut = (scaleValue: Animated.Value, role: "user" | "admin") => {
+    Animated.timing(scaleValue, {
+      toValue: 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Who are you?</Text>
@@ -18,6 +34,8 @@ const RoleSelection = () => {
         <Animated.View style={[styles.buttonWrapper, { transform: [{ scale: scaleValueUser }] }]}>
           <TouchableOpacity
             style={[styles.button, styles.userButton]}
+            onPressIn={() => onPressIn(scaleValueUser)}
+            onPressOut={() => onPressOut(scaleValueUser, "user")}
           >
             <Ionicons name="person-circle" size={30} color="#fff" />
             <Text style={styles.buttonText}>User</Text>
@@ -27,6 +45,8 @@ const RoleSelection = () => {
         <Animated.View style={[styles.buttonWrapper, { transform: [{ scale: scaleValueAdmin }] }]}>
           <TouchableOpacity
             style={[styles.button, styles.adminButton]}
+            onPressIn={() => onPressIn(scaleValueAdmin)}
+            onPressOut={() => onPressOut(scaleValueAdmin, "admin")}
           >
             <Ionicons name="briefcase" size={30} color="#fff" />
             <Text style={styles.buttonText}>Admin</Text>
@@ -49,7 +69,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 40,
     textAlign: "center",
-    letterSpacing: 1.5,
   },
   buttonsContainer: {
     flexDirection: "row",
