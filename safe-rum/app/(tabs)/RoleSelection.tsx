@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, Image }
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import React = require("react");
+import React from "react";
 
 const { width, height } = Dimensions.get("window");
 const SafeRumLogo = require('../../assets/images/SafeRumLogo.png');
