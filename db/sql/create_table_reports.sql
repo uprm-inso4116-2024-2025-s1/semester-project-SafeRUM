@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "reports" (
     "category" TEXT NOT NULL,
     "status" VARCHAR(255) CHECK ("status" IN ('Pending', 'Reviewed', 'Resolved')) NOT NULL DEFAULT 'Pending',
     "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "priority" BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT "reports_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "reports_creator_id_foreign" FOREIGN KEY ("creator_id") REFERENCES "users" ("id")
 );
