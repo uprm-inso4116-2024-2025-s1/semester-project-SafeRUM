@@ -7,7 +7,8 @@ INSERT INTO "reports" (
         "latitude",
         "longitude",
         "status",
-        "category"
+        "category",
+        "priority"
     )
 VALUES (
         1,
@@ -18,7 +19,8 @@ VALUES (
         18.4655,
         -66.1057,
         'Pending',
-        'General'
+        'General',
+        TRUE
     ),
     (
         2,
@@ -29,5 +31,6 @@ VALUES (
         18.4661,
         -66.1060,
         'Reviewed',
-        'Maintanance'
+        'Maintanance',
+        FALSE
     ) ON CONFLICT ("id") DO NOTHING;
