@@ -1,15 +1,25 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, Image } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import React = require("react");
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+const SafeRumLogo = require('../../assets/images/SafeRumLogo.png');
 
 const RoleSelection = () => {
   const [scaleValueUser] = useState(new Animated.Value(1));
   const [scaleValueAdmin] = useState(new Animated.Value(1));
   const router = useRouter();
+  const [selectedRole, setSelectedRole] = useState < string | null > (null); // role initially undefined, until role is selected
+
+  const onRoleSelect = async (role: string) => {
+    console.log(role);
+    setSelectedRole(role);  // Set the selected role
+    await AsyncStorage.setItem("selectedRole", role);
+    router.push("/userAuthScreen");
+  };
 
   const onPressIn = (scaleValue: Animated.Value) => {
     Animated.timing(scaleValue, {
@@ -19,16 +29,20 @@ const RoleSelection = () => {
     }).start();
   };
 
-  const onPressOut = (scaleValue: Animated.Value, role: "user" | "admin") => {
+  const onPressOut = (scaleValue: Animated.Value, role: string) => {
     Animated.timing(scaleValue, {
       toValue: 1,
       duration: 100,
       useNativeDriver: true,
     }).start();
+
+    // Trigger role selection
+    onRoleSelect(role);
   };
 
   return (
     <View style={styles.container}>
+      <Image source={SafeRumLogo} style={styles.logo} />
       <Text style={styles.title}>Who are you?</Text>
       <View style={styles.buttonsContainer}>
         <Animated.View style={[styles.buttonWrapper, { transform: [{ scale: scaleValueUser }] }]}>
@@ -63,6 +77,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+  },
+  logo: {
+    width: width * 0.5,
+    height: height * 0.25,
+    resizeMode: 'cover',
+    marginBottom: 30,
   },
   title: {
     fontSize: 28,
