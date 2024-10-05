@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 
 const { width, height } = Dimensions.get("window");
-const SafeRumLogo = require('../../assets/images/SafeRumLogo.png');
+const SafeRumLogo = require('../assets/images/SafeRumLogo.png');
 
 const RoleSelection = () => {
   const [scaleValueUser] = useState(new Animated.Value(1));
