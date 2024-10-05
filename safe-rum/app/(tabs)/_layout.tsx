@@ -7,13 +7,6 @@ export default () => {
         <Tabs>
             <Tabs.Screen name="home" />
             <Tabs.Screen name="ReportMap" />
-            <Tabs.Screen
-                name="RoleSelection"
-                options={{
-                    title: 'Roles',
-                    headerShown: false,
-                }}
-            />
 
             <Tabs.Screen
                 name="userAuthScreen"
