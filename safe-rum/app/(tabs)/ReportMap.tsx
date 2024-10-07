@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from "react";
-import MapView from "react-native-maps";
+import MapView, { Circle } from "react-native-maps";
 import { StyleSheet, View, Button, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 
+//TODO: Implement Geofencing to check if user is on campus.
+
 export default function App() {
+
+  // Initial Map State
   const [mapRegion, setMapRegion] = useState({
     latitude: 18.2106,
     longitude: -67.1396,
     latitudeDelta: 0.009,
     longitudeDelta: 0.009,
   });
+
+  const circleProps = {
+    latitude: 18.2106,
+    longitude: -67.1396,
+    radius: 500, // in meters
+    strokeColor: '#FF0000', // red
+  };
+
   const [isLoading, setIsLoading] = useState(false);
 
+
+  // TODO: Add function signature
   async function userLocation() {
     setIsLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -23,21 +37,15 @@ export default function App() {
     }
 
     try {
-      let location = await Location.getCurrentPositionAsync({
+      let userLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
       setMapRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
         latitudeDelta: 0.0030,
         longitudeDelta: 0.0030,
       });
-      console.log(
-        "Lat:",
-        location.coords.latitude,
-        "Lon:",
-        location.coords.longitude
-      );
     } catch (error) {
       console.error("Error getting location:", error);
     } finally {
@@ -45,13 +53,27 @@ export default function App() {
     }
   }
 
+  // ??
   useEffect(() => {
     userLocation();
   }, []);
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={mapRegion} showsUserLocation={true} />
+      <MapView style={styles.map} region={mapRegion} showsUserLocation={true}>
+      <Circle
+        center={  
+        {
+          latitude: 18.2106,
+          longitude: -67.1396,}
+        }
+        radius={480}
+        strokeWidth={10}
+        strokeColor="green"
+      />  
+      </MapView>
+      
+
       <View style={styles.buttonContainer}>
         <Button
           title={isLoading ? "Getting location..." : "Get location"}
@@ -60,6 +82,9 @@ export default function App() {
         />
         {isLoading && <ActivityIndicator style={styles.loader} />}
       </View>
+      
+
+
     </View>
   );
 }
