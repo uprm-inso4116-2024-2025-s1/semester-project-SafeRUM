@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '90%',
     marginTop: 20,
   },
   cancelButton: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 20,
     backgroundColor: '#8E8E93',
     padding: 10,
     borderRadius: 8,
