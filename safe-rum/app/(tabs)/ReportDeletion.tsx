@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#246C18',
+    backgroundColor: '#0F8F46',
     paddingTop: 30,
   },
   headerText: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#B3261E',
+    backgroundColor: '#FF0000',
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#246C18',
+    backgroundColor: '#0F8F46',
     paddingTop: 30,
   },
   scrollViewContent: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#246C18',
+    color: '#0F8F46',
     marginBottom: 4,
   },
   label_expanded: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '90%',
-    backgroundColor: '#246C18',
+    backgroundColor: '#0F8F46',
     padding: 20,
     borderRadius: 10,
     maxHeight: '80%', // Adjust modal height
