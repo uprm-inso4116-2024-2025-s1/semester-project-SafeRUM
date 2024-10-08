@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import MapView, { Circle } from "react-native-maps";
-import { StyleSheet, View, Button, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Button, ActivityIndicator, Alert } from "react-native";
 import * as Location from "expo-location";
 
 //TODO: Implement Geofencing to check if user is on campus.
 
 export default function App() {
-
   // Initial Map State
   const [mapRegion, setMapRegion] = useState({
     latitude: 18.2106,
@@ -18,20 +17,30 @@ export default function App() {
   const circleProps = {
     latitude: 18.2106,
     longitude: -67.1396,
-    radius: 500, // in meters
-    strokeColor: '#FF0000', // red
+    radius: 480, // in meters
+    strokeColor: 'green',
+    strokeWidth: 10,
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const isMounted = useRef(true);
+  const mapViewRef = useRef<MapView>(null);
 
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
-  // TODO: Add function signature
-  async function userLocation() {
+  const userLocation = useCallback(async () => {
     setIsLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      console.log("Permission to access location was denied");
+      Alert.alert(
+        "Permission Denied",
+        "Permission to access location was denied. Please enable it in your device settings."
+      );
       setIsLoading(false);
       return;
     }
@@ -40,39 +49,54 @@ export default function App() {
       let userLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
-      setMapRegion({
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-        latitudeDelta: 0.0030,
-        longitudeDelta: 0.0030,
-      });
+      if (isMounted.current) {
+        const newRegion = {
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
+          latitudeDelta: 0.0030,
+          longitudeDelta: 0.0030,
+        };
+        setMapRegion(newRegion);
+        mapViewRef.current?.animateToRegion(newRegion, 1000);
+        console.log(
+          "Lat:",
+          userLocation.coords.latitude,
+          "Lon:",
+          userLocation.coords.longitude
+        );
+      }
     } catch (error) {
       console.error("Error getting location:", error);
+      Alert.alert("Error", "Failed to get your location. Please try again.");
     } finally {
-      setIsLoading(false);
+      if (isMounted.current) {
+        setIsLoading(false);
+      }
     }
-  }
+  }, []);
 
-  // ??
   useEffect(() => {
     userLocation();
-  }, []);
+  }, [userLocation]);
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={mapRegion} showsUserLocation={true}>
-      <Circle
-        center={  
-        {
-          latitude: 18.2106,
-          longitude: -67.1396,}
-        }
-        radius={480}
-        strokeWidth={10}
-        strokeColor="green"
-      />  
+      <MapView 
+        ref={mapViewRef}
+        style={styles.map} 
+        region={mapRegion} 
+        showsUserLocation={true}
+      >
+        <Circle
+          center={{
+            latitude: circleProps.latitude,
+            longitude: circleProps.longitude,
+          }}
+          radius={circleProps.radius}
+          strokeWidth={circleProps.strokeWidth}
+          strokeColor={circleProps.strokeColor}
+        />  
       </MapView>
-      
 
       <View style={styles.buttonContainer}>
         <Button
@@ -82,9 +106,6 @@ export default function App() {
         />
         {isLoading && <ActivityIndicator style={styles.loader} />}
       </View>
-      
-
-
     </View>
   );
 }
