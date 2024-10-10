@@ -1,6 +1,8 @@
 # blueprints/auth.py
 
 from flask import Blueprint, request, jsonify
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
 from models import db, User
 
 auth_bp = Blueprint('auth', __name__)
@@ -44,32 +46,34 @@ def register():
         return jsonify({"error": "Password must be at least 8 characters long"}), 400
     
     # BUG: SQLAlchemy Integrity Error (duplicate users_email_unique key)
-    if User.query.filter_by(email=email).first():
-        jsonify({"error": "Email is already registered"}), 400
 
-    # Create new user
-    new_user = User(
-        first_name=first_name,
-        last_name=last_name,
-        email=email,
-        phone_number=phone_number
-    )
+    try:
+        # Create new user
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone_number=phone_number
+        )
 
-    #TODO: Hash password
-    new_user.set_password(password)
+        new_user.set_password(password)
 
-    # Commit changes (new user) to DB
-    db.session.add(new_user)
-    db.session.commit()
+        # Commit changes (new user) to DB
+        db.session.add(new_user)
+        db.session.commit()
 
-    # Return a confirmation message
-    return jsonify({"message": "User registered successfully", 
+        return jsonify({"message": "User registered successfully", 
                     "user" : {
                                 "first_name" : first_name, 
                                 "last_name" : last_name, 
-                                "email": email
+                                "email": email,
+                                "phone_number": phone_number
                             }}), 201
 
+    except IntegrityError as e:
+        db.session.rollback()   # rollback failed transaction (adding a new user)
+        return jsonify({'error': "An error occurred while adding the user."}), 400
+        
 
 #TODO: User login and session opening
 def login():
