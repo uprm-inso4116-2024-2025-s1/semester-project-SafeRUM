@@ -1,12 +1,108 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import MapView, { Circle } from "react-native-maps";
-import { StyleSheet, View, Button, ActivityIndicator, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import * as Location from "expo-location";
+import Pin from "@/components/Pin";
 
-//TODO: Implement Geofencing to check if user is on campus.
+// Sample data for pinned locations
+const uprm_main_locations = [
+  {
+    id: 1,
+    name: "Ing. Industrial",
+    lat: 18.2106,
+    lon: -67.1396,
+    reports: 5,
+    dangerLevel: "High",
+  },
+  {
+    id: 2,
+    name: "Biologia",
+    lat: 18.21279,
+    lon: -67.13859,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 3,
+    name: "Stefani",
+    lat: 18.20949,
+    lon: -67.13984,
+    reports: 1,
+    dangerLevel: "Low",
+  },
+  {
+    id: 4,
+    name: "Quimica",
+    lat: 18.21279,
+    lon: -67.14086,
+    reports: 2,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 5,
+    name: "Fisica",
+    lat: 18.21111,
+    lon: -67.13916,
+    reports: 4,
+    dangerLevel: "High",
+  },
+  {
+    id: 6,
+    name: "Chardon",
+    lat: 18.21044,
+    lon: -67.1403,
+    reports: 0,
+    dangerLevel: "None",
+  },
+  {
+    id: 7,
+    name: "Biblioteca",
+    lat: 18.21106,
+    lon: -67.14171,
+    reports: 6,
+    dangerLevel: "High",
+  },
+  {
+    id: 8,
+    name: "Sanchez Hidalgo",
+    lat: 18.21166,
+    lon: -67.1403,
+    reports: 0,
+    dangerLevel: "None",
+  },
+  {
+    id: 9,
+    name: "Centro de Estudiantes",
+    lat: 18.21025,
+    lon: -67.14114,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 10,
+    name: "Celis",
+    lat: 18.20936,
+    lon: -67.14088,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 11,
+    name: "Antonio Lucchetti",
+    lat: 18.20859,
+    lon: -67.14004,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+];
 
 export default function App() {
-  // Initial Map State
   const [mapRegion, setMapRegion] = useState({
     latitude: 18.2106,
     longitude: -67.1396,
@@ -17,14 +113,14 @@ export default function App() {
   const circleProps = {
     latitude: 18.2106,
     longitude: -67.1396,
-    radius: 480, // in meters
-    strokeColor: 'green',
+    radius: 480,
+    strokeColor: "green",
     strokeWidth: 10,
   };
 
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(true);
-  const mapViewRef = useRef<MapView>(null);
+  const mapViewRef = useRef<MapView | null>(null);
 
   useEffect(() => {
     return () => {
@@ -46,24 +142,18 @@ export default function App() {
     }
 
     try {
-      let userLocation = await Location.getCurrentPositionAsync({
+      let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
       if (isMounted.current) {
         const newRegion = {
-          latitude: userLocation.coords.latitude,
-          longitude: userLocation.coords.longitude,
-          latitudeDelta: 0.0030,
-          longitudeDelta: 0.0030,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
         };
         setMapRegion(newRegion);
         mapViewRef.current?.animateToRegion(newRegion, 1000);
-        console.log(
-          "Lat:",
-          userLocation.coords.latitude,
-          "Lon:",
-          userLocation.coords.longitude
-        );
       }
     } catch (error) {
       console.error("Error getting location:", error);
@@ -81,10 +171,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <MapView 
+      <MapView
         ref={mapViewRef}
-        style={styles.map} 
-        region={mapRegion} 
+        style={styles.map}
+        region={mapRegion}
         showsUserLocation={true}
       >
         <Circle
@@ -95,7 +185,13 @@ export default function App() {
           radius={circleProps.radius}
           strokeWidth={circleProps.strokeWidth}
           strokeColor={circleProps.strokeColor}
-        />  
+        />
+        {uprm_main_locations.map((location) => (
+          <Pin
+            key={location.id}
+            location={{ ...location, id: location.id.toString() }}
+          /> // Use the Pin component
+        ))}
       </MapView>
 
       <View style={styles.buttonContainer}>
