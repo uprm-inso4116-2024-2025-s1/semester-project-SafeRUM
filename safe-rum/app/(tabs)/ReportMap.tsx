@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import MapView, { Circle, Marker, Callout } from "react-native-maps";
+import MapView, { Circle } from "react-native-maps";
 import {
   StyleSheet,
   View,
   Button,
   ActivityIndicator,
   Alert,
-  Text,
 } from "react-native";
 import * as Location from "expo-location";
+import Pin from "@/components/Pin";
 
 // Sample data for pinned locations
-const pinnedLocations = [
+const uprm_main_locations = [
   {
     id: 1,
     name: "Ing. Industrial",
@@ -36,6 +36,70 @@ const pinnedLocations = [
     reports: 1,
     dangerLevel: "Low",
   },
+  {
+    id: 4,
+    name: "Quimica",
+    lat: 18.21279,
+    lon: -67.14086,
+    reports: 2,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 5,
+    name: "Fisica",
+    lat: 18.21111,
+    lon: -67.13916,
+    reports: 4,
+    dangerLevel: "High",
+  },
+  {
+    id: 6,
+    name: "Chardon",
+    lat: 18.21044,
+    lon: -67.1403,
+    reports: 0,
+    dangerLevel: "None",
+  },
+  {
+    id: 7,
+    name: "Biblioteca",
+    lat: 18.21106,
+    lon: -67.14171,
+    reports: 6,
+    dangerLevel: "High",
+  },
+  {
+    id: 8,
+    name: "Sanchez Hidalgo",
+    lat: 18.21166,
+    lon: -67.1403,
+    reports: 0,
+    dangerLevel: "None",
+  },
+  {
+    id: 9,
+    name: "Centro de Estudiantes",
+    lat: 18.21025,
+    lon: -67.14114,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 10,
+    name: "Celis",
+    lat: 18.20936,
+    lon: -67.14088,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
+  {
+    id: 11,
+    name: "Antonio Lucchetti",
+    lat: 18.20859,
+    lon: -67.14004,
+    reports: 3,
+    dangerLevel: "Medium",
+  },
 ];
 
 export default function App() {
@@ -49,7 +113,7 @@ export default function App() {
   const circleProps = {
     latitude: 18.2106,
     longitude: -67.1396,
-    radius: 480, // in meters
+    radius: 480,
     strokeColor: "green",
     strokeWidth: 10,
   };
@@ -90,12 +154,6 @@ export default function App() {
         };
         setMapRegion(newRegion);
         mapViewRef.current?.animateToRegion(newRegion, 1000);
-        console.log(
-          "Lat:",
-          location.coords.latitude,
-          "Lon:",
-          location.coords.longitude
-        );
       }
     } catch (error) {
       console.error("Error getting location:", error);
@@ -128,20 +186,11 @@ export default function App() {
           strokeWidth={circleProps.strokeWidth}
           strokeColor={circleProps.strokeColor}
         />
-        {pinnedLocations.map((location) => (
-          <Marker
+        {uprm_main_locations.map((location) => (
+          <Pin
             key={location.id}
-            coordinate={{ latitude: location.lat, longitude: location.lon }}
-            title={location.name}
-          >
-            <Callout tooltip>
-              <View style={styles.calloutView}>
-                <Text style={styles.calloutTitle}>{location.name}</Text>
-                <Text>Reports: {location.reports}</Text>
-                <Text>Danger Level: {location.dangerLevel}</Text>
-              </View>
-            </Callout>
-          </Marker>
+            location={{ ...location, id: location.id.toString() }}
+          /> // Use the Pin component
         ))}
       </MapView>
 
@@ -173,16 +222,5 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginLeft: 10,
-  },
-  calloutView: {
-    backgroundColor: "white",
-    borderRadius: 6,
-    padding: 10,
-    width: 150,
-  },
-  calloutTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 5,
   },
 });
