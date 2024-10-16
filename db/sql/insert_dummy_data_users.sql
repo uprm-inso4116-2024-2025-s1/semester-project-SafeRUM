@@ -6,8 +6,7 @@ INSERT INTO "users" (
         "profile_photo_url",
         "trust_level",
         "account_locked"
-    )
-VALUES (
+    ) VALUES (
         1,
         'john.doe@example.com',
         'hash_password_1',
@@ -33,4 +32,31 @@ VALUES (
         'https://example.com/photos/markjones.jpg',
         3.0,
         TRUE
+    ),
+    (
+        4,
+        'lucy.brown@example.com',
+        'hash_password_4',
+        'Lucy Brown',
+        'https://example.com/photos/lucybrown.jpg',
+        4.0,
+        FALSE
+    ),
+    (
+        5,
+        'david.wilson@example.com',
+        'hash_password_5',
+        'David Wilson',
+        'https://example.com/photos/davidwilson.jpg',
+        1.5,
+        TRUE
+    ),
+    (
+        6,
+        'susan.lee@example.com',
+        'hash_password_6',
+        'Susan Lee',
+        'https://example.com/photos/susanlee.jpg',
+        2.0,
+        FALSE
     ) ON CONFLICT ("id") DO NOTHING;
