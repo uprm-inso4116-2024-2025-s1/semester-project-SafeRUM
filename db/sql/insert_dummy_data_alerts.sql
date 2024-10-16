@@ -6,8 +6,7 @@ INSERT INTO "alerts" (
         "location",
         "latitude",
         "longitude"
-    )
-VALUES (
+    ) VALUES (
         1,
         1,
         'SOS',
@@ -24,4 +23,22 @@ VALUES (
         'Main Entrance',
         18.4661,
         -66.1060
+    ),
+    (
+        3,
+        3,
+        'Panic',
+        'Smoke detected in the cafeteria. Evacuate immediately.',
+        'Cafeteria',
+        18.4658,
+        -66.1075
+    ),
+    (
+        4,
+        4,
+        'Safety Info',
+        'Unattended package reported near the parking lot.',
+        'Parking Lot',
+        18.4670,
+        -66.1080
     ) ON CONFLICT ("id") DO NOTHING;
