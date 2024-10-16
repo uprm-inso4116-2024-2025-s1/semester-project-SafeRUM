@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import React, { useState, useEffect, useRef, useCallback } from "react";
 import MapView, { Circle } from "react-native-maps";
 import {
   StyleSheet,
@@ -128,22 +127,12 @@ export default function App() {
       isMounted.current = false;
     };
   }, []);
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
 
-  const userLocation = useCallback(async () => {
   const userLocation = useCallback(async () => {
     setIsLoading(true);
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      Alert.alert(
-        "Permission Denied",
-        "Permission to access location was denied. Please enable it in your device settings."
-      );
       Alert.alert(
         "Permission Denied",
         "Permission to access location was denied. Please enable it in your device settings."
@@ -169,13 +158,7 @@ export default function App() {
     } catch (error) {
       console.error("Error getting location:", error);
       Alert.alert("Error", "Failed to get your location. Please try again.");
-      Alert.alert("Error", "Failed to get your location. Please try again.");
     } finally {
-      if (isMounted.current) {
-        setIsLoading(false);
-      }
-    }
-  }, []);
       if (isMounted.current) {
         setIsLoading(false);
       }
@@ -184,7 +167,6 @@ export default function App() {
 
   useEffect(() => {
     userLocation();
-  }, [userLocation]);
   }, [userLocation]);
 
   return (
@@ -208,7 +190,7 @@ export default function App() {
           <Pin
             key={location.id}
             location={{ ...location, id: location.id.toString() }}
-          />
+          /> // Use the Pin component
         ))}
       </MapView>
 
