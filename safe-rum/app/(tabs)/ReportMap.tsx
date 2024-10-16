@@ -190,7 +190,7 @@ export default function App() {
           <Pin
             key={location.id}
             location={{ ...location, id: location.id.toString() }}
-          /> // Use the Pin component
+          />
         ))}
       </MapView>
 
