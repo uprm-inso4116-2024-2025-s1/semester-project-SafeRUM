@@ -9,8 +9,7 @@ INSERT INTO "reports" (
         "status",
         "category",
         "priority"
-    )
-VALUES (
+    ) VALUES (
         1,
         2,
         'Suspicious Activity',
@@ -31,6 +30,30 @@ VALUES (
         18.4661,
         -66.1060,
         'Reviewed',
-        'Maintanance',
+        'Maintenance',
+        FALSE
+    ),
+    (
+        3,
+        4,
+        'Vandalism',
+        'Graffiti found on the side wall of the cafeteria',
+        'Cafeteria',
+        18.4658,
+        -66.1075,
+        'Pending',
+        'Security',
+        TRUE
+    ),
+    (
+        4,
+        5,
+        'Water Leak',
+        'Water leaking from the pipe near the parking lot',
+        'Parking Lot',
+        18.4670,
+        -66.1080,
+        'Resolved',
+        'Maintenance',
         FALSE
     ) ON CONFLICT ("id") DO NOTHING;
