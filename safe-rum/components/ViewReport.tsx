@@ -49,6 +49,9 @@ export default function ViewReport({
                 <Text style={styles.infoText}>{selectedReport.timeAndDate}</Text>
               </View>
             </View>
+            <TouchableOpacity style={styles.editButton}>
+              <Text style={styles.editText}>Edit</Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </View>
@@ -97,5 +100,17 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     color: "#000",
+  },
+  editButton: {
+    backgroundColor: "#65558F",
+    // width: "50%",
+    alignSelf: "center",
+    borderRadius: 100,
+  },
+  editText: {
+    color: "#FFFFFF",
+    alignSelf: "flex-start",
+    paddingVertical: 10,
+    paddingHorizontal: 24,
   },
 });
