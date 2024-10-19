@@ -49,7 +49,12 @@ export default function ViewReport({
 
               <Text>Label</Text>
               <View style={styles.field}>
-                <TextInput style={styles.infoText} editable={inEditMode}>
+                <TextInput
+                  style={styles.infoText}
+                  editable={inEditMode}
+                  multiline={true}
+                  numberOfLines={4}
+                >
                   {selectedReport.label}
                 </TextInput>
               </View>
