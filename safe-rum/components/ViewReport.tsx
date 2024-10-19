@@ -1,6 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { ScrollView, TouchableOpacity, StyleSheet, View, Modal, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Modal,
+  Text,
+  TextInput,
+} from "react-native";
 import { Report } from "@/app/(tabs)/ReportViewing";
 
 export default function ViewReport({
@@ -12,6 +20,9 @@ export default function ViewReport({
   closeModal: () => void;
   selectedReport: Report;
 }) {
+  // Edit mode allows editing the report
+  const [inEditMode, setEditMode] = useState(false);
+
   return (
     <Modal
       visible={modalVisible}
@@ -31,26 +42,34 @@ export default function ViewReport({
             <View style={styles.wrapper}>
               <Text>Title</Text>
               <View style={styles.field}>
-                <Text style={styles.infoText}>{selectedReport.title}</Text>
+                <TextInput style={styles.infoText} editable={inEditMode}>
+                  {selectedReport.title}
+                </TextInput>
               </View>
 
               <Text>Label</Text>
               <View style={styles.field}>
-                <Text style={styles.infoText}>{selectedReport.label}</Text>
+                <TextInput style={styles.infoText} editable={inEditMode}>
+                  {selectedReport.label}
+                </TextInput>
               </View>
 
               <Text>Location</Text>
               <View style={styles.field}>
-                <Text style={styles.infoText}>{selectedReport.location}</Text>
+                <TextInput style={styles.infoText} editable={inEditMode}>
+                  {selectedReport.location}
+                </TextInput>
               </View>
 
               <Text>Time and Date</Text>
               <View style={styles.field}>
-                <Text style={styles.infoText}>{selectedReport.timeAndDate}</Text>
+                <TextInput style={styles.infoText} editable={inEditMode}>
+                  {selectedReport.timeAndDate}
+                </TextInput>
               </View>
             </View>
-            <TouchableOpacity style={styles.editButton}>
-              <Text style={styles.editText}>Edit</Text>
+            <TouchableOpacity style={styles.editButton} onPress={() => setEditMode(!inEditMode)}>
+              <Text style={styles.editText}>{inEditMode ? "Apply" : "Edit"}</Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
