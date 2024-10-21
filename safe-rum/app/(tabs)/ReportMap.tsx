@@ -9,114 +9,17 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import Pin from "@/components/Pin";
-
-// Sample data for pinned locations
-const uprm_main_locations = [
-  {
-    id: 1,
-    name: "Ing. Industrial",
-    lat: 18.2106,
-    lon: -67.1396,
-    reports: 5,
-    dangerLevel: "High",
-  },
-  {
-    id: 2,
-    name: "Biologia",
-    lat: 18.21279,
-    lon: -67.13859,
-    reports: 3,
-    dangerLevel: "Medium",
-  },
-  {
-    id: 3,
-    name: "Stefani",
-    lat: 18.20949,
-    lon: -67.13984,
-    reports: 1,
-    dangerLevel: "Low",
-  },
-  {
-    id: 4,
-    name: "Quimica",
-    lat: 18.21279,
-    lon: -67.14086,
-    reports: 2,
-    dangerLevel: "Medium",
-  },
-  {
-    id: 5,
-    name: "Fisica",
-    lat: 18.21111,
-    lon: -67.13916,
-    reports: 4,
-    dangerLevel: "High",
-  },
-  {
-    id: 6,
-    name: "Chardon",
-    lat: 18.21044,
-    lon: -67.1403,
-    reports: 0,
-    dangerLevel: "None",
-  },
-  {
-    id: 7,
-    name: "Biblioteca",
-    lat: 18.21106,
-    lon: -67.14171,
-    reports: 6,
-    dangerLevel: "High",
-  },
-  {
-    id: 8,
-    name: "Sanchez Hidalgo",
-    lat: 18.21166,
-    lon: -67.1403,
-    reports: 0,
-    dangerLevel: "None",
-  },
-  {
-    id: 9,
-    name: "Centro de Estudiantes",
-    lat: 18.21025,
-    lon: -67.14114,
-    reports: 3,
-    dangerLevel: "Medium",
-  },
-  {
-    id: 10,
-    name: "Celis",
-    lat: 18.20936,
-    lon: -67.14088,
-    reports: 3,
-    dangerLevel: "Medium",
-  },
-  {
-    id: 11,
-    name: "Antonio Lucchetti",
-    lat: 18.20859,
-    lon: -67.14004,
-    reports: 3,
-    dangerLevel: "Medium",
-  },
-];
+import {uprm_main_locations, circleProps} from "@/constants/ReportMapConstants";
 
 export default function App() {
+  
+  // Set initial Value
   const [mapRegion, setMapRegion] = useState({
     latitude: 18.2106,
     longitude: -67.1396,
     latitudeDelta: 0.009,
     longitudeDelta: 0.009,
   });
-
-  const circleProps = {
-    latitude: 18.2106,
-    longitude: -67.1396,
-    radius: 480,
-    strokeColor: "green",
-    strokeWidth: 10,
-  };
 
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(true);
