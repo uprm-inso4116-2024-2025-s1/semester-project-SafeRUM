@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, View, Button, TextInput, Alert, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { BaseButton } from 'react-native-gesture-handler';
+import { Text, View, Alert, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
+import { Ionicons } from '@expo/vector-icons';
 
 enum ReportType {
   Report = 'Report',
@@ -13,7 +13,7 @@ interface Location {
   longitude: number;
 }
 
-export default function Index() {
+export default function Index({ goBack }: { goBack: () => void }) {
   const [isWriting, setIsWriting] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [reportTitle, setReportTitle] = useState('');
@@ -62,7 +62,6 @@ export default function Index() {
   };
 
   const handleSOSPress = () => {
-    // Set dummy location
     setLocation({ latitude: 18.211005502415397, longitude: -67.14156653443999 });
     setSosActive(true);
     setConfirmEnabled(true);
@@ -91,6 +90,10 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1 }}>
+      <TouchableOpacity onPress={goBack} style={styles.icon}>
+        <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#0F8F46' }}>
         
       {!isWriting && !sosActive && (
@@ -109,12 +112,11 @@ export default function Index() {
       <Text style={styles.buttonText}>Sexual Harasser</Text>
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.priorityButton} onPress={handleSOSPress}>
+    <TouchableOpacity style={styles.redButton} onPress={handleSOSPress}>
       <Text style={styles.buttonText}>SOS</Text>
     </TouchableOpacity>
   </>
 )}
-
 
         {isWriting && (
           <View style={{ marginTop: 20, alignItems: 'center' }}>
@@ -146,11 +148,11 @@ export default function Index() {
                 <Marker coordinate={location} />
               )}
             </MapView>
-            <TouchableOpacity style={styles.bubbleButton} onPress={handleSubmitReport}>
+            <TouchableOpacity style={styles.submitButton} onPress={handleSubmitReport}>
               <Text style={styles.buttonText}>Submit Report</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.priorityButton} onPress={handleCancel}>
-              <Text style={styles.buttonText}>Cancel</Text>
+            <TouchableOpacity onPress={handleCancel} style={styles.icon}>
+              <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
             </TouchableOpacity>
           </View>
         )}
@@ -169,14 +171,14 @@ export default function Index() {
             >
               {location && <Marker coordinate={location} />}
             </MapView>
-            <TouchableOpacity style={styles.sosButton} onPress={() => handleConfirmSOS('Panic Alert')}>
+            <TouchableOpacity style={styles.redButton} onPress={() => handleConfirmSOS('Panic Alert')}>
               <Text style={styles.buttonText}>Panic Alert</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.sosButton} onPress={() => handleConfirmSOS('Immediate Help')}>
+            <TouchableOpacity style={styles.redButton} onPress={() => handleConfirmSOS('Immediate Help')}>
               <Text style={styles.buttonText}>Immediate Help</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.priorityButton} onPress={handleCancelSOS}>
-              <Text style={styles.buttonText}>Cancel</Text>
+            <TouchableOpacity onPress={handleCancelSOS} style={styles.icon}>
+              <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
             </TouchableOpacity>
           </View>
         )}
@@ -184,14 +186,6 @@ export default function Index() {
     </View>
   );
 }
-
-const baseButton = {
-  padding: 15,
-  borderRadius: 10,
-  marginBottom: 10,
-  width: 'auto',
-  alignItems: 'center',
-};
 
 const styles = StyleSheet.create({
   headerText: {
@@ -201,16 +195,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bubbleButton: {
-    ...baseButton,
-    backgroundColor: 'orange',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 'auto',
+    alignItems: 'center',
+    backgroundColor: '#a26919',
   },
-  priorityButton: {
-    ...baseButton,
-    backgroundColor: 'red',
+  submitButton: {
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 'auto',
+    alignItems: 'center',
+    backgroundColor: '#49418e',
   },
-  sosButton: {
-    ...baseButton,
-    backgroundColor: '#9a2a24',
+  redButton: {
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 'auto',
+    alignItems: 'center',
+    backgroundColor: '#990000',
   },
   buttonText: {
     fontSize: 18,
@@ -227,4 +233,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
+  icon: {
+    position: 'absolute',
+    left: 0,
+  },
 });
+
