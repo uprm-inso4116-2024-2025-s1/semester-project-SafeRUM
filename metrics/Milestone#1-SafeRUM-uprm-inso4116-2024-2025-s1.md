@@ -1,6 +1,6 @@
 # Milestone Data
 
-## Date Generated: 2024-10-10
+## Date Generated: 2024-10-21
 | Developer | Points Closed | Percent Contribution | Projected Grade | Lecture Topic Tasks |
 | --------- | ------------- | -------------------- | --------------- | ------------------- |
 | lex939 | 82.3 | 6.1% | 100.0% | 0 |
@@ -58,3 +58,8 @@
 
 | Message |
 | ------- |
+| INFO: Found project: {'title': 'SafeRUM', 'number': 1} |
+| WARNING: [Issue #295](https://github.com/uprm-inso4116-2024-2025-s1/semester-project-SafeRUM/issues/295) is not associated with a milestone. |
+| WARNING: [Issue #296](https://github.com/uprm-inso4116-2024-2025-s1/semester-project-SafeRUM/issues/296) is not associated with a milestone. |
+| WARNING: [Issue #297](https://github.com/uprm-inso4116-2024-2025-s1/semester-project-SafeRUM/issues/297) is not associated with a milestone. |
+| WARNING: [Issue #298](https://github.com/uprm-inso4116-2024-2025-s1/semester-project-SafeRUM/issues/298) is not associated with a milestone. |
