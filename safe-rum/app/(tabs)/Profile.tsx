@@ -5,6 +5,7 @@ import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import SettingsPage from '../Settings';
 import EditProfile from '../EditProfile';
+import CalendarPage from '../Calendar/Calendar';
 
 export default function Index() {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ export default function Index() {
     return <SettingsPage setSettingsState={setSettingsState}/>;
   }
   if (editState) {
-    return <EditProfile userProfile={userProfile} setUserProfile={setUserProfile} setEditState={setEditState}/>;
+    return <CalendarPage setCalendarState = {setEditState} />;
   }
 
   return (
