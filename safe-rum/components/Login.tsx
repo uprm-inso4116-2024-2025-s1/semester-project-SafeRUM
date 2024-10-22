@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Alert, StyleSheet, Image, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
-import { getAuth, sendPasswordResetEmail } from '@firebase/auth';
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from '@firebase/auth';
 import { useRouter } from 'expo-router';
 
 // Import the SafeRum logo
@@ -21,74 +21,109 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-interface LoginScreenProps {
-  toggleUserAuthScreen: () => void;
-}
+// Predefined list of admin emails with temporary passwords
+const adminList: { [key: string]: string } = {
+  'admin1@upr.edu': 'temp1234',
+  'admin2@upr.edu': 'temp5678',
+};
 
-export default function Login({ toggleUserAuthScreen }: LoginScreenProps) {
+export default function Login({ toggleUserAuthScreen }: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
   const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const router = useRouter();
 
-  const API_URL = 'http://<your-ip>:3000';
+  const handleLogin = () => {
+    if (!username) {
+      Alert.alert('Error', 'Please enter your username or email.');
+      return;
+    }
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert('Login Successful', 'Redirecting...');
-        router.push('/home');
+    // Check if user is an admin
+    if (adminList[username]) {
+      // Check if the user is using a temporary password
+      if (adminList[username].startsWith('temp')) {
+        // Admin has a temporary password, prompt to change it
+        if (!password || adminList[username] === password) {
+          setIsAdmin(true);
+          setModalVisible(true); // Show the change password modal
+        } else {
+          // Admin password does not match the temporary password
+          Alert.alert('Login Failed', 'Incorrect password. Please enter your temporary password.');
+        }
       } else {
-        Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
-          {
-            text: 'Forgot Password?',
-            onPress: () => setForgotPasswordModalVisible(true),
-          },
-          {
-            text: 'OK',
-          },
-        ]);
+        // Admin has already changed their password, proceed with regular login
+        console.log(password);
+        if (!password) {
+          Alert.alert('Error', 'Please enter your password.');
+          return;
+        }
+
+        if (adminList[username] === password) {
+          Alert.alert('Login Successful', 'Redirecting to Admin Home...');
+          router.push('/(tabs)/home');
+        } else {
+          Alert.alert('Login Failed', 'Incorrect password.');
+        }
       }
-    } catch (error) {
-      Alert.alert('Login Failed', 'Something went wrong', [
-        {
-          text: 'Forgot Password?',
-          onPress: () => setForgotPasswordModalVisible(true),
-        },
-        {
-          text: 'OK',
-        },
-      ]);
+    } else {
+      // Regular user login using Firebase
+      if (!password) {
+        Alert.alert('Error', 'Please enter your password.');
+        return;
+      }
+
+      signInWithEmailAndPassword(auth, username, password)
+        .then(() => {
+          Alert.alert('Login Successful', 'Redirecting...');
+          router.push('/home');
+        })
+        .catch((error) => {
+          Alert.alert('Login Failed', `${error.message || 'Invalid credentials'}`, [
+            {
+              text: 'Forgot Password?',
+              onPress: () => setForgotPasswordModalVisible(true),
+            },
+            {
+              text: 'OK',
+            },
+          ]);
+        });
     }
   };
 
-  const handleForgotPassword = async () => {
+  const handleChangePassword = () => {
+    if (!newPassword) {
+      Alert.alert('Error', 'Please enter a new password.');
+      return;
+    }
+
+    // Update the admin's password in the adminList and no longer treat it as a temporary password
+    adminList[username] = newPassword;
+    Alert.alert('Success', 'Your password has been changed successfully!');
+    setModalVisible(false);
+    setPassword(''); // Clear the password field
+  };
+
+  const handleForgotPassword = () => {
     if (!resetEmail) {
       Alert.alert('Error', 'Please enter your email to reset your password.');
       return;
     }
 
-    try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      Alert.alert('Success', 'Password reset email sent successfully.');
-      setForgotPasswordModalVisible(false);
-    } catch (error) {
-      Alert.alert('Error', 'Something went wrong with the reset process.');
-    }
+    // Send a password reset email using Firebase
+    sendPasswordResetEmail(auth, resetEmail)
+      .then(() => {
+        Alert.alert('Success', 'Password reset email sent successfully.');
+        setForgotPasswordModalVisible(false);
+      })
+      .catch((error) => {
+        Alert.alert('Error', `Something went wrong with the reset process: ${error.message}`);
+      });
   };
 
   return (
@@ -129,6 +164,30 @@ export default function Login({ toggleUserAuthScreen }: LoginScreenProps) {
           <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
 
+        {/* Modal for changing admin password */}
+        <Modal visible={modalVisible} transparent={true} animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Change Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="New Password"
+                placeholderTextColor="#888"
+                secureTextEntry={true}
+                value={newPassword}
+                onChangeText={setNewPassword}
+              />
+              <TouchableOpacity style={styles.resetButton} onPress={handleChangePassword}>
+                <Text style={styles.resetButtonText}>Change Password</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Forgot Password Modal */}
         <Modal
           visible={forgotPasswordModalVisible}
           transparent={true}
