@@ -3,7 +3,7 @@ import { View, Text, TextInput, Alert, StyleSheet, Image, TouchableOpacity, Dime
 import { useRouter } from 'expo-router';
 
 // Import the SafeRum logo
-const SafeRumLogo = require('../../assets/images/SafeRumLogo.png'); // Adjust path if needed
+const SafeRumLogo = require('../assets/images/SafeRumLogo.png'); // Adjust path if needed
 
 interface LoginScreenProps {
   toggleUserAuthScreen: () => void;

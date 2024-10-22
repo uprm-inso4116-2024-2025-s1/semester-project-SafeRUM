@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Dimensions, Platform } from 'react-native';
-import UserSignup from '@/components/UserSignup';
-import Login from './login';
+import UserSignup from '@/components/Signup';
+import Login from '../../components/Login';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get('window');
