@@ -5,7 +5,11 @@ import { useRouter } from 'expo-router';
 // Import the SafeRum logo
 const SafeRumLogo = require('../../assets/images/SafeRumLogo.png'); // Adjust path if needed
 
-export default function Login() {
+interface LoginScreenProps {
+  toggleUserAuthScreen: () => void;
+}
+
+export default function Login({ toggleUserAuthScreen } : LoginScreenProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -108,9 +112,12 @@ export default function Login() {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Alert.alert('Sign Up or Forgot Password')}>
-          <Text style={styles.signupText}>Don't have an account? Sign up</Text>
+        <View style={styles.toggleTextContainer}>
+        <Text style={styles.toggleText}>Don't have an account? </Text>
+        <TouchableOpacity onPress={toggleUserAuthScreen}>
+          <Text style={styles.linkText}>Sign up</Text>
         </TouchableOpacity>
+      </View>
       </View>
     </View>
   );
@@ -124,19 +131,18 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingTop: 50,
+    // paddingTop: 50,
   },
   logo: {
     width: width * 0.7,
     height: height * 0.25,
     resizeMode: 'contain',
-    marginBottom: 30,
   },
   formContainer: {
     width: '90%',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
-    padding: 20,
+    // padding: 20,
     alignItems: 'center',
   },
   title: {
@@ -156,8 +162,8 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '100%',
-    backgroundColor: '#0F8F46',
-    padding: 15,
+    backgroundColor: '#009A44',
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 15,
@@ -167,8 +173,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  signupText: {
-    color: '#0F8F46',
-    fontSize: 16,
+  toggleTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // marginTop: 25,
+  },
+  toggleText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  linkText: {
+    color: '#009A44',
+    fontWeight: 'bold',
   },
 });
