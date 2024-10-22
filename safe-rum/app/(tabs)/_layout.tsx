@@ -8,7 +8,7 @@ export default () => {
             <Tabs.Screen name="ReportMap" />
 
             <Tabs.Screen
-                name="userAuthScreen"
+                name="Authentication"
                 options={{
                     title: 'Authentication',
                     headerShown: false,
