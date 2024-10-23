@@ -36,7 +36,7 @@ export default function ViewReport({
             <Ionicons name="close-circle" size={32} color="#FFF" />
           </TouchableOpacity>
 
-          <Text style={styles.modalHeaderText}>View Report</Text>
+          <Text style={styles.modalHeaderText}>{inEditMode ? "Edit Report" : "View Report"}</Text>
 
           <ScrollView style={styles.modalScroll}>
             <View style={styles.wrapper}>
