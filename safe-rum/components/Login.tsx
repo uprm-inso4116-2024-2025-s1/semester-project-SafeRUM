@@ -65,7 +65,7 @@ export default function Login({ toggleUserAuthScreen }: any) {
 
         if (adminList[username] === password) {
           Alert.alert('Login Successful', 'Redirecting to Admin Home...');
-          router.push('/(tabs)/home');
+          router.push('/admins/ReportMap');
         } else {
           Alert.alert('Login Failed', 'Incorrect password.');
         }
@@ -80,7 +80,7 @@ export default function Login({ toggleUserAuthScreen }: any) {
       signInWithEmailAndPassword(auth, username, password)
         .then(() => {
           Alert.alert('Login Successful', 'Redirecting...');
-          router.push('/home');
+          router.push('/users/home');
         })
         .catch((error) => {
           Alert.alert('Login Failed', `${error.message || 'Invalid credentials'}`, [

@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { initializeApp } from '@firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
+  authDomain: "saferum-fcc4b.firebaseapp.com",
+  projectId: "saferum-fcc4b",
+  storageBucket: "saferum-fcc4b.appspot.com",
+  messagingSenderId: "11200525932",
+  appId: "1:11200525932:web:4e741499413e43017e4a49",
+  measurementId: "G-6M83VVM4YY"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 interface SignUpScreenProps {
   toggleUserAuthScreen: () => void;
@@ -22,16 +38,31 @@ export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) 
     setPassword('');
     setConfirmPassword('');
     setPasswordVisible(false);
-  }
+  };
 
   const handleRegister = () => {
-    
-    // TODO: Input validation logic here
+    // Basic validation
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      Alert.alert('Error', 'All fields are required.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return;
+    }
 
-    Alert.alert('Success', 'Account created successfully!');
-
-    clearSignUpItems();
-
+    // Registering user with Firebase
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // User registered successfully
+        Alert.alert('Success', 'Account created successfully!');
+        clearSignUpItems();
+        toggleUserAuthScreen(); // Redirect to login after successful signup
+      })
+      .catch((error) => {
+        // Handle registration errors
+        Alert.alert('Error', error.message);
+      });
   };
 
   return (

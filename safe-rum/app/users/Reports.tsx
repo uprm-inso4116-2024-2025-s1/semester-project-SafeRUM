@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
 
@@ -10,7 +11,7 @@ const ReportScreen = () => {
         <View style={styles.headerButtons}>
           <TouchableOpacity
             style={styles.headerButton}
-            onPress={() => Alert.alert('Create Report Button Pressed')}
+            onPress={() => router.push("../ReportViewing.tsx")}
           >
             <Text style={styles.headerButtonText}>Create Report</Text>
           </TouchableOpacity>
