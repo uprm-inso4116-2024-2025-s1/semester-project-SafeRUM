@@ -11,6 +11,7 @@ import * as Location from "expo-location";
 import Pin from "@/components/Pin";
 import {uprm_main_locations, circleProps} from "@/constants/ReportMapConstants";
 import CircleComponent from "@/components/UprmBounds";
+import { showPermissionDeniedAlert, showFailedGettingUserLocation } from "@/components/Alert";
 
 export default function App() {
   
@@ -37,10 +38,7 @@ export default function App() {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      Alert.alert(
-        "Permission Denied",
-        "Permission to access location was denied. Please enable it in your device settings."
-      );
+      showPermissionDeniedAlert();
       setIsLoading(false);
       return;
     }
@@ -60,8 +58,7 @@ export default function App() {
         mapViewRef.current?.animateToRegion(newRegion, 1000);
       }
     } catch (error) {
-      console.error("Error getting location:", error);
-      Alert.alert("Error", "Failed to get your location. Please try again.");
+      showFailedGettingUserLocation();
     } finally {
       if (isMounted.current) {
         setIsLoading(false);
