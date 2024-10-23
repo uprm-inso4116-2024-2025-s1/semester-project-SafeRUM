@@ -11,6 +11,7 @@ export default function Index() {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#d1f5d3",
+        
       }}
     >
       <ProfilePicture/>
