@@ -1,15 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface ReportDeletionScreenProps {
   goBack: () => void;
 }
 
+interface Report {
+  id: number;
+  title: string;
+  date: string;
+}
+
+const initialReports: Report[] = [
+  { id: 1, title: 'Flooded - Chardon', date: '9/20/24' },
+  { id: 2, title: 'Suspicious - Chardon', date: '9/20/24' },
+  // Add more reports here...
+];
+
 export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenProps) {
+  const [reports, setReports] = useState<Report[]>(initialReports);
+  const [selectedReport, setSelectedReport] = useState<number | null>(null);
   const [deletionReason, setDeletionReason] = useState('');
 
   const handleDelete = () => {
+    if (selectedReport === null) {
+      Alert.alert('Please select a report to delete.');
+      return;
+    }
+
     if (!deletionReason) {
       Alert.alert('Please select a reason for deletion.');
       return;
@@ -17,10 +36,18 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
 
     Alert.alert(
       "Delete Report",
-      `Do you really want to delete the report?`,
+      `Do you really want to delete the selected report?`,
       [
         { text: "Cancel", style: "cancel" },
-        { text: "Confirm", style: "destructive", onPress: () => console.log("Report Deleted") }
+        {
+          text: "Confirm",
+          style: "destructive",
+          onPress: () => {
+            setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
+            setSelectedReport(null);  // Clear the selected report after deletion
+            setDeletionReason('');  // Clear the deletion reason
+          },
+        },
       ]
     );
   };
@@ -33,44 +60,52 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
 
       <Text style={styles.headerText}>Delete Report</Text>
 
-      <View style={styles.wrapper}>
-        <Text style={styles.label}>Title</Text>
-        <View style={styles.field}>
-          <Text style={styles.infoText}></Text>
-        </View>
+      <ScrollView style={styles.scrollContainer}>
+        {reports.length === 0 ? (
+          <Text style={styles.noReportsText}>No reports available.</Text>
+        ) : (
+          reports.map(report => (
+            <TouchableOpacity
+              key={report.id}
+              style={[
+                styles.reportItem,
+                selectedReport === report.id && styles.selectedReportItem
+              ]}
+              onPress={() => setSelectedReport(report.id)}
+            >
+              <Text style={styles.reportText}>
+                {report.title} - {report.date}
+              </Text>
+            </TouchableOpacity>
+          ))
+        )}
+      </ScrollView>
 
-        <Text style={styles.label}>Location</Text>
-        <View style={styles.field}>
-          <Text style={styles.infoText}></Text>
-        </View>
+      {reports.length > 0 && (
+        <>
+          <Text style={styles.questionText}>Do you really want to delete this report?</Text>
 
-        <Text style={styles.label}>Date</Text>
-        <View style={styles.field}>
-          <Text style={styles.infoText}></Text>
-        </View>
-      </View>
+          <TouchableOpacity
+            style={styles.radioContainer}
+            onPress={() => setDeletionReason('solved')}
+          >
+            <View style={[styles.radioButton, deletionReason === 'solved' && styles.radioButtonSelected]}>
+              {deletionReason === 'solved' && <View style={styles.radioInner} />}
+            </View>
+            <Text style={styles.radioText}>Yes, the problem is solved</Text>
+          </TouchableOpacity>
 
-      <Text style={styles.questionText}>Do you really want to delete this report?</Text>
-
-      <TouchableOpacity
-        style={styles.radioContainer}
-        onPress={() => setDeletionReason('solved')}
-      >
-        <View style={[styles.radioButton, deletionReason === 'solved' && styles.radioButtonSelected]}>
-          {deletionReason === 'solved' && <View style={styles.radioInner} />}
-        </View>
-        <Text style={styles.radioText}>Yes, the problem is solved</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.radioContainer}
-        onPress={() => setDeletionReason('false alarm')}
-      >
-        <View style={[styles.radioButton, deletionReason === 'false alarm' && styles.radioButtonSelected]}>
-          {deletionReason === 'false alarm' && <View style={styles.radioInner} />}
-        </View>
-        <Text style={styles.radioText}>Yes, it was a false alarm</Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.radioContainer}
+            onPress={() => setDeletionReason('false alarm')}
+          >
+            <View style={[styles.radioButton, deletionReason === 'false alarm' && styles.radioButtonSelected]}>
+              {deletionReason === 'false alarm' && <View style={styles.radioInner} />}
+            </View>
+            <Text style={styles.radioText}>Yes, it was a false alarm</Text>
+          </TouchableOpacity>
+        </>
+      )}
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.cancelButton} onPress={goBack}>
@@ -103,31 +138,34 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 19,
     left: 15,
+    display: 'none'
   },
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    padding: 0,
-    gap: 16,
-    width: 240,
-    height: 'auto',
+  scrollContainer: {
+    width: '90%',
+    height: 200,
     marginBottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    borderRadius: 8
   },
-  field: {
-    backgroundColor: '#FFFFFF',
-    padding: 10,
-    borderRadius: 8,
-    width: '100%',
-  },
-  label: {
-    fontSize: 14,
+  noReportsText: {
+    fontSize: 16,
     color: '#FFF',
-    marginBottom: 4,
+    textAlign: 'center',
   },
-  infoText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  reportItem: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    marginVertical: 8,
+    borderRadius: 8,
+    width: '90%',
+    marginLeft: '5%',
+    alignItems: 'center',
+  },
+  selectedReportItem: {
+    backgroundColor: '#BDECB6',
+  },
+  reportText: {
+    fontSize: 16,
     color: '#000',
   },
   questionText: {
@@ -173,6 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '90%',
     marginTop: 20,
+    marginBottom: 20
   },
   cancelButton: {
     flex: 1,
