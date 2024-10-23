@@ -15,9 +15,13 @@ const UserDetails: React.FC = () => {
     alert('Signed out');
   };
 
+  const handleSave = () => {
+    alert('Signed out');
+  };
+
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 2 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={90}  // Adjust based on the height of your header 
     >
@@ -75,20 +79,6 @@ const UserDetails: React.FC = () => {
               secureTextEntry
             />
 
-            {/* Role Dropdown
-            <Text>Role</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={role}
-                style={styles.picker}
-                onValueChange={(itemValue) => setRole(itemValue)}
-              >
-                <Picker.Item label="Student" value="student" />
-                <Picker.Item label="Professor" value="professor" />
-                <Picker.Item label="Faculty" value="faculty" />
-                <Picker.Item label="Staff" value="staff" />
-              </Picker>
-            </View> */}
 
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <DropDownPicker
@@ -103,13 +93,18 @@ const UserDetails: React.FC = () => {
                     setOpen={setOpen}
                     setValue={setRole}
                     placeholder="Select your role"
-                    style={{ width: '100%', marginBottom: 20 }}
+                    style={{ width: '100%', marginBottom: 20 , marginTop: 10}}
                 />
             </View>
 
-
-            {/* Sign Out Button */}
-            <Button title="Sign Out" onPress={handleSignOut} color="#ff8800" />
+            
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' , flexDirection: 'row' }}>
+              {/* Sign Out Button */}
+              <Button title="Sign Out" onPress={handleSignOut} color="#ff8800" />
+              {/* Save Button */}
+              <Button title="Save" onPress={handleSave} color="green"  />
+            </View>
+            
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -126,7 +121,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
-    backgroundColor: '#000',
+    backgroundColor: 'green',
     justifyContent: 'center',
   },
   header: {
@@ -146,16 +141,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#333',
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    marginBottom: 20,
-    overflow: 'hidden',
-  },
-  picker: {
-    height: 40,
-    color: '#fff',
-    backgroundColor: '#333',
-  },
+ 
+
 });

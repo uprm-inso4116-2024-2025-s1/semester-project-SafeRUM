@@ -27,7 +27,8 @@ const ProfilePicture: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pickImage} style={styles.imageContainer}>
+      
+      <TouchableOpacity onPress={pickImage} >
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
         ) : (
@@ -38,7 +39,7 @@ const ProfilePicture: React.FC = () => {
       </TouchableOpacity>
 
       {/* Wrapping the Button in a View for styling */}
-      <View style={styles.buttonContainer}>
+      <View >
         <Button title="Select Profile Picture" onPress={pickImage} />
       </View>
     </View>
@@ -52,10 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 50,  // Added some padding at the top for spacing
-  },
-  imageContainer: {
-    marginBottom: 20,  // Add margin between image and button
+    color: 'green',
   },
   image: {
     width: 150,
@@ -74,7 +72,5 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-  buttonContainer: {
-    marginTop: 20,  // Add margin to give space between image and button
-  },
+
 });
