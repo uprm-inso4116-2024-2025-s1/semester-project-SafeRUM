@@ -10,6 +10,7 @@ import {
 import * as Location from "expo-location";
 import Pin from "@/components/Pin";
 import {uprm_main_locations, circleProps} from "@/constants/ReportMapConstants";
+import CircleComponent from "@/components/UprmBounds";
 
 export default function App() {
   
@@ -23,7 +24,7 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(true);
-  const mapViewRef = useRef<MapView | null>(null);
+  const mapViewRef = useRef<MapView | null>(null); 
 
   useEffect(() => {
     return () => {
@@ -80,15 +81,14 @@ export default function App() {
         region={mapRegion}
         showsUserLocation={true}
       >
-        <Circle
-          center={{
-            latitude: circleProps.latitude,
-            longitude: circleProps.longitude,
-          }}
+        <CircleComponent
+          latitude={circleProps.latitude}
+          longitude={circleProps.longitude}
           radius={circleProps.radius}
           strokeWidth={circleProps.strokeWidth}
           strokeColor={circleProps.strokeColor}
         />
+          
         {uprm_main_locations.map((location) => (
           <Pin
             key={location.id}
