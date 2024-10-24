@@ -31,13 +31,20 @@ export default function Index() {
     } else if (!location) {
       Alert.alert('Error', 'Please select a location on the map');
     } else {
-      const timestamp = new Date().toLocaleString();
+      const currentDate = new Date();
+      const timestamp = currentDate.toLocaleString();
+      
+      // Set expiration date 7 days from now
+      const expirationDate = new Date();
+      expirationDate.setDate(currentDate.getDate() + 7); // 7 days in the future
+  
       try {
         await addDoc(collection(db, 'reports'), {
           type: ReportType.Report,
           reportText,
           location,
           timestamp,
+          expirationDate: expirationDate.toISOString(), // Save expiration date
         });
         Alert.alert('Success', 'Report and location submitted');
         setReportText('');

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../components/UserLogin'; 
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../../components/UserLogin';
 
 interface ReportDeletionScreenProps {
   goBack: () => void;
@@ -22,11 +22,32 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
   const fetchReports = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, 'reports'));
-      const reportsData: Report[] = querySnapshot.docs.map(doc => ({
-        id: doc.id, 
-        title: doc.data().reportText,
-        date: doc.data().timestamp, 
-      }));
+      const now = new Date();
+  
+      const reportsData: Report[] = [];
+      const expiredReports: string[] = [];
+  
+      querySnapshot.forEach(async (doc) => {
+        const data = doc.data();
+        const expirationDate = new Date(data.expirationDate);
+  
+        if (expirationDate > now) {
+          reportsData.push({
+            id: doc.id,
+            title: data.reportText,
+            date: data.timestamp,
+          });
+        } else {
+          
+          expiredReports.push(doc.id);
+        }
+      });
+
+     
+      for (const reportId of expiredReports) {
+        await deleteDoc(doc(db, 'reports', reportId));
+      }
+  
       setReports(reportsData);
     } catch (error) {
       console.error('Error fetching reports: ', error);
@@ -57,10 +78,16 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
         {
           text: "Confirm",
           style: "destructive",
-          onPress: () => {
-            setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
-            setSelectedReport(null); 
-            setDeletionReason('');  
+          onPress: async () => {
+            try {
+              await deleteDoc(doc(db, 'reports', selectedReport));
+              setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
+              setSelectedReport(null); 
+              setDeletionReason('');
+            } catch (error) {
+              console.error('Error deleting report: ', error);
+              Alert.alert('Error', 'Failed to delete report');
+            }
           },
         },
       ]
