@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../components/UserLogin'; 
+import { db } from '../components/UserLogin'; 
 
 interface ReportDeletionScreenProps {
   goBack: () => void;

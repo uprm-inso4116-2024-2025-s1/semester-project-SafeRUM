@@ -98,6 +98,9 @@ export default function Index({ goBack }: { goBack: () => void }) {
         
       {!isWriting && !sosActive && (
   <>
+    <TouchableOpacity onPress={goBack} style={styles.icon}>
+    <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
+    </TouchableOpacity>
     <Text style={styles.headerText}>Select a Category:</Text>
     <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Safety Issue')}>
       <Text style={styles.buttonText}>Safety Issue</Text>
