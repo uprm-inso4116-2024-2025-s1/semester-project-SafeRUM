@@ -1,27 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../components/UserLogin'; 
 
 interface ReportDeletionScreenProps {
   goBack: () => void;
 }
 
 interface Report {
-  id: number;
+  id: string;
   title: string;
   date: string;
 }
 
-const initialReports: Report[] = [
-  { id: 1, title: 'Flooded - Chardon', date: '9/20/24' },
-  { id: 2, title: 'Suspicious - Chardon', date: '9/20/24' },
-  // Add more reports here...
-];
-
 export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenProps) {
-  const [reports, setReports] = useState<Report[]>(initialReports);
-  const [selectedReport, setSelectedReport] = useState<number | null>(null);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [selectedReport, setSelectedReport] = useState<string | null>(null);
   const [deletionReason, setDeletionReason] = useState('');
+
+  const fetchReports = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'reports'));
+      const reportsData: Report[] = querySnapshot.docs.map(doc => ({
+        id: doc.id, 
+        title: doc.data().reportText,
+        date: doc.data().timestamp, 
+      }));
+      setReports(reportsData);
+    } catch (error) {
+      console.error('Error fetching reports: ', error);
+      Alert.alert('Error', 'Failed to fetch reports');
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
 
   const handleDelete = () => {
     if (selectedReport === null) {
@@ -44,8 +59,8 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
           style: "destructive",
           onPress: () => {
             setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
-            setSelectedReport(null);  // Clear the selected report after deletion
-            setDeletionReason('');  // Clear the deletion reason
+            setSelectedReport(null); 
+            setDeletionReason('');  
           },
         },
       ]
