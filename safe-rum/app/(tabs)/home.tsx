@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View, Button, TextInput, Alert, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../components/UserLogin'; 
 
 enum ReportType {
   Report = 'Report',
@@ -23,22 +25,35 @@ export default function Index() {
     setIsWriting(true);
   };
 
-  const handleSubmitReport = () => {
+  const handleSubmitReport = async () => {
     if (reportText.trim() === '') {
       Alert.alert('Error', 'Report cannot be empty');
     } else if (!location) {
       Alert.alert('Error', 'Please select a location on the map');
     } else {
-      const timestamp = new Date().toLocaleString();
-      console.log(`Report Type: ${ReportType.Report}`);
-      console.log('Report:', reportText);
-      console.log('Location:', location);
-      console.log('Time:', timestamp);
-      console.log('\n');
-      Alert.alert('Success', 'Report and location submitted');
-      setReportText('');
-      setLocation(null);
-      setIsWriting(false);
+      const currentDate = new Date();
+      const timestamp = currentDate.toLocaleString();
+      
+      // Set expiration date 7 days from now
+      const expirationDate = new Date();
+      expirationDate.setDate(currentDate.getDate() + 7); // 7 days in the future
+  
+      try {
+        await addDoc(collection(db, 'reports'), {
+          type: ReportType.Report,
+          reportText,
+          location,
+          timestamp,
+          expirationDate: expirationDate.toISOString(), // Save expiration date
+        });
+        Alert.alert('Success', 'Report and location submitted');
+        setReportText('');
+        setLocation(null);
+        setIsWriting(false);
+      } catch (error) {
+        Alert.alert('Error', 'Failed to submit report');
+        console.error('Error adding document: ', error);
+      }
     }
   };
 
