@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import ReportScreen from '@/app/(tabs)/Reports';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
