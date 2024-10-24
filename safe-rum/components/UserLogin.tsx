@@ -3,8 +3,8 @@ import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert, Modal } fro
 import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native'; // For navigation
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
@@ -18,6 +18,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const navigation = useNavigation(); // Use navigation for redirection
 
 
