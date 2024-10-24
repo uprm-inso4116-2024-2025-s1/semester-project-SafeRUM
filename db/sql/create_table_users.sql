@@ -10,3 +10,4 @@ CREATE TABLE IF NOT EXISTS "users" (
     CONSTRAINT "users_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "users_email_unique" UNIQUE ("email")
 );
+ALTER TABLE "users" ADD COLUMN failed_attempts INT NOT NULL DEFAULT 0;

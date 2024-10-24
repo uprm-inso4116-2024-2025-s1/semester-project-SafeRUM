@@ -10,7 +10,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   
-  const API_URL = 'http://<your-ip>:3000'; 
+  // This is if you're running it on the web and not on Expo Go
+  // If you want to run it on the app you'll need to change it to the 
+  const API_URL = 'http://192.168.0.9:3000/api'; 
 
   const handleLogin = async () => {
     try {
@@ -24,25 +26,41 @@ export default function Login() {
           password: password,
         }),
       });
+  
+      const responseText = await response.text();
 
-      const data = await response.json();
+      console.log('Raw response: ', responseText); // Print the raw response for debugging
 
+      let data;
+      try {
+        data = JSON.parse(responseText); // Parse the response as JSON
+      } catch (error) {
+        console.error('Error pasring JSON: ', error);
+        throw new Error('Invalid response from server');
+      }
+  
       if (response.ok) {
         Alert.alert('Login Successful', 'Redirecting...');
         router.push('/home');
       } else {
-        Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
-          {
-            text: 'Forgot Password?',
-            onPress: handleForgotPassword,
-          },
-          {
-            text: 'OK',
-          },
-        ]);
+        const errorMessage = data.error || 'Invalid credentials';
+        if (errorMessage.includes('locked')) {
+          Alert.alert('Account Locked', 'Too many failed attempts. Please contact support or try later.');
+        } else {
+          Alert.alert('Login Failed', errorMessage, [
+            {
+              text: 'Forgot Password?',
+              onPress: handleForgotPassword,
+            },
+            {
+              text: 'OK',
+            },
+          ]);
+        }
       }
     } catch (error) {
-      Alert.alert('Login Failed', 'Something went wrong', [
+      const err = error as Error;
+      Alert.alert('Login Failed', `Something went wrong: ${err.message}`, [
         {
           text: 'Forgot Password?',
           onPress: handleForgotPassword,
@@ -53,6 +71,9 @@ export default function Login() {
       ]);
     }
   };
+  
+  
+
 
   const handleForgotPassword = async () => {
     if (!username) {
