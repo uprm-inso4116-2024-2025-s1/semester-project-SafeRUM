@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native'; // For navigation
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
@@ -18,6 +19,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+const navigation = useNavigation(); // Use navigation for redirection
+
 
 
 interface UserLoginScreenProps {
@@ -68,6 +72,15 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
         setUserAuthenticated(true); 
         Alert.alert('Success', 'You have logged in successfully!');
         clearLogInItems();
+
+        const userRole = 'admin'; 
+
+        if (userRole === 'admin') {
+          navigation.navigate('AdminDashboard'); // Redirect to Admin dashboard (this need to change to the dashboard when that task is done)
+        } else {
+          navigation.navigate('home'); // Redirect regular users to Home
+        }
+
       })
       .catch((error) => {
         Alert.alert('Authentication Error', error.message);
