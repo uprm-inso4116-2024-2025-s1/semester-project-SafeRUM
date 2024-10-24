@@ -5,7 +5,6 @@ import { initializeApp } from '@firebase/app';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native'; // For navigation
-
 const firebaseConfig = {
   apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
   authDomain: "saferum-fcc4b.firebaseapp.com",
