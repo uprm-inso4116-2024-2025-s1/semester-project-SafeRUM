@@ -26,14 +26,15 @@ const navigation = useNavigation(); // Use navigation for redirection
 
 interface UserLoginScreenProps {
   toggleUserAuthScreen: () => void;
+  setUserAuthenticated: (authenticated: boolean) => void;
+  userAuthenticated: boolean;
 }
 
-export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps) {
+export default function UserLogin({ toggleUserAuthScreen, userAuthenticated, setUserAuthenticated }: UserLoginScreenProps) {
   const [rememberMe, setRememberMe] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false); 
   const [resetEmail, setResetEmail] = useState(''); 
 
@@ -57,34 +58,34 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
   }
 
   const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.');
-      return;
-    }
+    // if (!email || !password) {
+    //   Alert.alert('Empty Fields', 'Make sure to fill out all fields before submitting.');
+    //   return;
+    // }
 
-    if (!validateEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid UPR email ending with @upr.edu');
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   Alert.alert('Invalid Email', 'Please enter a valid UPR email ending with @upr.edu');
+    //   return;
+    // }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
         setUserAuthenticated(true); 
         Alert.alert('Success', 'You have logged in successfully!');
         clearLogInItems();
 
-        const userRole = 'admin'; 
+      //   const userRole = 'admin'; 
 
-        if (userRole === 'admin') {
-          navigation.navigate('AdminDashboard'); // Redirect to Admin dashboard (this need to change to the dashboard when that task is done)
-        } else {
-          navigation.navigate('home'); // Redirect regular users to Home
-        }
+      //   if (userRole === 'admin') {
+      //     navigation.navigate('AdminDashboard'); // Redirect to Admin dashboard (this need to change to the dashboard when that task is done)
+      //   } else {
+      //     navigation.navigate('home'); // Redirect regular users to Home
+      //   }
 
-      })
-      .catch((error) => {
-        Alert.alert('Authentication Error', error.message);
-      });
+      // })
+      // .catch((error) => {
+      //   Alert.alert('Authentication Error', error.message);
+      // });
   };
 
   const handleForgotPassword = () => {
@@ -102,8 +103,6 @@ export default function UserLogin({ toggleUserAuthScreen }: UserLoginScreenProps
         Alert.alert('Error', error.message);
       });
   };
-
-
   return (
     <View style={styles.formContainer}>
       <Text style={styles.title}>Log In</Text>

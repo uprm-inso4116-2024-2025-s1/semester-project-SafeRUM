@@ -3,11 +3,13 @@ import { View, StyleSheet, Dimensions, Platform } from 'react-native';
 import UserSignup from '@/components/UserSignup';
 import UserLogin from '@/components/UserLogin';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import ReportScreen from '../Reports';
 
 const { width, height } = Dimensions.get('window');
 
 export default function UserAuthScreen() {
   const [isLogin, setIsLogin] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
 
   const formWidth = Platform.OS === 'web' ? Math.min(400, width * 0.4) : width * 0.85;
   const formHeight = Platform.OS === 'web' ? Math.min(500, height * 0.6) : height * 0.6;
@@ -25,6 +27,9 @@ export default function UserAuthScreen() {
     setIsLogin(!isLogin);
   };
 
+  if (userAuthenticated) {
+    return <ReportScreen />;
+  }
   return (
     <View style={styles.container}>
       <View style={[styles.formWrapper, { width: formWidth, height: formHeight }]}>
@@ -33,7 +38,11 @@ export default function UserAuthScreen() {
             <UserSignup toggleUserAuthScreen={toggleUserAuthScreen} />
           </View>
           <View style={[styles.formContent, { width: formWidth }]}>
-            <UserLogin toggleUserAuthScreen={toggleUserAuthScreen} />
+          <UserLogin
+            toggleUserAuthScreen={toggleUserAuthScreen}
+            setUserAuthenticated={setUserAuthenticated}
+            userAuthenticated={userAuthenticated}
+          />
           </View>
         </Animated.View>
       </View>
