@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   formWrapper: {
     minHeight: 350,
     maxHeight: '85%',
-    overflow: 'hidden',
+    //overflow: 'hidden',
     borderRadius: 15,
     backgroundColor: '#fff',
     shadowColor: '#000',

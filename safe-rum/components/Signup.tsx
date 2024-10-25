@@ -40,6 +40,15 @@ export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) 
     setPasswordVisible(false);
   };
 
+const isValidEmail = () => {
+    let regex = /[-a-z0-9!#$%&'*+\/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+\/=?^_`{|}~]+)*@(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9](?:[-a-z0-9]*[a-z0-9])?/i;
+    return regex.test(email);
+}
+const isUprEmail = () => {
+    let result = email.substring(email.length - 7);
+    return result == "upr.edu";
+}
+
   const handleRegister = () => {
     // Basic validation
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -50,6 +59,18 @@ export default function UserSignUp({ toggleUserAuthScreen }: SignUpScreenProps) 
       Alert.alert('Error', 'Passwords do not match.');
       return;
     }
+    if (!isValidEmail()){
+      Alert.alert('Error', 'Please enter a valid email.');
+      return;
+    }
+    if (!isUprEmail()){
+      Alert.alert('Error', 'Please enter a Upr email address.');
+      return;
+    }
+  
+
+    
+
 
     // Registering user with Firebase
     createUserWithEmailAndPassword(auth, email, password)
@@ -163,7 +184,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 10,
+    height: 30,
   },
   inputContainer: {
     position: 'relative',
@@ -171,7 +193,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    height: 45,
+    height: 35,
     backgroundColor: '#fff',
     borderRadius: 8,
     paddingHorizontal: 15,
