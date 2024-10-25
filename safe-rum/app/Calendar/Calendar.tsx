@@ -63,6 +63,7 @@ export default function CalendarPage({setCalendarState} : CalendarPageProps) {
           setCurrentView={setCurrentView}
           getReportsForDate={getReportsForDate} 
           getReportsForMonth={getReportsForMonth}
+          addReport={getReportsForDate}
         />
       )}
     </View>

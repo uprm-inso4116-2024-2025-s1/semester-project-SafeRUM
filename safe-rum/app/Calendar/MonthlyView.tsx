@@ -22,6 +22,7 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
   setCurrentView,
   getReportsForDate,
   getReportsForMonth,
+  addReport
 }) => {
   const [reportsVisible, setReportsVisible] = useState(false);
   const [reportsForSelectedDate, setReportsForSelectedDate] = useState<string[]>([]);
