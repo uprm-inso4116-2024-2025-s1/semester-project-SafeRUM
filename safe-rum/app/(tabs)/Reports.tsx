@@ -1,34 +1,46 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 
+// Define the types for the props
+interface HeaderProps {
+  onCreateReport: () => void;
+  onViewReports: () => void;
+}
+// Header Component with props type
+const Header: React.FC<HeaderProps> = ({ onCreateReport, onViewReports }) => (
+  <View style={styles.header}>
+    <Text style={styles.headerTitle}>Reports</Text>
+    <View style={styles.headerButtons}>
+      <TouchableOpacity style={styles.headerButton} onPress={onCreateReport}>
+        <Text style={styles.headerButtonText}>Create Report</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.headerButton, styles.myReportsButton]}
+        onPress={onViewReports}
+      >
+        <Text style={styles.headerButtonText}>My Reports</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+// Placeholder Component
+const Placeholder = () => (
+  <View style={styles.placeholder}>
+    <Text style={styles.placeholderText}>reports go here WIP</Text>
+  </View>
+);
+
+// Main Report Screen Component
 const ReportScreen = () => {
+  const handleCreateReport = () => Alert.alert('Create Report Button Pressed');
+  const handleViewReports = () => Alert.alert('My Reports Button Pressed');
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with "Create Report" and "My Reports" buttons */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Reports</Text>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity
-            style={styles.headerButton}
-            onPress={() => Alert.alert('Create Report Button Pressed')}
-          >
-            <Text style={styles.headerButtonText}>Create Report</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.headerButton, { marginLeft: 10 }]}
-            onPress={() => Alert.alert('My Reports Button Pressed')}
-          >
-            <Text style={styles.headerButtonText}>My Reports</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Main Content */}
+      <Header onCreateReport={handleCreateReport} onViewReports={handleViewReports} />
       <View style={styles.content}>
-        {/* White background with text */}
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>reports go here WIP</Text>
-        </View>
+        <Placeholder />
       </View>
     </SafeAreaView>
   );
@@ -62,6 +74,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 5,
+  },
+  myReportsButton: {
+    marginLeft: 10,
   },
   headerButtonText: {
     color: '#0F8F46',
