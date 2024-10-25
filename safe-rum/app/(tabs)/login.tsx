@@ -13,45 +13,46 @@ export default function Login() {
   const API_URL = 'http://<your-ip>:3000'; 
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
+    router.push("/Profile");
+  //   try {
+  //     const response = await fetch(`${API_URL}/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         username: username,
+  //         password: password,
+  //       }),
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (response.ok) {
-        Alert.alert('Login Successful', 'Redirecting...');
-        router.push('/home');
-      } else {
-        Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
-          {
-            text: 'Forgot Password?',
-            onPress: handleForgotPassword,
-          },
-          {
-            text: 'OK',
-          },
-        ]);
-      }
-    } catch (error) {
-      Alert.alert('Login Failed', 'Something went wrong', [
-        {
-          text: 'Forgot Password?',
-          onPress: handleForgotPassword,
-        },
-        {
-          text: 'OK',
-        },
-      ]);
-    }
+  //     if (response.ok) {
+  //       Alert.alert('Login Successful', 'Redirecting...');
+  //       router.push('/Profile');
+  //     } else {
+  //       Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
+  //         {
+  //           text: 'Forgot Password?',
+  //           onPress: handleForgotPassword,
+  //         },
+  //         {
+  //           text: 'OK',
+  //         },
+  //       ]);
+  //     }
+  //   } catch (error) {
+  //     Alert.alert('Login Failed', 'Something went wrong', [
+  //       {
+  //         text: 'Forgot Password?',
+  //         onPress: handleForgotPassword,
+  //       },
+  //       {
+  //         text: 'OK',
+  //       },
+  //     ]);
+  //   }
   };
 
   const handleForgotPassword = async () => {
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '100%',
-    backgroundColor: '#008000',
+    backgroundColor: '#0F8F46',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   signupText: {
-    color: '#008000',
+    color: '#0F8F46',
     fontSize: 16,
   },
 });
