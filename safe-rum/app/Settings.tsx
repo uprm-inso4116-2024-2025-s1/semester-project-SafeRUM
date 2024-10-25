@@ -3,6 +3,7 @@ import { View, Text, Switch, TouchableOpacity, StyleSheet, SafeAreaView, Image, 
 import { FontAwesome } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { router, useRouter } from 'expo-router';
 
 interface SettingsPageProps {
   setSettingsState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,6 +44,11 @@ const handleToggle = (settingType: string) => {
       headerShown: false,
     });
   }, [navigation]);
+
+
+  const logout = () => {
+    router.push("/(tabs)/login");
+  }
 
 
   return (
@@ -112,7 +118,7 @@ const handleToggle = (settingType: string) => {
             <TouchableOpacity style={styles.authButton}>
                 <Text style={styles.authButtonText}>2-Factor Auth</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutButton}>
+            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Text style={styles.logoutButtonText}>Log Out</Text>
             </TouchableOpacity>
             </View>

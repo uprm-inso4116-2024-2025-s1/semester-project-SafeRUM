@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+<<<<<<< HEAD:safe-rum/app/ReportDeletion.tsx
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../components/UserLogin'; 
+=======
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../components/UserLogin';
+>>>>>>> main:safe-rum/app/(tabs)/ReportDeletion.tsx
 
 interface ReportDeletionScreenProps {
   goBack: () => void;
