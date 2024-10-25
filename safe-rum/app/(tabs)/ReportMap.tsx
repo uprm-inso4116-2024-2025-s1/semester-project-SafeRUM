@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import Pin from "@/components/Pin";
+import * as geolib from 'geolib';
 
 // Sample data for pinned locations
 const uprm_main_locations = [
@@ -155,6 +156,17 @@ export default function App() {
         setMapRegion(newRegion);
         mapViewRef.current?.animateToRegion(newRegion, 1000);
       }
+
+      const userWithinRadius = geolib.isPointWithinRadius(
+        { latitude: location.coords.latitude, longitude: location.coords.longitude },
+        { latitude: circleProps.latitude, longitude: circleProps.longitude },
+        circleProps.radius
+        //circleProps.radius
+    );
+    if(!userWithinRadius){
+      Alert.alert("Error", "User is not within bounds");
+    }
+
     } catch (error) {
       console.error("Error getting location:", error);
       Alert.alert("Error", "Failed to get your location. Please try again.");
