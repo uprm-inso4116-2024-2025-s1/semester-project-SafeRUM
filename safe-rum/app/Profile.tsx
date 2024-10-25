@@ -3,8 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'r
 import { FontAwesome } from '@expo/vector-icons';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import SettingsPage from '../Settings';
-import EditProfile from '../EditProfile';
+import SettingsPage from './Settings';
+import EditProfile from './EditProfile';
 
 export default function Index() {
   const navigation = useNavigation();
