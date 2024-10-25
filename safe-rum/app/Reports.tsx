@@ -1,53 +1,61 @@
 import React, { useState } from 'react';
-import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import Index from './ReportCreation';
 import ReportDeletionScreen from './ReportDeletion';
 
+// Define the props interface for the Header component
+interface HeaderProps {
+  onCreatePress: () => void;
+  onDeletePress: () => void;
+}
 
-const ReportScreen = () => {
+// Header Component with typed props
+const Header: React.FC<HeaderProps> = ({ onCreatePress, onDeletePress }) => (
+  <View style={styles.header}>
+    <Text style={styles.headerTitle}>Reports</Text>
+    <View style={styles.headerButtons}>
+      <TouchableOpacity style={styles.headerButton} onPress={onCreatePress}>
+        <Text style={styles.headerButtonText}>Create Report</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.headerButton, { marginLeft: 10 }]} onPress={onDeletePress}>
+        <Text style={styles.headerButtonText}>Delete Reports</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+// Placeholder Component
+const Placeholder = () => (
+  <View style={styles.placeholder}>
+    <Text style={styles.placeholderText}>reports go here WIP</Text>
+  </View>
+);
+
+// Main Report Screen Component
+const ReportScreen: React.FC = () => {
   const [createState, setCreateState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
 
   const goBackCreate = () => {
     setCreateState(!createState);
   };
+
   const goBackDelete = () => {
     setDeleteState(!deleteState);
-  }
+  };
 
   if (createState) {
-    return <Index goBack={goBackCreate}/>
+    return <Index goBack={goBackCreate} />;
   }
   if (deleteState) {
-    return <ReportDeletionScreen goBack={goBackDelete}/>
+    return <ReportDeletionScreen goBack={goBackDelete} />;
   }
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with "Create Report" and "My Reports" buttons */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Reports</Text>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity
-            style={styles.headerButton}
-            onPress={() => setCreateState(true)}
-          >
-            <Text style={styles.headerButtonText}>Create Report</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.headerButton, { marginLeft: 10 }]}
-            onPress={() => setDeleteState(true)}
-          >
-            <Text style={styles.headerButtonText}>Delete Reports</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Main Content */}
+      <Header onCreatePress={() => setCreateState(true)} onDeletePress={() => setDeleteState(true)} />
       <View style={styles.content}>
-        {/* White background with text */}
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>reports go here WIP</Text>
-        </View>
+        <Placeholder />
       </View>
     </SafeAreaView>
   );
