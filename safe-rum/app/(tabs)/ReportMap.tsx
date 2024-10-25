@@ -3,7 +3,7 @@ import MapView, { Circle } from "react-native-maps";
 import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Text, Image, TextInput } from "react-native";
 import * as Location from "expo-location";
 
-const Header = ({ onUserLocation, isLoading, searchQuery, setSearchQuery, onSearch }) => {
+const Header = ({ onUserLocation, isLoading, searchQuery, setSearchQuery, onSearch, showHeader, setShowHeader, toggleTheme, isLightMode }) => {
   return (
     <View style={styles.header}>
       <TextInput
@@ -14,7 +14,12 @@ const Header = ({ onUserLocation, isLoading, searchQuery, setSearchQuery, onSear
         onSubmitEditing={onSearch}
         returnKeyType="search"
       />
-
+      <TouchableOpacity style={styles.themeToggleButton} onPress={toggleTheme}>
+        <Image 
+          source={isLightMode ? require('../../assets/images/DarkMode.png') : require('../../assets/images/LightMode.png')}
+          style={styles.themeToggleIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -37,9 +42,12 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showNav, setShowNav] = useState(true);
+  const [showHeader, setShowHeader] = useState(true);
   const isMounted = useRef(true);
   const mapViewRef = useRef<MapView>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const [isLightMode, setIsLightMode] = useState(true);
 
   useEffect(() => {
     return () => {
@@ -118,14 +126,22 @@ export default function App() {
     }
   };
 
+  const toggleTheme = () => {
+    setIsLightMode((prevMode) => !prevMode);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isLightMode ? styles.lightContainer : styles.darkContainer]}>
       <Header 
         onUserLocation={userLocation}
         isLoading={isLoading}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onSearch={handleSearch}
+        showHeader={showHeader} 
+        setShowHeader={setShowHeader} 
+        toggleTheme={toggleTheme} 
+        isLightMode={isLightMode} 
       />
 
       <MapView 
@@ -203,6 +219,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  lightContainer: {
+    backgroundColor: 'white',
+  },
+  darkContainer: {
+    backgroundColor: '#3a3a3a',
+  },
   map: {
     width: "100%",
     height: "100%",
@@ -211,7 +233,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    backgroundColor: '#3a3a3a',
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -237,63 +259,57 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 16,
   },
+  themeToggleButton: {
+    marginLeft: 10,
+    width: 40,
+    height: 40,
+  },
+  themeToggleIcon: {
+    width: 25,
+    height: 25,
+  },
   navItem: {
     backgroundColor: '#5c5c5c',
     padding: 15,
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 65,
-    height: 65,
-    position: 'relative',
+  },
+  imageIcon: {
+    width: 30,
+    height: 30,
+  },
+  imageIconArrow: {
+    width: 30,
+    height: 30,
+  },
+  showButtonContainer: {
+    position: 'absolute',
+    bottom: 60,
+    left: '50%',
+    transform: [{ translateX: -50 }],
+    zIndex: 10,
+  },
+  showButton: {
+    backgroundColor: '#5c5c5c',
+    padding: 15,
+    borderRadius: 40,
+    alignItems: 'center',
   },
   badge: {
     position: 'absolute',
     top: -5,
     right: -5,
     backgroundColor: 'red',
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   badgeText: {
     color: 'white',
-    fontSize: 10,
-  },
-  loader: {
-    position: 'absolute',
-    bottom: -5,
-  },
-  toggleButton: {
-    position: 'absolute',
-    left: 10,
-    top: 10,
-    width: 25,
-    height: 25,
-    zIndex: 20,
-  },
-  showButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: '#3a3a3a',
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  showButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 25,
-    height: 25,
-    borderRadius: 20,
-  },
-  imageIcon: {
-    width: 40,
-    height: 40,
-  },
-  imageIconArrow: {
-    width: 28,
-    height: 28,
+    fontSize: 12,
   },
 });
 
