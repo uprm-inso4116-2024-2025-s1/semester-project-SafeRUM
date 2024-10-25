@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
 
 interface YearlyViewProps {
   selectedYear: number;
@@ -7,6 +10,7 @@ interface YearlyViewProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+  setCalendarState: React.Dispatch<React.SetStateAction<boolean>>; // Add this line
 }
 
 const YearlyView: React.FC<YearlyViewProps> = ({ 
@@ -14,7 +18,8 @@ const YearlyView: React.FC<YearlyViewProps> = ({
   selectedDate, 
   setSelectedDate, 
   setSelectedMonth, 
-  setCurrentView 
+  setCurrentView,
+  setCalendarState
 }) => {
 
   const months = [
@@ -28,6 +33,12 @@ const YearlyView: React.FC<YearlyViewProps> = ({
 
   return (
     <View style={styles.yearView}>
+         <TouchableOpacity
+            onPress={() => setCalendarState(false)}
+            style={styles.backButton}
+        >
+          <Icon name="arrow-back" size={24} color="#4CAF50" />
+        </TouchableOpacity>
       <Text style={styles.yearText}>{selectedYear}</Text>
       <View style={styles.monthsContainer}>
         {months.map((month, index) => (
@@ -54,13 +65,14 @@ const YearlyView: React.FC<YearlyViewProps> = ({
 
                 return (
                   <TouchableOpacity
-                    onPress={() =>
-                      setSelectedDate(new Date(selectedYear, index, item))
-                    }
+                  onPress={() => {
+                    setSelectedMonth(index);
+                    setCurrentView('monthly');
+                  }}
                   >
                     <View style={styles.dayContainer}>
                       <View style={isSelected ? styles.selectedDay : null}>
-                        <Text style={isSelected ? null : styles.dayText}>
+                        <Text style={isSelected ? styles.selectedDayText : styles.dayText}>
                           {item}
                         </Text>
                       </View>
@@ -90,7 +102,7 @@ const styles = StyleSheet.create({
   backButton: {
     fontSize: 16,
     color: '#4CAF50',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   yearView: {
     marginBottom: 20,
@@ -99,16 +111,19 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: '#0F8F46',
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
+    paddingLeft: 15,
   },
   monthsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    borderTopWidth: 0.5,
+    borderTopColor: '#0F8F46'
   },
   monthContainer: {
-    width: '33%',
-    marginVertical: 12,
+    width: '32%',
+    marginVertical: 8,
   },
   monthText: {
     fontSize: 18,
@@ -121,52 +136,23 @@ const styles = StyleSheet.create({
     margin: 0.5,
     textAlign: 'center',
   },
+  selectedDayText:{
+    fontSize: 12,
+    margin: 0.5,
+    textAlign: 'center',
+    color: '#0F8F46',
+    fontWeight: 'bold'
+  },
   selectedDay: {
     alignItems: 'center',
     justifyContent: 'center', 
     height: 19,
-    width: 20, 
-    backgroundColor: '#0F8F46',
-    borderRadius: 20,
-    color: '#fff',
+    width: 25, 
   },
   dayContainer: {
-    width: 19,
-    height: 25,
+    width: 17,
+    height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 0,
-  },
-  monthView: {
-    flex: 1,
-  },
-  monthHeader: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-  calendarContainer: {
-    marginBottom: 20,
-  },
-  weekDays: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-  },
-  weekDayText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#666',
-  },
-  reportsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  reportText: {
-    fontSize: 16,
-    color: '#4CAF50',
-    marginVertical: 5,
   },
 });

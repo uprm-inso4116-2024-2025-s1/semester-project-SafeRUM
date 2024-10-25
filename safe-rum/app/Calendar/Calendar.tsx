@@ -3,7 +3,11 @@ import { View, StyleSheet } from 'react-native';
 import YearlyView from './YearlyView';
 import MonthlyView from './MonthlyView';
 
-export default function CalendarPage() {
+interface CalendarPageProps {
+  setCalendarState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function CalendarPage({setCalendarState} : CalendarPageProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentView, setCurrentView] = useState('yearly'); // 'yearly' or 'monthly'
   const [selectedMonth, setSelectedMonth] = useState(selectedDate.getMonth());
@@ -23,6 +27,21 @@ export default function CalendarPage() {
     return reportsData[dateString] || [];
   };
 
+  const getReportsForMonth = (month: number, year: number): { date: Date; reports: string[] }[] => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const reportsForMonth = [];
+  
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const reports = getReportsForDate(date);
+      if (reports.length > 0) {
+        reportsForMonth.push({ date, reports });
+      }
+    }
+  
+    return reportsForMonth;
+  };
+  
   return (
     <View style={styles.container}>
       {currentView === 'yearly' && (
@@ -32,6 +51,7 @@ export default function CalendarPage() {
           setSelectedDate={setSelectedDate}
           setSelectedMonth={setSelectedMonth}
           setCurrentView={setCurrentView}
+          setCalendarState={setCalendarState} 
         />
       )}
       {currentView === 'monthly' && (
@@ -42,6 +62,7 @@ export default function CalendarPage() {
           setSelectedDate={setSelectedDate}
           setCurrentView={setCurrentView}
           getReportsForDate={getReportsForDate} 
+          getReportsForMonth={getReportsForMonth}
         />
       )}
     </View>
