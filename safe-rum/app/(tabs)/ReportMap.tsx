@@ -1,7 +1,23 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import MapView, { Circle } from "react-native-maps";
-import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Text,Image } from "react-native";
+import { StyleSheet, View, ActivityIndicator, Alert, TouchableOpacity, Text, Image, TextInput } from "react-native";
 import * as Location from "expo-location";
+
+const Header = ({ onUserLocation, isLoading, searchQuery, setSearchQuery, onSearch }) => {
+  return (
+    <View style={styles.header}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search for a location"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={onSearch}
+        returnKeyType="search"
+      />
+
+    </View>
+  );
+};
 
 export default function App() {
   const [mapRegion, setMapRegion] = useState({
@@ -20,9 +36,10 @@ export default function App() {
   };
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showNav, setShowNav] = useState(true); // Initially show navigation
+  const [showNav, setShowNav] = useState(true);
   const isMounted = useRef(true);
   const mapViewRef = useRef<MapView>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     return () => {
@@ -71,8 +88,46 @@ export default function App() {
     userLocation();
   }, [userLocation]);
 
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      Alert.alert("Error", "Please enter a location.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const geocode = await Location.geocodeAsync(searchQuery);
+      if (geocode.length > 0) {
+        const { latitude, longitude } = geocode[0];
+        const newRegion = {
+          latitude,
+          longitude,
+          latitudeDelta: 0.009,
+          longitudeDelta: 0.009,
+        };
+        setMapRegion(newRegion);
+        mapViewRef.current?.animateToRegion(newRegion, 1000);
+      } else {
+        Alert.alert("Error", "Location not found.");
+      }
+    } catch (error) {
+      console.error("Error with geocoding:", error);
+      Alert.alert("Error", "Failed to find the location. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <Header 
+        onUserLocation={userLocation}
+        isLoading={isLoading}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearch={handleSearch}
+      />
+
       <MapView 
         ref={mapViewRef}
         style={styles.map} 
@@ -94,37 +149,34 @@ export default function App() {
         <View style={styles.bottomNav}>
           <TouchableOpacity style={styles.toggleButton} onPress={() => setShowNav(false)}>
             <Image 
-              source={require('../../assets/images/DownArrowButton.png')} // Use require to load the image
-              style={styles.imageIconArrow} // Use your custom styles
+              source={require('../../assets/images/DownArrowButton.png')}
+              style={styles.imageIconArrow}
             />
           </TouchableOpacity>
-          
-           
-           <TouchableOpacity style={styles.navItem}>
+
+          <TouchableOpacity style={styles.navItem}>
             <Image 
-              source={require('../../assets/images/AddReportButton.png')} // Use require to load the image
-              style={styles.imageIcon} // Use your custom styles
+              source={require('../../assets/images/AddReportButton.png')}
+              style={styles.imageIcon}
             />
           </TouchableOpacity>
 
-
-        
           <TouchableOpacity 
             style={styles.navItem}
             onPress={userLocation}
             disabled={isLoading}
           >
             <Image 
-              source={require('../../assets/images/MyLocationButton.png')} // Use require to load the image
-              style={styles.imageIcon} // Use your custom styles
+              source={require('../../assets/images/MyLocationButton.png')}
+              style={styles.imageIcon}
             />
             {isLoading && <ActivityIndicator style={styles.loader} color="white" />}
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Image 
-              source={require('../../assets/images/BellReportButton.png')} // Use require to load the image
-              style={styles.imageIcon} // Use your custom styles
+              source={require('../../assets/images/MyLocationButton.png')}
+              style={styles.imageIcon}
             />
             <View style={styles.badge}>
               <Text style={styles.badgeText}>3</Text>
@@ -133,13 +185,12 @@ export default function App() {
         </View>
       )}
 
-      {/* Only show the up button when the navigation is hidden */}
       {!showNav && (
         <View style={styles.showButtonContainer}>
           <TouchableOpacity style={styles.showButton} onPress={() => setShowNav(true)}>
             <Image 
-              source={require('../../assets/images/UpArrowButton.png')} // Use require to load the image
-              style={styles.imageIconArrow} // Use your custom styles
+              source={require('../../assets/images/UpArrowButton.png')}
+              style={styles.imageIconArrow}
             />
           </TouchableOpacity>
         </View>
@@ -156,16 +207,35 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    backgroundColor: '#3a3a3a',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    zIndex: 10,
+  },
   bottomNav: {
     position: 'absolute',
     bottom: 0,
-    width: '100%', // Make it cover the full width
+    width: '100%',
     backgroundColor: '#3a3a3a',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 70,
+    paddingHorizontal: 20,
     paddingVertical: 15,
     zIndex: 10,
+  },
+  searchInput: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 10,
+    marginHorizontal: 10,
+    fontSize: 16,
   },
   navItem: {
     backgroundColor: '#5c5c5c',
@@ -176,10 +246,6 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     position: 'relative',
-  },
-  iconText: {
-    fontSize: 22,
-    color: 'white',
   },
   badge: {
     position: 'absolute',
@@ -200,7 +266,7 @@ const styles = StyleSheet.create({
   },
   toggleButton: {
     position: 'absolute',
-    left: 10, // Align it to the left
+    left: 10,
     top: 10,
     width: 25,
     height: 25,
@@ -208,11 +274,11 @@ const styles = StyleSheet.create({
   },
   showButtonContainer: {
     position: 'absolute',
-    bottom: 0, // Aligns to the bottom
-    width: '100%', // Full width
-    backgroundColor: '#3a3a3a', // Background color for visibility
-    paddingVertical: 10, // Padding for aesthetic spacing
-    alignItems: 'center', // Center the button
+    bottom: 0,
+    width: '100%',
+    backgroundColor: '#3a3a3a',
+    paddingVertical: 10,
+    alignItems: 'center',
   },
   showButton: {
     alignItems: 'center',
@@ -221,19 +287,13 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 20,
   },
-  toggleText: {
-    color: 'white',
-    fontSize: 20,
-  },
-
   imageIcon: {
-    width: 40,  // Adjust the width as needed
-    height: 40, // Adjust the height as needed
+    width: 40,
+    height: 40,
   },
-
   imageIconArrow: {
-    width: 28,  // Adjust the width as needed
-    height: 28, // Adjust the height as needed
+    width: 28,
+    height: 28,
   },
-
 });
+
