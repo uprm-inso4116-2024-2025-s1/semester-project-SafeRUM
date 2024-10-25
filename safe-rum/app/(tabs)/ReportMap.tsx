@@ -6,11 +6,11 @@ import {
   Button,
   ActivityIndicator,
   Alert,
+  Image,
 } from "react-native";
 import * as Location from "expo-location";
 import Pin from "@/components/Pin";
 import * as geolib from 'geolib';
-
 // Sample data for pinned locations
 const uprm_main_locations = [
   {
@@ -111,6 +111,33 @@ export default function App() {
     longitudeDelta: 0.009,
   });
 
+  const statuses = [
+    "@/assets/images/green.jpg",
+    "@/assets/images/yellow.jpg",
+    "@/assets/images/red.jpg"
+  ]
+
+    // Function to get the correct image based on value
+    const getImageSource = (value) => {
+      switch (value) {
+        case 0:
+          return require("@/assets/images/green.jpg"); // Replace with your local image paths
+        case 1:
+          return require("@/assets/images/yellow.jpg");
+        default:
+          return require("@/assets/images/red.jpg");
+      }
+    };
+
+      // Handler to cycle through values 1 to 3
+  const handleChangeImage = () => {
+    setImageValue((imageValue+1)%3) // Cycles through 1, 2, and 3
+  };
+
+  const status_idx = 0
+
+  const [imageValue, setImageValue] = useState(0); // The value that determines which image to display
+
   const circleProps = {
     latitude: 18.2106,
     longitude: -67.1396,
@@ -161,7 +188,6 @@ export default function App() {
         { latitude: location.coords.latitude, longitude: location.coords.longitude },
         { latitude: circleProps.latitude, longitude: circleProps.longitude },
         circleProps.radius
-        //circleProps.radius
     );
     if(!userWithinRadius){
       Alert.alert("Error", "User is not within bounds");
@@ -183,12 +209,21 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+
       <MapView
         ref={mapViewRef}
         style={styles.map}
         region={mapRegion}
         showsUserLocation={true}
       >
+
+      <View style={styles.imageContainer}>
+       <Image
+       source={getImageSource(imageValue)}
+        style={styles.image}
+      />
+      </View>
+
         <Circle
           center={{
             latitude: circleProps.latitude,
@@ -210,6 +245,11 @@ export default function App() {
         <Button
           title={isLoading ? "Getting location..." : "Get location"}
           onPress={userLocation}
+          disabled={isLoading}
+        />
+        <Button
+          title={"Change status (DEBUG)"}
+          onPress={handleChangeImage}
           disabled={isLoading}
         />
         {isLoading && <ActivityIndicator style={styles.loader} />}
@@ -234,5 +274,14 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginLeft: 10,
+  },
+  imageContainer: {
+    alignItems: 'flex-end', // Align the image to the right
+    width: '100%', // Full width of the container
+  },
+  image: {
+    width: 25, // Set width to 20px
+    height: 25, // Set height to 20px
+    resizeMode: 'contain', // Optional to make sure image scales properly
   },
 });
