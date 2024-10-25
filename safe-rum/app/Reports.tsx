@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
 import Index from './ReportCreation';
 import ReportDeletionScreen from './ReportDeletion';
 
@@ -45,10 +45,10 @@ const ReportScreen: React.FC = () => {
   };
 
   if (createState) {
-    return <Index goBack={goBackCreate} />;
+    return <Index goBack={goBackCreate}/>;
   }
   if (deleteState) {
-    return <ReportDeletionScreen goBack={goBackDelete} />;
+    return <ReportDeletionScreen goBack={goBackDelete}/>;
   }
 
   return (
