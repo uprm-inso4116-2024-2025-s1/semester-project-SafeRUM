@@ -29,6 +29,7 @@ class User(db.Model):
     trust_level = db.Column(db.Float(53), nullable=False, default=0)
     account_locked = db.Column(db.Boolean, nullable=False, default=0)
     created_at = db.Column(db.DateTime, server_default=db.func.now())  # Auto timestamp
+    firebase_token = db.Column(db.String, nullable=False)
 
     # TODO: Password hashing for secure storage
     def set_password(self, password):
@@ -51,6 +52,7 @@ class User(db.Model):
             "trust_level": self.trust_level,
             "account_locked": self.account_locked,
             "created_at": self.created_at,
+            "firebase_token": self.firebase_token,
         }
 
 

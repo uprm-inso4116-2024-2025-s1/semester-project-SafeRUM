@@ -29,10 +29,19 @@ def register():
     phone_number = data.get("phone_number")
     password = data.get("password")
     password_confirmation = data.get("password_confirmation")
+    firebase_jwt = data.get("firebase_jwt")
 
     # No empty fields
     if not all(
-        [first_name, last_name, email, phone_number, password, password_confirmation]
+        [
+            first_name,
+            last_name,
+            email,
+            phone_number,
+            password,
+            password_confirmation,
+            firebase_jwt,
+        ]
     ):
         return jsonify({"error": "All fields are required"}), 400
 
