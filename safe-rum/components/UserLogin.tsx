@@ -20,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const navigation = useNavigation(); // Use navigation for redirection
+// const navigation = useNavigation(); // Use navigation for redirection
 
 
 

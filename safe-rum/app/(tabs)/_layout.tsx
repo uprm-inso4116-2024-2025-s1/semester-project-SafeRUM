@@ -17,13 +17,6 @@ export default () => {
                 }}
             />
 
-            <Tabs.Screen name="Profile" 
-            options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="person" color={color} size={size} /> 
-                ),
-              }}
-            />
         </Tabs>
     )
 }

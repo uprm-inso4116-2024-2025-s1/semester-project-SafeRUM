@@ -45,22 +45,22 @@ export default function Index() {
           <FontAwesome name="gear" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          source={require('../../assets/images/UPRM-logo.png')}
+          source={require('../assets/images/UPRM-logo.png')}
           style={styles.backgroundImage}
         />
         <View style={styles.profileCard}>
           <View style={styles.profileHeader}>
             <Image
-              source={require('../../assets/images/UPRM-paw.png')}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
             <Image
-              source={require('../../assets/images/UPRM-paw.png')}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
           </View>
           <Image
-            source={require('../../assets/images/no-profile.png')}
+            source={require('../assets/images/no-profile.png')}
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>{`${userProfile.firstName} ${userProfile.lastName}`}</Text>
@@ -68,7 +68,7 @@ export default function Index() {
           <Text style={styles.profileEmail}>{userProfile.email}</Text>
           <TouchableOpacity style={styles.editButton} onPress={() => setEditState((prevState) => !prevState)}>
             <Image
-              source={require('../../assets/images/pencil-icon.png')}
+              source={require('../assets/images/pencil-icon.png')}
             />
             <Text style={styles.editButtonText}> Edit profile</Text>
           </TouchableOpacity>
@@ -78,7 +78,7 @@ export default function Index() {
       <View style={styles.reportsSection}>
         <View style={styles.reportsHeader}>
           <Image
-            source={require('../../assets/images/clock-icon.png')}
+            source={require('../assets/images/clock-icon.png')}
             style={styles.icon} 
           />
           <Text style={styles.reportsTitle}>Recent reports</Text>
