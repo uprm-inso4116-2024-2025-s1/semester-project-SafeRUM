@@ -1,2 +1,3 @@
 __pycache__/
 pgdata/
+node_modules/git add .gitignore

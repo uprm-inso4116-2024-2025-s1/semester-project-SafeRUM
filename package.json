@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@types/react": "^18.3.12",
+    "react-native-modal-datetime-picker": "^18.0.0",
+    "react-native-vector-icons": "^10.2.0"
+  },
+  "devDependencies": {
+    "@types/react-native-vector-icons": "^6.4.18"
+  }
+}

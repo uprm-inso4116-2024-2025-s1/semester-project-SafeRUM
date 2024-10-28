@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import SettingsPage from './Settings';
 import EditProfile from './EditProfile';
+import CalendarPage from './Calendar/Calendar';
+import { useNavigation } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
 
 export default function Index() {
+
   const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
   const [settingsState, setSettingsState] = useState<boolean>(false);
   const [editState, setEditState] = useState<boolean>(false);
+  const [calendarState, setCalendarState] = useState<boolean>(false);
 
   // Initial profile state
   const [userProfile, setUserProfile] = useState({
@@ -20,17 +36,20 @@ export default function Index() {
     role: 'General Supervisor',
   });
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false, 
-    });
-  }, [navigation]);
-
   if (settingsState) {
-    return <SettingsPage setSettingsState={setSettingsState}/>;
+    return <SettingsPage setSettingsState={setSettingsState} />;
   }
   if (editState) {
-    return <EditProfile userProfile={userProfile} setUserProfile={setUserProfile} setEditState={setEditState}/>;
+    return (
+      <EditProfile
+        userProfile={userProfile}
+        setUserProfile={setUserProfile}
+        setEditState={setEditState}
+      />
+    );
+  }
+  if (calendarState) {
+    return <CalendarPage setCalendarState={setCalendarState} />;
   }
 
   return (
@@ -38,48 +57,63 @@ export default function Index() {
       <View style={styles.profileSection}>
         <TouchableOpacity
           style={styles.gearIcon}
-          onPress={() => {
-            setSettingsState(prevState => !prevState);
-          }}
+          onPress={() => {setSettingsState(prevState => !prevState);}}
         >
           <FontAwesome name="gear" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          source={require('../../assets/images/UPRM-logo.png')}
+          source={require('../assets/images/UPRM-logo.png')}
           style={styles.backgroundImage}
         />
         <View style={styles.profileCard}>
           <View style={styles.profileHeader}>
             <Image
-              source={require('../../assets/images/UPRM-paw.png')}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
             <Image
-              source={require('../../assets/images/UPRM-paw.png')}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
           </View>
           <Image
-            source={require('../../assets/images/no-profile.png')}
+            source={require('../assets/images/no-profile.png')}
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>{`${userProfile.firstName} ${userProfile.lastName}`}</Text>
           <Text style={styles.profileRole}>{userProfile.role}</Text>
           <Text style={styles.profileEmail}>{userProfile.email}</Text>
-          <TouchableOpacity style={styles.editButton} onPress={() => setEditState((prevState) => !prevState)}>
-            <Image
-              source={require('../../assets/images/pencil-icon.png')}
-            />
-            <Text style={styles.editButtonText}> Edit profile</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            {/* Edit Profile Button */}
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => setEditState((prevState) => !prevState)}
+            >
+              <Image
+                source={require('../assets/images/pencil-icon.png')}
+              />
+              <Text style={styles.editButtonText}> Edit profile</Text>
+            </TouchableOpacity>
+
+            {/* Calendar Button */}
+            <TouchableOpacity
+              style={styles.calendarButton}
+              onPress={() => setCalendarState((prevState) => !prevState)}
+            >
+              <Image
+                source={require('../assets/images/Vector.png')}
+              />
+              <Text style={styles.calendarButtonText}> Calendar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
       <View style={styles.reportsSection}>
         <View style={styles.reportsHeader}>
           <Image
-            source={require('../../assets/images/clock-icon.png')}
-            style={styles.icon} 
+            source={require('../assets/images/clock-icon.png')}
+            style={styles.icon}
           />
           <Text style={styles.reportsTitle}>Recent reports</Text>
         </View>
@@ -87,7 +121,9 @@ export default function Index() {
       </View>
     </SafeAreaView>
   );
-};
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -159,20 +195,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   
   },
-  editButton: {
-    flexDirection: 'row',
-    backgroundColor: '#0F8F46',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  editButtonText: {
-    left: 2,
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-  },
   pawIcon: {
     width: 36, 
     height: 28,
@@ -207,5 +229,40 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: 70, 
     textAlign: 'center', 
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  editButton: {
+    flexDirection: 'row',
+    backgroundColor: '#0F8F46',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginRight: 10,
+    alignItems: 'center',
+  },
+  calendarButton: {
+    flexDirection: 'row',
+    backgroundColor: '#0F8F46',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center'  
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginLeft: 5,
+  },
+  calendarButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginLeft: 5,
+
   },
 });
