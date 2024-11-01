@@ -1,4 +1,5 @@
 import { Redirect } from "expo-router";
+import React from "react";
 
 // App starts here
 const StartPage = () => {
