@@ -9,7 +9,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import { Report } from "@/app/ReportViewing";
+import { Report } from "@/app/(tabs)/ReportViewing";
 
 export default function ViewReport({
   modalVisible,

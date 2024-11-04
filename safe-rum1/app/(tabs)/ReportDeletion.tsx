@@ -1,63 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../components/UserLogin';
 
 interface ReportDeletionScreenProps {
   goBack: () => void;
 }
 
 interface Report {
-  id: string;
+  id: number;
   title: string;
   date: string;
 }
 
+const initialReports: Report[] = [
+  { id: 1, title: 'Flooded - Chardon', date: '9/20/24' },
+  { id: 2, title: 'Suspicious - Chardon', date: '9/20/24' },
+  // Add more reports here...
+];
+
 export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenProps) {
-  const [reports, setReports] = useState<Report[]>([]);
-  const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  const [reports, setReports] = useState<Report[]>(initialReports);
+  const [selectedReport, setSelectedReport] = useState<number | null>(null);
   const [deletionReason, setDeletionReason] = useState('');
-
-  const fetchReports = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'reports'));
-      const now = new Date();
-  
-      const reportsData: Report[] = [];
-      const expiredReports: string[] = [];
-  
-      querySnapshot.forEach(async (doc) => {
-        const data = doc.data();
-        const expirationDate = new Date(data.expirationDate);
-  
-        if (expirationDate > now) {
-          reportsData.push({
-            id: doc.id,
-            title: data.reportText,
-            date: data.timestamp,
-          });
-        } else {
-          
-          expiredReports.push(doc.id);
-        }
-      });
-
-     
-      for (const reportId of expiredReports) {
-        await deleteDoc(doc(db, 'reports', reportId));
-      }
-  
-      setReports(reportsData);
-    } catch (error) {
-      console.error('Error fetching reports: ', error);
-      Alert.alert('Error', 'Failed to fetch reports');
-    }
-  };
-
-  useEffect(() => {
-    fetchReports();
-  }, []);
 
   const handleDelete = () => {
     if (selectedReport === null) {
@@ -78,16 +42,10 @@ export default function ReportDeletionScreen({ goBack }: ReportDeletionScreenPro
         {
           text: "Confirm",
           style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteDoc(doc(db, 'reports', selectedReport));
-              setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
-              setSelectedReport(null); 
-              setDeletionReason('');
-            } catch (error) {
-              console.error('Error deleting report: ', error);
-              Alert.alert('Error', 'Failed to delete report');
-            }
+          onPress: () => {
+            setReports(prevReports => prevReports.filter(report => report.id !== selectedReport));
+            setSelectedReport(null);  // Clear the selected report after deletion
+            setDeletionReason('');  // Clear the deletion reason
           },
         },
       ]

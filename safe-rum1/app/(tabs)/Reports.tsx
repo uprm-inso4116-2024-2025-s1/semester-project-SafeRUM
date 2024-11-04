@@ -1,26 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
-import Index from './ReportCreation';
-import ReportDeletionScreen from './ReportDeletion';
-
 
 const ReportScreen = () => {
-  const [createState, setCreateState] = useState(false);
-  const [deleteState, setDeleteState] = useState(false);
-
-  const goBackCreate = () => {
-    setCreateState(!createState);
-  };
-  const goBackDelete = () => {
-    setDeleteState(!deleteState);
-  }
-
-  if (createState) {
-    return <Index goBack={goBackCreate}/>
-  }
-  if (deleteState) {
-    return <ReportDeletionScreen goBack={goBackDelete}/>
-  }
   return (
     <SafeAreaView style={styles.container}>
       {/* Header with "Create Report" and "My Reports" buttons */}
@@ -29,15 +10,15 @@ const ReportScreen = () => {
         <View style={styles.headerButtons}>
           <TouchableOpacity
             style={styles.headerButton}
-            onPress={() => setCreateState(true)}
+            onPress={() => Alert.alert('Create Report Button Pressed')}
           >
             <Text style={styles.headerButtonText}>Create Report</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.headerButton, { marginLeft: 10 }]}
-            onPress={() => setDeleteState(true)}
+            onPress={() => Alert.alert('My Reports Button Pressed')}
           >
-            <Text style={styles.headerButtonText}>Delete Reports</Text>
+            <Text style={styles.headerButtonText}>My Reports</Text>
           </TouchableOpacity>
         </View>
       </View>

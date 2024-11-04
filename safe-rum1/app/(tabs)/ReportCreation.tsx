@@ -33,23 +33,14 @@ export default function Index({ goBack }: { goBack: () => void }) {
     } else if (!location) {
       Alert.alert('Error', 'Please select a location on the map');
     } else {
-      // Current date and timestamp
-      const currentDate = new Date();
-      const timestamp = currentDate.toLocaleString();
-  
-      // Expiration date set to 7 days from now
-      const expirationDate = new Date();
-      expirationDate.setDate(currentDate.getDate() + 7);
-  
+      const timestamp = new Date().toLocaleString();
       console.log(`Report Type: ${ReportType.Report}`);
       console.log('Category:', selectedCategory);
       console.log('Title:', reportTitle);
       console.log('Report:', reportText);
       console.log('Location:', location);
       console.log('Time:', timestamp);
-      console.log('Expiration Date:', expirationDate.toISOString()); // Logs expiration date in ISO format
       console.log('\n');
-  
       Alert.alert('Success', 'Report and location submitted');
       setReportTitle('');
       setReportText('');
@@ -57,7 +48,6 @@ export default function Index({ goBack }: { goBack: () => void }) {
       setIsWriting(false);
     }
   };
-  
 
   const handleCancel = () => {
     setReportTitle('');
@@ -108,9 +98,6 @@ export default function Index({ goBack }: { goBack: () => void }) {
         
       {!isWriting && !sosActive && (
   <>
-    <TouchableOpacity onPress={goBack} style={styles.icon}>
-    <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
-    </TouchableOpacity>
     <Text style={styles.headerText}>Select a Category:</Text>
     <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Safety Issue')}>
       <Text style={styles.buttonText}>Safety Issue</Text>
