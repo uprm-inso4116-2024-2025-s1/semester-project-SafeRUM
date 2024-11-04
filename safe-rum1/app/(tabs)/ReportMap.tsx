@@ -6,10 +6,6 @@ import {
   Button,
   ActivityIndicator,
   Alert,
-  ScrollView,
-  Modal,
-  Text,
-  TouchableOpacity,
 } from "react-native";
 import * as Location from "expo-location";
 import Pin from "@/components/Pin";
@@ -125,7 +121,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useRef(true);
   const mapViewRef = useRef<MapView | null>(null);
-  const [showReports, setShowReports] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -205,41 +200,8 @@ export default function App() {
           onPress={userLocation}
           disabled={isLoading}
         />
-        <TouchableOpacity
-          style={styles.reportsButton}
-          onPress={() => setShowReports(true)}
-        >
-          <Text style={styles.reportsButtonText}>Reports</Text>
-        </TouchableOpacity>
         {isLoading && <ActivityIndicator style={styles.loader} />}
       </View>
-      <Modal
-        visible={showReports}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowReports(false)} // To handle hardware back button on Android
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Location Reports</Text>
-            <ScrollView>
-              {uprm_main_locations.map((location) => (
-                <View key={location.id} style={styles.reportItem}>
-                  <Text style={styles.locationText}>
-                    {location.name}: {location.reports} reports
-                  </Text>
-                </View>
-              ))}
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowReports(false)}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> 
     </View>
   );
 }
@@ -254,56 +216,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     padding: 10,
   },
   loader: {
     marginLeft: 10,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "90%",
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  reportItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  closeButton: {
-    padding: 10,
-    backgroundColor: "#2196F3",
-    alignItems: "center",
-    marginTop: 20,
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: "white",
-    fontSize: 16,
-  },
-  locationText: {
-    fontSize: 16,
-  },
-  reportsButton: {
-    padding: 10,
-    backgroundColor: "red", 
-    borderRadius: 10, 
-  },
-  reportsButtonText: {
-    color: "white", 
-    fontSize: 16,
   },
 });

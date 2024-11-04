@@ -13,46 +13,45 @@ export default function Login() {
   const API_URL = 'http://<your-ip>:3000'; 
 
   const handleLogin = async () => {
-    router.push("/Profile");
-  //   try {
-  //     const response = await fetch(`${API_URL}/login`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         username: username,
-  //         password: password,
-  //       }),
-  //     });
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     if (response.ok) {
-  //       Alert.alert('Login Successful', 'Redirecting...');
-  //       router.push('/Profile');
-  //     } else {
-  //       Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
-  //         {
-  //           text: 'Forgot Password?',
-  //           onPress: handleForgotPassword,
-  //         },
-  //         {
-  //           text: 'OK',
-  //         },
-  //       ]);
-  //     }
-  //   } catch (error) {
-  //     Alert.alert('Login Failed', 'Something went wrong', [
-  //       {
-  //         text: 'Forgot Password?',
-  //         onPress: handleForgotPassword,
-  //       },
-  //       {
-  //         text: 'OK',
-  //       },
-  //     ]);
-  //   }
+      if (response.ok) {
+        Alert.alert('Login Successful', 'Redirecting...');
+        router.push('/home');
+      } else {
+        Alert.alert('Login Failed', `${data.error || 'Invalid credentials'}`, [
+          {
+            text: 'Forgot Password?',
+            onPress: handleForgotPassword,
+          },
+          {
+            text: 'OK',
+          },
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Login Failed', 'Something went wrong', [
+        {
+          text: 'Forgot Password?',
+          onPress: handleForgotPassword,
+        },
+        {
+          text: 'OK',
+        },
+      ]);
+    }
   };
 
   const handleForgotPassword = async () => {

@@ -8,12 +8,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import SettingsPage from './Settings';
-import EditProfile from './EditProfile';
-import CalendarPage from './Calendar/Calendar';
+import SettingsPage from '../Settings';
+import EditProfile from '../EditProfile';
+import CalendarPage from '../Calendar/Calendar';
 import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
-
 
 export default function Index() {
 
@@ -63,22 +62,22 @@ export default function Index() {
           <FontAwesome name="gear" size={30} color="black" />
         </TouchableOpacity>
         <Image
-          source={require('../assets/images/UPRM-logo.png')}
+          source={require('../../assets/images/UPRM-logo.png')}
           style={styles.backgroundImage}
         />
         <View style={styles.profileCard}>
           <View style={styles.profileHeader}>
             <Image
-              source={require('../assets/images/')}
+              source={require('../../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
             <Image
-              source={require('../assets/images/UPRM-paw.png')}
+              source={require('../../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
           </View>
           <Image
-            source={require('../assets/images/no-profile.png')}
+            source={require('../../assets/images/no-profile.png')}
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>{`${userProfile.firstName} ${userProfile.lastName}`}</Text>
@@ -91,7 +90,7 @@ export default function Index() {
               onPress={() => setEditState((prevState) => !prevState)}
             >
               <Image
-                source={require('../assets/images/pencil-icon.png')}
+                source={require('../../assets/images/pencil-icon.png')}
               />
               <Text style={styles.editButtonText}> Edit profile</Text>
             </TouchableOpacity>
@@ -102,7 +101,7 @@ export default function Index() {
               onPress={() => setCalendarState((prevState) => !prevState)}
             >
               <Image
-                source={require('../assets/images/Vector.png')}
+                source={require('../../assets/images/Vector-3.png')}
               />
               <Text style={styles.calendarButtonText}> Calendar</Text>
             </TouchableOpacity>
@@ -113,7 +112,7 @@ export default function Index() {
       <View style={styles.reportsSection}>
         <View style={styles.reportsHeader}>
           <Image
-            source={require('../assets/images/clock-icon.png')}
+            source={require('../../assets/images/clock-icon.png')}
             style={styles.icon}
           />
           <Text style={styles.reportsTitle}>Recent reports</Text>
