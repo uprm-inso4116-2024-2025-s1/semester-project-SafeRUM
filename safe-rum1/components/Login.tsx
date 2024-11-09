@@ -80,7 +80,7 @@ export default function Login({ toggleUserAuthScreen }: any) {
       signInWithEmailAndPassword(auth, username, password)
         .then(() => {
           Alert.alert('Login Successful', 'Redirecting...');
-          router.push('/users/home');
+          router.push('/users/Reports');
         })
         .catch((error) => {
           Alert.alert('Login Failed', `${error.message || 'Invalid credentials'}`, [
