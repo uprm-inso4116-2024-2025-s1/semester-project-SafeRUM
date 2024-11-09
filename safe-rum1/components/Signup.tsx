@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, TouchableOpacity, Text, View, Alert } from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import { initializeApp } from '@firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import { router } from 'expo-router';
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -78,7 +79,8 @@ const isUprEmail = () => {
         // User registered successfully
         Alert.alert('Success', 'Account created successfully!');
         clearSignUpItems();
-        toggleUserAuthScreen(); // Redirect to login after successful signup
+        // toggleUserAuthScreen(); // Redirect to login after successful signup
+        router.push('/users/Reports');
       })
       .catch((error) => {
         // Handle registration errors
