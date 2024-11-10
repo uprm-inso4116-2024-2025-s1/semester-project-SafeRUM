@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Button, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AppState } from 'react-native';  // To monitor app state (background/foreground)
+import { router } from 'expo-router';
 
 const DummyLogout: React.FC = () => {
   const [token, setToken] = useState<string | null>('dummy_token');  // Simple token in state
@@ -51,7 +52,7 @@ const DummyLogout: React.FC = () => {
   const handleLogout = () => {
     setToken(null);  // Clear the token from state
     Alert.alert('Logged out', 'You have been logged out.');
-    navigation.navigate('Login');  // Redirect to the login screen or wherever necessary
+    router.push('/Authentication');  // Redirect to the login screen or wherever necessary
   };
 
   return (
