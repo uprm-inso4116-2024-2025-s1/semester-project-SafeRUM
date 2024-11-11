@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#0F8F46",
+    backgroundColor: "#337137",
     paddingTop: 30,
   },
   scrollViewContent: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: "#0F8F46",
+    color: "#337137",
     marginBottom: 4,
   },
   field: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   notifyButton: {
-    backgroundColor: "#FF6347",
+    backgroundColor: "#B46A00",
     padding: 10,
     borderRadius: 8,
     alignSelf: "center",
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   expandButton: {
-    backgroundColor: "#6A4E99",
+    backgroundColor: "#4B3F92",
     padding: 8,
     borderRadius: 8,
     alignSelf: "center",
