@@ -1,5 +1,6 @@
 # blueprints/users.py
 
+from backend.firebase import admin_required
 from flask import Blueprint, current_app, jsonify, request
 from flask_autodoc.autodoc import Autodoc
 from models import db, User
@@ -61,6 +62,7 @@ def update(user_id):
     return jsonify({"message": f"User {user_id} not found"}), 200
 
 
+@admin_required
 @auto.doc()
 @users_bp.route("/all", methods=["GET"])
 def get_users():
