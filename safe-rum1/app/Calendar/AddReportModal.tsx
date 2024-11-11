@@ -65,7 +65,7 @@ const AddReportModal: React.FC<AddReportModalProps> = ({
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Add New Report</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Icon name="close" size={24} color="#4CAF50" />
+              <Icon name="close" size={24} color="#337137" />
             </TouchableOpacity>
           </View>
           <TextInput
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#0F8F46',
+    color: '#337137',
   },
   closeButton: {
     padding: 10,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   submitButton: {
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     padding: 10,
     borderRadius: 5,
     flex: 1,
