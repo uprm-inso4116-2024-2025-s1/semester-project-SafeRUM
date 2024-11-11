@@ -33,7 +33,7 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
-  
+
   const handlePlusButtonPress = () => {
     setAddReportVisible(true);
   };
@@ -53,7 +53,7 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
           onPress={() => setCurrentView('yearly')}
           style={styles.backButton}
         >
-          <Icon name="arrow-back" size={24} color="#4CAF50" />
+          <Icon name="arrow-back" size={24} color="#337137" />
         </TouchableOpacity>
 
         {/* Month and Year Header */}
@@ -66,7 +66,7 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
           onPress={handlePlusButtonPress}
           style={styles.plusButton}
         >
-          <Icon name="add" size={24} color="#4CAF50" />
+          <Icon name="add" size={24} color="#337137" />
         </TouchableOpacity>
       </View>
       <View style={styles.calendarContainer}>
@@ -166,24 +166,25 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
             renderItem={({ item }) => {
               const date = item.date;
               const reports = item.reports;
-            
+
               const monthNames = [
                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
               ];
               const formattedDate = `${monthNames[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
-            
+
               // Format the date for the current item
-              return(
-              <View style={styles.reportItem}>
-                <Text style={styles.reportDate}>{formattedDate}</Text>
-                {item.reports.map((report, index) => (
-                  <Text key={index} style={styles.reportText}>
-                    • {report}
-                  </Text>
-                ))}
-              </View>
-        )}}
+              return (
+                <View style={styles.reportItem}>
+                  <Text style={styles.reportDate}>{formattedDate}</Text>
+                  {item.reports.map((report, index) => (
+                    <Text key={index} style={styles.reportText}>
+                      • {report}
+                    </Text>
+                  ))}
+                </View>
+              )
+            }}
           />
         ) : (
           <Text style={styles.noReportsText}>No reports available for this month.</Text>
@@ -201,15 +202,15 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: '#f9f9f9',
   },
- yearView: {
+  yearView: {
     marginBottom: 20,
   },
   yearText: {
     fontSize: 36,
-    color: '#0F8F46',
+    color: '#337137',
     fontWeight: 'bold',
     textAlign: 'center',
-    
+
   },
   monthsContainer: {
     flexDirection: 'row',
@@ -235,11 +236,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayContainer: {
-    width: 58, 
-    height: 60, 
-    justifyContent: 'space-around', 
-    alignItems: 'center', 
-    borderBottomColor: '#0F8F46',
+    width: 58,
+    height: 60,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderBottomColor: '#337137',
     borderBottomWidth: 1,
   },
   dayText: {
@@ -247,17 +248,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   selectedDay: {
-    width: 58, 
-    height: 60, 
-    justifyContent: 'space-around', 
-    alignItems: 'center', 
-    borderBottomColor: '#0F8F46',
+    width: 58,
+    height: 60,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderBottomColor: '#337137',
     borderBottomWidth: 1,
   },
   selectedDayText: {
-    color: '#0F8F46', 
+    color: '#337137',
     fontWeight: 'bold',
-    
+
   },
   monthView: {
     flex: 1,
@@ -268,8 +269,8 @@ const styles = StyleSheet.create({
   weekDays: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: 2, 
-    borderBottomColor: '#0F8F46',
+    paddingHorizontal: 2,
+    borderBottomColor: '#337137',
     borderBottomWidth: 1,
     paddingTop: 15
   },
@@ -277,8 +278,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     color: '#666',
-    width: 58, 
-    textAlign: 'center', 
+    width: 58,
+    textAlign: 'center',
     paddingBottom: 7,
   },
   reportsTitle: {
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
   },
   reportText: {
     fontSize: 15,
-    color: '#0F8F46',
+    color: '#337137',
     marginVertical: 5,
   },
   modalContainer: {
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     fontSize: 16,
-    color: '#0F8F46',
+    color: '#337137',
     textAlign: 'right',
     marginBottom: 10,
     marginTop: 10,
@@ -323,7 +324,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    paddingHorizontal: 10, 
+    paddingHorizontal: 10,
   },
   backButton: {
     padding: 10,
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
   monthHeader: {
     fontSize: 24,
     fontWeight: '300',
-    color: '#0F8F46',
+    color: '#337137',
     textAlign: 'center',
     flex: 1,
   },
@@ -347,14 +348,14 @@ const styles = StyleSheet.create({
   reportsContainer: {
     marginTop: 2,
     borderTopWidth: 0.5,
-    borderTopColor: '#0F8F46',
+    borderTopColor: '#337137',
   },
   reportsHeader: {
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 23,
     marginBottom: 10,
-    color: '#0F8F46',
+    color: '#337137',
   },
   reportItem: {
     marginBottom: 15,
