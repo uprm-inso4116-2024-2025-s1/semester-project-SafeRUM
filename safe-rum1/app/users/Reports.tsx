@@ -1,7 +1,14 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, StyleSheet, SafeAreaView, Alert,} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const ReportScreen = () => {
+  const navigation = useNavigation();
+
+  const handleCreateReportPress = () => {
+    navigation.navigate('ReportCreation'); 
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header with "Create Report" and "My Reports" buttons */}
@@ -10,7 +17,7 @@ const ReportScreen = () => {
         <View style={styles.headerButtons}>
           <TouchableOpacity
             style={styles.headerButton}
-            onPress={() => Alert.alert('Create Report Button Pressed')}
+            onPress={handleCreateReportPress}
           >
             <Text style={styles.headerButtonText}>Create Report</Text>
           </TouchableOpacity>
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: '#FFFFFF', // Set the background to white
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
