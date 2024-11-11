@@ -95,28 +95,28 @@ export default function Index({ goBack }: { goBack: () => void }) {
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#0F8F46' }}>
-        
-      {!isWriting && !sosActive && (
-  <>
-    <Text style={styles.headerText}>Select a Category:</Text>
-    <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Safety Issue')}>
-      <Text style={styles.buttonText}>Safety Issue</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Suspicious Person')}>
-      <Text style={styles.buttonText}>Suspicious Person</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Armed Suspect')}>
-      <Text style={styles.buttonText}>Armed Suspect</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Sexual Harasser')}>
-      <Text style={styles.buttonText}>Sexual Harasser</Text>
-    </TouchableOpacity>
 
-    <TouchableOpacity style={styles.redButton} onPress={handleSOSPress}>
-      <Text style={styles.buttonText}>SOS</Text>
-    </TouchableOpacity>
-  </>
-)}
+        {!isWriting && !sosActive && (
+          <>
+            <Text style={styles.headerText}>Select a Category:</Text>
+            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Safety Issue')}>
+              <Text style={styles.buttonText}>Safety Issue</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Threat / Assault')}>
+              <Text style={styles.buttonText}>Threat / Assault</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Harassment')}>
+              <Text style={styles.buttonText}>Harassment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Sexual Harasser')}>
+              <Text style={styles.buttonText}>Sexual Harasser</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.redButton} onPress={handleSOSPress}>
+              <Text style={styles.buttonText}>SOS</Text>
+            </TouchableOpacity>
+          </>
+        )}
 
         {isWriting && (
           <View style={{ marginTop: 20, alignItems: 'center' }}>
