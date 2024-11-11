@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: "90%",
-    backgroundColor: "#0F8F46",
+    backgroundColor: "#337137",
     padding: 20,
     borderRadius: 10,
     maxHeight: "80%",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   editButton: {
-    backgroundColor: "#65558F",
+    backgroundColor: "#4B3F92",
     // width: "50%",
     alignSelf: "center",
     borderRadius: 100,
