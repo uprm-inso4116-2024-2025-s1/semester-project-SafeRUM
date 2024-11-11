@@ -1,6 +1,7 @@
 # blueprints/users.py
 
-from flask import Blueprint, request, jsonify
+from backend.firebase import admin_required
+from flask import Blueprint, jsonify, request
 from models import db, User
 
 users_bp = Blueprint("users", __name__)
@@ -52,6 +53,7 @@ def update(user_id):
     return jsonify({"message": f"User {user_id} not found"}), 200
 
 
+@admin_required
 @users_bp.route("/all", methods=["GET"])
 def get_users():
     """ADMIN-EXCLUSIVE: Get all users."""
