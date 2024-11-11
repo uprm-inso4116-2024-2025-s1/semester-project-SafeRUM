@@ -6,7 +6,7 @@ const ReportScreen = () => {
   const navigation = useNavigation();
 
   const handleCreateReportPress = () => {
-    navigation.navigate('ReportCreation'); 
+    navigation.navigate('ReportCreation');
   };
 
   return (
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 60,
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   headerButtonText: {
-    color: '#0F8F46',
+    color: '#337137',
     fontSize: 16,
     fontWeight: 'bold',
   },
