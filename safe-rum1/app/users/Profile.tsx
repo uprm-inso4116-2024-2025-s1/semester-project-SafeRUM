@@ -1,4 +1,23 @@
 import React, { useState } from 'react';
+import { getFirestore, collection, getDocs } from '@firebase/firestore';
+import { useEffect } from 'react';
+import { initializeApp } from '@firebase/app';
+import { Alert } from 'react-native';
+
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCIb-bHGc68LhhHOGmz5QjZBJ5T3DAoGO4",
+  authDomain: "saferum-fcc4b.firebaseapp.com",
+  projectId: "saferum-fcc4b",
+  storageBucket: "saferum-fcc4b.appspot.com",
+  messagingSenderId: "11200525932",
+  appId: "1:11200525932:web:4e741499413e43017e4a49",
+  measurementId: "G-6M83VVM4YY"
+};
+
+const app = initializeApp(firebaseConfig);
+const firestore = getFirestore(app);
+
 import {
   View,
   Text,
@@ -15,6 +34,41 @@ import { useNavigation } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
 
 export default function Index() {
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const reportsRef = collection(firestore, "reports");
+        const reportsSnapshot = await getDocs(reportsRef);
+        const reportsData = reportsSnapshot.docs.map(doc => doc.data());
+  
+        console.log("Fetched Reports Data:", reportsData);  // Log to check data
+  
+        reportsData.forEach(report => {
+          const expirationDate = new Date(report.expirationDate).getTime();
+          const currentTime = new Date().getTime();
+          const timeLeft = currentTime - expirationDate;
+  
+          console.log("Report:", report.reportText, "Time Left:", timeLeft);
+  
+          if (timeLeft > 0) {
+            const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  
+            Alert.alert(
+              "Report Notification",
+              `Report "${report.reportText}" expires in ${daysLeft} days, ${hoursLeft} hours, and ${minutesLeft} minutes.`
+            );
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+  
+    fetchReports();
+  }, []);
 
   const navigation = useNavigation();
 
