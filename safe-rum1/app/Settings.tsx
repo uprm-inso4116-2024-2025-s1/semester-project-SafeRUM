@@ -101,16 +101,16 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
           <Text style={styles.profileEmail}>yadriel.calderon@upr.edu</Text>
           <View style={styles.buttonContainer}>
 
-          {/* Edit Profile Button */}
-          <View style={styles.editButton}>
-            <Image source={require('../assets/images/pencil-icon.png')} />
-            <Text style={styles.editButtonText}> Edit profile</Text>
-          </View>
-          <View style={styles.calendarButton}><Image
-                source={require('../assets/images/Vector-3.png')}
-              />
+            {/* Edit Profile Button */}
+            <View style={styles.editButton}>
+              <Image source={require('../assets/images/pencil-icon.png')} />
+              <Text style={styles.editButtonText}> Edit profile</Text>
+            </View>
+            <View style={styles.calendarButton}><Image
+              source={require('../assets/images/Vector-3.png')}
+            />
               <Text style={styles.calendarButtonText}> Calendar</Text></View>
-        </View>
+          </View>
         </View>
       </View>
 
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   // Edit profile button styling
   editButton: {
     flexDirection: 'row',
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   // Settings section styling
   settingsSection: {
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -462,11 +462,11 @@ const styles = StyleSheet.create({
   },
   calendarButton: {
     flexDirection: 'row',
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignItems: 'center'  
+    alignItems: 'center'
   },
   calendarButtonText: {
     color: '#fff',
