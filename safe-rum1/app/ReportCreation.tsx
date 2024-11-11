@@ -94,7 +94,7 @@ export default function Index({ goBack }: { goBack: () => void }) {
         <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
       </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#0F8F46' }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#337137' }}>
 
         {!isWriting && !sosActive && (
           <>
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 'auto',
     alignItems: 'center',
-    backgroundColor: '#a26919',
+    backgroundColor: '#B46A00',
   },
   submitButton: {
     padding: 15,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 'auto',
     alignItems: 'center',
-    backgroundColor: '#49418e',
+    backgroundColor: '#4B3F92',
   },
   redButton: {
     padding: 15,
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 'auto',
     alignItems: 'center',
-    backgroundColor: '#990000',
+    backgroundColor: '#B40000',
   },
   buttonText: {
     fontSize: 18,
