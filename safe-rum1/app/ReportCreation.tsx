@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
-import { Text, View, Alert, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import MapView, { Marker, MapPressEvent } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  Alert,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import MapView, { Marker, MapPressEvent } from "react-native-maps";
+import { Ionicons } from "@expo/vector-icons";
+import ReportGuidelines from "./ReportGuidelines";
 
 enum ReportType {
-  Report = 'Report',
-  SOS = 'SOS',
+  Report = "Report",
+  SOS = "SOS",
 }
 
 interface Location {
@@ -16,11 +25,12 @@ interface Location {
 export default function Index({ goBack }: { goBack: () => void }) {
   const [isWriting, setIsWriting] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [reportTitle, setReportTitle] = useState('');
-  const [reportText, setReportText] = useState('');
+  const [reportTitle, setReportTitle] = useState("");
+  const [reportText, setReportText] = useState("");
   const [location, setLocation] = useState<Location | null>(null);
   const [sosActive, setSosActive] = useState(false);
   const [confirmEnabled, setConfirmEnabled] = useState(false);
+  const [viewGuidelines, setViewGuidelines] = useState(false);
 
   const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
@@ -28,30 +38,36 @@ export default function Index({ goBack }: { goBack: () => void }) {
   };
 
   const handleSubmitReport = () => {
-    if (reportText.trim() === '' || reportTitle.trim() === '') {
-      Alert.alert('Error', 'Report title and description cannot be empty');
+    if (reportText.trim() === "" || reportTitle.trim() === "") {
+      Alert.alert("Error", "Report title and description cannot be empty");
     } else if (!location) {
-      Alert.alert('Error', 'Please select a location on the map');
+      Alert.alert("Error", "Please select a location on the map");
     } else {
-      const timestamp = new Date().toLocaleString();
-      console.log(`Report Type: ${ReportType.Report}`);
-      console.log('Category:', selectedCategory);
-      console.log('Title:', reportTitle);
-      console.log('Report:', reportText);
-      console.log('Location:', location);
-      console.log('Time:', timestamp);
-      console.log('\n');
-      Alert.alert('Success', 'Report and location submitted');
-      setReportTitle('');
-      setReportText('');
-      setLocation(null);
-      setIsWriting(false);
+      // TODO: When the reports are fully implemented, the guidelines should **only** be shown to
+      // the user for their first report.
+      setViewGuidelines(true);
     }
   };
 
+  const handleTermsAccepted = () => {
+    const timestamp = new Date().toLocaleString();
+    console.log(`Report Type: ${ReportType.Report}`);
+    console.log("Category:", selectedCategory);
+    console.log("Title:", reportTitle);
+    console.log("Report:", reportText);
+    console.log("Location:", location);
+    console.log("Time:", timestamp);
+    console.log("\n");
+    Alert.alert("Success", "Report and location submitted");
+    setReportTitle("");
+    setReportText("");
+    setLocation(null);
+    setIsWriting(false);
+  };
+
   const handleCancel = () => {
-    setReportTitle('');
-    setReportText('');
+    setReportTitle("");
+    setReportText("");
     setLocation(null);
     setIsWriting(false);
   };
@@ -72,12 +88,12 @@ export default function Index({ goBack }: { goBack: () => void }) {
       const timestamp = new Date().toLocaleString();
       console.log(`Report Type: ${ReportType.SOS}`);
       console.log(`Report: ${sosType}`);
-      console.log('Location:', location);
-      console.log('Time:', timestamp);
-      console.log('\n');
-      Alert.alert('SOS Sent', `Your emergency and current location has been sent.`);
+      console.log("Location:", location);
+      console.log("Time:", timestamp);
+      console.log("\n");
+      Alert.alert("SOS Sent", `Your emergency and current location has been sent.`);
     } else {
-      Alert.alert('Error', 'Please select a location before sending SOS.');
+      Alert.alert("Error", "Please select a location before sending SOS.");
     }
     setSosActive(false);
     setConfirmEnabled(false);
@@ -94,21 +110,39 @@ export default function Index({ goBack }: { goBack: () => void }) {
         <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
       </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#337137' }}>
-
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#337137",
+        }}
+      >
         {!isWriting && !sosActive && (
           <>
             <Text style={styles.headerText}>Select a Category:</Text>
-            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Safety Issue')}>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Safety Issue")}
+            >
               <Text style={styles.buttonText}>Safety Issue</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Threat / Assault')}>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Threat / Assault")}
+            >
               <Text style={styles.buttonText}>Threat / Assault</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Harassment')}>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Harassment")}
+            >
               <Text style={styles.buttonText}>Harassment</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.bubbleButton} onPress={() => handleSelectCategory('Sexual Harasser')}>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Sexual Harasser")}
+            >
               <Text style={styles.buttonText}>Sexual Harasser</Text>
             </TouchableOpacity>
 
@@ -119,7 +153,7 @@ export default function Index({ goBack }: { goBack: () => void }) {
         )}
 
         {isWriting && (
-          <View style={{ marginTop: 20, alignItems: 'center' }}>
+          <View style={{ marginTop: 20, alignItems: "center" }}>
             <Text style={styles.headerText}>{selectedCategory}</Text>
             <TextInput
               placeholder="Title"
@@ -144,9 +178,7 @@ export default function Index({ goBack }: { goBack: () => void }) {
               }}
               onPress={handleMapPress}
             >
-              {location && (
-                <Marker coordinate={location} />
-              )}
+              {location && <Marker coordinate={location} />}
             </MapView>
             <TouchableOpacity style={styles.submitButton} onPress={handleSubmitReport}>
               <Text style={styles.buttonText}>Submit Report</Text>
@@ -154,11 +186,16 @@ export default function Index({ goBack }: { goBack: () => void }) {
             <TouchableOpacity onPress={handleCancel} style={styles.icon}>
               <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
             </TouchableOpacity>
+
+            <ReportGuidelines
+              viewGuidelines={viewGuidelines}
+              acceptTermsCallback={handleTermsAccepted}
+            />
           </View>
         )}
 
         {sosActive && (
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: "center" }}>
             <Text style={styles.headerText}>SOS</Text>
             <MapView
               style={{ width: 300, height: 200, marginBottom: 10 }}
@@ -171,10 +208,16 @@ export default function Index({ goBack }: { goBack: () => void }) {
             >
               {location && <Marker coordinate={location} />}
             </MapView>
-            <TouchableOpacity style={styles.redButton} onPress={() => handleConfirmSOS('Panic Alert')}>
+            <TouchableOpacity
+              style={styles.redButton}
+              onPress={() => handleConfirmSOS("Panic Alert")}
+            >
               <Text style={styles.buttonText}>Panic Alert</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.redButton} onPress={() => handleConfirmSOS('Immediate Help')}>
+            <TouchableOpacity
+              style={styles.redButton}
+              onPress={() => handleConfirmSOS("Immediate Help")}
+            >
               <Text style={styles.buttonText}>Immediate Help</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleCancelSOS} style={styles.icon}>
@@ -191,51 +234,50 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     marginBottom: 20,
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   bubbleButton: {
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
-    width: 'auto',
-    alignItems: 'center',
-    backgroundColor: '#B46A00',
+    width: "auto",
+    alignItems: "center",
+    backgroundColor: "#B46A00",
   },
   submitButton: {
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
-    width: 'auto',
-    alignItems: 'center',
-    backgroundColor: '#4B3F92',
+    width: "auto",
+    alignItems: "center",
+    backgroundColor: "#4B3F92",
   },
   redButton: {
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
-    width: 'auto',
-    alignItems: 'center',
-    backgroundColor: '#B40000',
+    width: "auto",
+    alignItems: "center",
+    backgroundColor: "#B40000",
   },
   buttonText: {
     fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   input: {
     height: 40,
     width: 300,
-    borderColor: 'white',
-    backgroundColor: 'white',
+    borderColor: "white",
+    backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,
   },
   icon: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
   },
 });
-
