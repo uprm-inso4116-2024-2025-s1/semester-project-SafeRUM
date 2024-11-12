@@ -57,7 +57,7 @@ export default function Index() {
       <View style={styles.profileSection}>
         <TouchableOpacity
           style={styles.gearIcon}
-          onPress={() => {setSettingsState(prevState => !prevState);}}
+          onPress={() => { setSettingsState(prevState => !prevState); }}
         >
           <FontAwesome name="gear" size={30} color="black" />
         </TouchableOpacity>
@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
     right: 10,
     zIndex: 1,
   },
-  profileHeader:{
-    flexDirection: 'row', 
-    alignItems: 'flex-end', 
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   profileSection: {
     flex: 1,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '85%',
     height: '55%',
-    elevation: 5, 
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 5, 
+    elevation: 5,
     width: 100,
     height: 100,
     borderRadius: 40,
@@ -189,21 +189,21 @@ const styles = StyleSheet.create({
   },
   profileRole: {
     fontSize: 16,
-   
+
   },
   profileEmail: {
     fontSize: 16,
-  
+
   },
   pawIcon: {
-    width: 36, 
+    width: 36,
     height: 28,
-    marginHorizontal: 130, 
+    marginHorizontal: 130,
   },
   reportsSection: {
-    flexDirection: 'column', 
-    justifyContent: 'flex-start', 
-    backgroundColor: '#0F8F46',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    backgroundColor: '#337137',
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -211,13 +211,13 @@ const styles = StyleSheet.create({
     height: 270,
   },
   reportsHeader: {
-    flexDirection: 'row', 
-    alignItems: 'flex-start', 
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   icon: {
-    width: 30, 
+    width: 30,
     height: 30,
-    marginRight: 10, 
+    marginRight: 10,
   },
   reportsTitle: {
     marginTop: 2,
@@ -227,8 +227,8 @@ const styles = StyleSheet.create({
   noReportsText: {
     fontSize: 18,
     color: '#fff',
-    marginTop: 70, 
-    textAlign: 'center', 
+    marginTop: 70,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     flexDirection: 'row',
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -246,11 +246,11 @@ const styles = StyleSheet.create({
   },
   calendarButton: {
     flexDirection: 'row',
-    backgroundColor: '#0F8F46',
+    backgroundColor: '#337137',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignItems: 'center'  
+    alignItems: 'center'
   },
   editButtonText: {
     color: '#fff',

@@ -13,11 +13,11 @@ interface YearlyViewProps {
   setCalendarState: React.Dispatch<React.SetStateAction<boolean>>; // Add this line
 }
 
-const YearlyView: React.FC<YearlyViewProps> = ({ 
-  selectedYear, 
-  selectedDate, 
-  setSelectedDate, 
-  setSelectedMonth, 
+const YearlyView: React.FC<YearlyViewProps> = ({
+  selectedYear,
+  selectedDate,
+  setSelectedDate,
+  setSelectedMonth,
   setCurrentView,
   setCalendarState
 }) => {
@@ -33,12 +33,12 @@ const YearlyView: React.FC<YearlyViewProps> = ({
 
   return (
     <View style={styles.yearView}>
-         <TouchableOpacity
-            onPress={() => setCalendarState(false)}
-            style={styles.backButton}
-        >
-          <Icon name="arrow-back" size={24} color="#4CAF50" />
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => setCalendarState(false)}
+        style={styles.backButton}
+      >
+        <Icon name="arrow-back" size={24} color="#337137" />
+      </TouchableOpacity>
       <Text style={styles.yearText}>{selectedYear}</Text>
       <View style={styles.monthsContainer}>
         {months.map((month, index) => (
@@ -65,10 +65,10 @@ const YearlyView: React.FC<YearlyViewProps> = ({
 
                 return (
                   <TouchableOpacity
-                  onPress={() => {
-                    setSelectedMonth(index);
-                    setCurrentView('monthly');
-                  }}
+                    onPress={() => {
+                      setSelectedMonth(index);
+                      setCurrentView('monthly');
+                    }}
                   >
                     <View style={styles.dayContainer}>
                       <View style={isSelected ? styles.selectedDay : null}>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 16,
-    color: '#4CAF50',
+    color: '#337137',
     marginBottom: 5,
   },
   yearView: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   yearText: {
     fontSize: 36,
-    color: '#0F8F46',
+    color: '#337137',
     fontWeight: 'bold',
     textAlign: 'left',
     paddingLeft: 15,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     borderTopWidth: 0.5,
-    borderTopColor: '#0F8F46'
+    borderTopColor: '#337137'
   },
   monthContainer: {
     width: '32%',
@@ -136,18 +136,18 @@ const styles = StyleSheet.create({
     margin: 0.5,
     textAlign: 'center',
   },
-  selectedDayText:{
+  selectedDayText: {
     fontSize: 12,
     margin: 0.5,
     textAlign: 'center',
-    color: '#0F8F46',
+    color: '#337137',
     fontWeight: 'bold'
   },
   selectedDay: {
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     height: 19,
-    width: 25, 
+    width: 25,
   },
   dayContainer: {
     width: 17,

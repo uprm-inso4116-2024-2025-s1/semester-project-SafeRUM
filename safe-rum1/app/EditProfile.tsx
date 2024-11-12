@@ -44,7 +44,7 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
             source={require('../assets/images/arrowLeft.png')}
             style={styles.arrowIcon}
           />
-        </TouchableOpacity>    
+        </TouchableOpacity>
         <Text style={styles.title}>Edit Profile</Text>
       </View>
 
@@ -95,7 +95,7 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F8F46', // green background
+    backgroundColor: '#337137', // green background
     paddingHorizontal: 20,
   },
   title: {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   arrowIcon: {
     marginTop: 20,
-    width: 36, 
+    width: 36,
     height: 28,
   },
 });
