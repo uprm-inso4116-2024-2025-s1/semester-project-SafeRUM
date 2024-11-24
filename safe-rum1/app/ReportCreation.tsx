@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
+  Modal,
   Alert,
   TextInput,
   TouchableOpacity,
@@ -138,8 +139,8 @@ const MapWithMarker = ({
   location: Location | null;
   onMapPress: (event: MapPressEvent) => void;
 }) => (
-  <MapView 
-    style={styles.map} 
+  <MapView
+    style={styles.map}
     onPress={onMapPress}
     initialRegion={{
       latitude: 18.2106,
@@ -160,12 +161,72 @@ export default function Index({ goBack }: { goBack: () => void }) {
   const [reportText, setReportText] = useState("");
   const [sosActive, setSosActive] = useState(false);
   const [viewGuidelines, setViewGuidelines] = useState(false);
+  const [isHelpModalVisible, setHelpModalVisible] = useState(false);
 
-  useEffect(() => {
-    if (sosActive) {
-      fetchCurrentLocation().then((loc) => loc && setLocation(loc));
+  const openHelpModal = () => setHelpModalVisible(true);
+  const closeHelpModal = () => setHelpModalVisible(false);
+
+  const handleSelectCategory = (category: string) => {
+    setSelectedCategory(category);
+    setIsWriting(true);
+  };
+
+  const HelpModal = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
+    return (
+      <Modal visible={isVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>How to Use the Report Creation Page</Text>
+            <Text style={styles.modalText}>
+              - Select a category for your report from the list.
+              {"\n"}- Fill in the title and details of the report.
+              {"\n"}- Use the map to select the location for your report.
+              {"\n"}- Tap "Submit Report" to send it.
+              {"\n\n"}For emergencies, use the "SOS" option to send an alert.
+            </Text>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const handleSubmitReport = () => {
+    if (reportText.trim() === "" || reportTitle.trim() === "") {
+      Alert.alert("Error", "Report title and description cannot be empty");
+    } else if (!location) {
+      Alert.alert("Error", "Please select a location on the map");
+    } else {
+      // TODO: When the reports are fully implemented, the guidelines should **only** be shown to
+      // the user for their first report.
+      setViewGuidelines(true);
     }
-  }, [sosActive]);
+  };
+
+  const handleTermsAccepted = () => {
+    const timestamp = new Date().toLocaleString();
+    console.log(`Report Type: ${ReportType.Report}`);
+    console.log("Category:", selectedCategory);
+    console.log("Title:", reportTitle);
+    console.log("Report:", reportText);
+    console.log("Location:", location);
+    console.log("Time:", timestamp);
+    console.log("\n");
+    Alert.alert("Success", "Report and location submitted");
+    setReportTitle("");
+    setReportText("");
+    setLocation(null);
+    setIsWriting(false);
+  };
+
+  const handleCancel = () => {
+    setReportTitle("");
+    setReportText("");
+    setLocation(null);
+    setIsWriting(false);
+  };
 
   const handleMapPress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -192,99 +253,140 @@ export default function Index({ goBack }: { goBack: () => void }) {
       Alert.alert("Error", validationError);
       return;
     }
-    if (selectedReport) {
-      setViewGuidelines(true);
-      const timestamp = createTimestamp();
-      selectedReport.handleSubmit({ location, title: reportTitle, description: reportText, timestamp });
-      // handleCancel();
-    }
+    setSosActive(false);
+    setConfirmEnabled(false);
   };
 
-  const handleTermsAccepted = () => {
-    Alert.alert("Success", "Report and location submitted");
-    setViewGuidelines(false);
-    handleCancel();
+  const handleCancelSOS = () => {
+    setSosActive(false);
+    setConfirmEnabled(false);
   };
-
-  const renderDefaultScreen = () => (
-    <>
-      <Text style={styles.headerText}>Select a Category:</Text>
-      {reportActions.map((action) => (
-        <ActionButton
-          key={action.title}
-          title={action.title}
-          onPress={() => {
-            setSelectedReport(action);
-            setIsWriting(true);
-          }}
-        />
-      ))}
-      <ActionButton
-        title="SOS"
-        onPress={() => setSosActive(true)}
-        style={styles.redButton}
-      />
-    </>
-  );
-
-  const renderReportForm = () => (
-    <View style={styles.reportForm}>
-      <Text style={styles.headerText}>{selectedReport?.title}</Text>
-      <TextInput
-        placeholder="Title"
-        value={reportTitle}
-        onChangeText={setReportTitle}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Description"
-        value={reportText}
-        onChangeText={setReportText}
-        style={[styles.input, { height: 75 }]}
-        multiline
-      />
-      <MapWithMarker location={location} onMapPress={handleMapPress} />
-      <ActionButton title="Submit Report" onPress={handleSubmitReport} style={styles.submitButton} />
-      <TouchableOpacity onPress={handleCancel} style={styles.icon}>
-        <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderSOSActions = () => (
-    <View style={styles.sosContainer}>
-      <Text style={styles.headerText}>SOS</Text>
-      {sosActions.map((action) => (
-        <ActionButton
-          key={action.type}
-          title={action.title}
-          onPress={() => {
-            const timestamp = createTimestamp();
-            action.handleSOS({ location, timestamp });
-            setSosActive(false);
-          }}
-          style={styles.redButton}
-        />
-      ))}
-      <TouchableOpacity onPress={() => setSosActive(false)} style={styles.icon}>
-        <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
-      </TouchableOpacity>
-    </View>
-  );
 
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity onPress={goBack} style={styles.icon}>
         <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
       </TouchableOpacity>
-      <ScrollView contentContainerStyle={styles.container}>
-        {!isWriting && !sosActive && renderDefaultScreen()}
-        {isWriting && renderReportForm()}
-        {sosActive && renderSOSActions()}
-        {viewGuidelines && <ReportGuidelines
+
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#337137",
+        }}
+      >
+        {!isWriting && !sosActive && (
+          <>
+            <Text style={styles.headerText}>Select a Category:</Text>
+            <TouchableOpacity style={styles.helpButton} onPress={openHelpModal}>
+              <Text style={styles.buttonText}>Help</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Safety Issue")}
+            >
+              <Text style={styles.buttonText}>Safety Issue</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Threat / Assault")}
+            >
+              <Text style={styles.buttonText}>Threat / Assault</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Harassment")}
+            >
+              <Text style={styles.buttonText}>Harassment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bubbleButton}
+              onPress={() => handleSelectCategory("Sexual Harasser")}
+            >
+              <Text style={styles.buttonText}>Sexual Harasser</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.redButton} onPress={handleSOSPress}>
+              <Text style={styles.buttonText}>SOS</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {isWriting && (
+          <View style={{ marginTop: 20, alignItems: "center" }}>
+            <Text style={styles.headerText}>{selectedCategory}</Text>
+            <TextInput
+              placeholder="Title"
+              value={reportTitle}
+              onChangeText={setReportTitle}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Label"
+              value={reportText}
+              onChangeText={setReportText}
+              style={[styles.input, { height: 75 }]}
+              multiline={true}
+            />
+            <MapView
+              style={{ width: 300, height: 200, marginBottom: 10 }}
+              initialRegion={{
+                latitude: 18.2106,
+                longitude: -67.1396,
+                latitudeDelta: 0.009,
+                longitudeDelta: 0.009,
+              }}
+              onPress={handleMapPress}
+            >
+              {location && <Marker coordinate={location} />}
+            </MapView>
+            <TouchableOpacity style={styles.submitButton} onPress={handleSubmitReport}>
+              <Text style={styles.buttonText}>Submit Report</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCancel} style={styles.icon}>
+              <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
+            </TouchableOpacity>
+
+            <ReportGuidelines
               viewGuidelines={viewGuidelines}
               acceptTermsCallback={handleTermsAccepted}
-            />}
+            />
+          </View>
+        )}
+
+        {sosActive && (
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.headerText}>SOS</Text>
+            <MapView
+              style={{ width: 300, height: 200, marginBottom: 10 }}
+              initialRegion={{
+                latitude: 18.211005502415397,
+                longitude: -67.14156653443999,
+                latitudeDelta: 0.009,
+                longitudeDelta: 0.009,
+              }}
+            >
+              {location && <Marker coordinate={location} />}
+            </MapView>
+            <TouchableOpacity
+              style={styles.redButton}
+              onPress={() => handleConfirmSOS("Panic Alert")}
+            >
+              <Text style={styles.buttonText}>Panic Alert</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.redButton}
+              onPress={() => handleConfirmSOS("Immediate Help")}
+            >
+              <Text style={styles.buttonText}>Immediate Help</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCancelSOS} style={styles.icon}>
+              <Ionicons name="arrow-back-circle" size={32} color="#FFF" />
+            </TouchableOpacity>
+          </View>
+        )}
+        <HelpModal isVisible={isHelpModalVisible} onClose={closeHelpModal} />
       </ScrollView>
     </View>
   );
@@ -340,22 +442,41 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
   },
-  container: {
-    flexGrow: 1,
+  modalOverlay: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#337137",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
-  map: {
-    width: 300,
-    height: 200,
+  modalContent: {
+    width: "80%",
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  closeButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#B40000",
+    alignItems: "center",
+    width: "50%",
+  },
+  helpButton: {
+    padding: 15,
+    borderRadius: 10,
     marginBottom: 10,
-  },
-  reportForm: {
-    marginTop: 20,
     alignItems: "center",
-  },
-  sosContainer: {
-    alignItems: "center",
+    backgroundColor: "#4B3F92",
   },
 });
