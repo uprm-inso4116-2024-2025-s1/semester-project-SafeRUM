@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Text,
   View,
+  Modal,
   Alert,
   TextInput,
   TouchableOpacity,
@@ -31,10 +32,36 @@ export default function Index({ goBack }: { goBack: () => void }) {
   const [sosActive, setSosActive] = useState(false);
   const [confirmEnabled, setConfirmEnabled] = useState(false);
   const [viewGuidelines, setViewGuidelines] = useState(false);
+  const [isHelpModalVisible, setHelpModalVisible] = useState(false);
+
+  const openHelpModal = () => setHelpModalVisible(true);
+  const closeHelpModal = () => setHelpModalVisible(false);
 
   const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
     setIsWriting(true);
+  };
+
+  const HelpModal = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
+    return (
+      <Modal visible={isVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>How to Use the Report Creation Page</Text>
+            <Text style={styles.modalText}>
+              - Select a category for your report from the list.
+              {"\n"}- Fill in the title and details of the report.
+              {"\n"}- Use the map to select the location for your report.
+              {"\n"}- Tap "Submit Report" to send it.
+              {"\n\n"}For emergencies, use the "SOS" option to send an alert.
+            </Text>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
   };
 
   const handleSubmitReport = () => {
@@ -121,6 +148,9 @@ export default function Index({ goBack }: { goBack: () => void }) {
         {!isWriting && !sosActive && (
           <>
             <Text style={styles.headerText}>Select a Category:</Text>
+            <TouchableOpacity style={styles.helpButton} onPress={openHelpModal}>
+              <Text style={styles.buttonText}>Help</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.bubbleButton}
               onPress={() => handleSelectCategory("Safety Issue")}
@@ -225,6 +255,7 @@ export default function Index({ goBack }: { goBack: () => void }) {
             </TouchableOpacity>
           </View>
         )}
+        <HelpModal isVisible={isHelpModalVisible} onClose={closeHelpModal} />
       </ScrollView>
     </View>
   );
@@ -279,5 +310,42 @@ const styles = StyleSheet.create({
   icon: {
     position: "absolute",
     left: 0,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  closeButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#B40000",
+    alignItems: "center",
+    width: "50%",
+  },
+  helpButton: {
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    alignItems: "center",
+    backgroundColor: "#4B3F92",
   },
 });
