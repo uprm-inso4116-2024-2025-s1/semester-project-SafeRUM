@@ -92,7 +92,7 @@ export default function Index() {
               <Image
                 source={require('../../assets/images/pencil-icon.png')}
               />
-              <Text style={styles.editButtonText}> Edit profile</Text>
+              <Text style={styles.editButtonText}> Edit Profile Details</Text>
             </TouchableOpacity>
 
             {/* Calendar Button */}
@@ -103,7 +103,7 @@ export default function Index() {
               <Image
                 source={require('../../assets/images/Vector-3.png')}
               />
-              <Text style={styles.calendarButtonText}> Calendar</Text>
+              <Text style={styles.calendarButtonText}> View Calendar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -115,9 +115,9 @@ export default function Index() {
             source={require('../../assets/images/clock-icon.png')}
             style={styles.icon}
           />
-          <Text style={styles.reportsTitle}>Recent reports</Text>
+          <Text style={styles.reportsTitle}>View Latest Reports</Text>
         </View>
-        <Text style={styles.noReportsText}>No recent reports</Text>
+        <Text style={styles.noReportsText}>View History Report</Text>
       </View>
     </SafeAreaView>
   );
