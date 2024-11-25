@@ -82,7 +82,7 @@ export default function CurrentReportsScreen() {
       });
       Alert.alert(
         "Notification Sent",
-        `A notification for "${report.title}" has been sent successfully.`,
+        `A notification for "${report.title}" has been sent successfully. Admins will be alerted.`,
       );
     } catch (error) {
       Alert.alert("Error", "Failed to send the notification.");
@@ -115,12 +115,12 @@ export default function CurrentReportsScreen() {
                 style={styles.notifyButton}
                 onPress={() => sendNotification(report)}
               >
-                <Text style={styles.notifyButtonText}>Send Notification</Text>
+                <Text style={styles.notifyButtonText}>Notify Admins of Priority Report.</Text>
               </TouchableOpacity>
             )}
 
             <TouchableOpacity style={styles.expandButton} onPress={() => openModal(report)}>
-              <Text style={styles.expandButtonText}>Expand</Text>
+              <Text style={styles.expandButtonText}>View Full Report</Text>
             </TouchableOpacity>
           </View>
         ))}
