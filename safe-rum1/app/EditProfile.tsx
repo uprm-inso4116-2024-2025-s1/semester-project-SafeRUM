@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import ProfileHeader from './ProfileHeader';
+import ProfileDetails from './ProfileDetails';
 
 interface EditPageProps {
   setEditState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,14 +43,12 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
       {/* Profile Header */}
       <ProfileHeader onCancel={handleCancel} />
 
-      {/* Profile Image Section */}
-      <View style={styles.profileSection}>
-        <Image source={require('../assets/images/no-profile.png')} style={styles.profileImage} />
-        <View>
-          <Text style={styles.profileName}>{`${firstName} ${lastName}`}</Text>
-          <Text style={styles.profileRole}>{userProfile.role}</Text>
-        </View>
-      </View>
+      {/* Profile Details */}
+      <ProfileDetails
+        firstName={firstName}
+        lastName={lastName}
+        role={userProfile.role}
+      />
 
       {/* Input fields for profile info */}
       <View style={styles.inputSection}>
@@ -94,26 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#337137', // green background
     paddingHorizontal: 20,
-  },
-  profileSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 55,
-    height: 55,
-    borderRadius: 40,
-    marginRight: 10,
-  },
-  profileName: {
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  profileRole: {
-    fontSize: 16,
-    color: '#000',
-    opacity: 0.5,
   },
   inputSection: {
     marginBottom: 15,
