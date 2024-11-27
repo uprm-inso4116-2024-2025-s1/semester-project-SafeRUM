@@ -75,7 +75,6 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
     setReportsForSelectedDate(reportsOnDate);
   }, [selectedDate, reports]);  
 
-  // Utility function to parse date strings to Date objects in local time
   const parseDateStringToLocalDate = (dateString: string): Date => {
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day);

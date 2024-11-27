@@ -6,7 +6,7 @@ import MonthlyView from './MonthlyView';
 
 interface Report {
   id: string;
-  date: string; // ISO string with date and time
+  date: string;
   title: string;
   description: string;
 }
@@ -25,10 +25,9 @@ export default function CalendarPage({ setCalendarState }: CalendarPageProps) {
 
   const REPORTS_STORAGE_KEY = '@reports_key';
 
-  // Utility function to format dates in 'YYYY-MM-DD' format
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2); // months are zero-indexed
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   };
@@ -62,7 +61,7 @@ export default function CalendarPage({ setCalendarState }: CalendarPageProps) {
   const addReport = async (date: Date, title: string, description: string) => {
     const newReport: Report = {
       id: Date.now().toString(),
-      date: formatDate(date), // Store date as 'YYYY-MM-DD'
+      date: formatDate(date),
       title,
       description,
     };
@@ -86,17 +85,15 @@ export default function CalendarPage({ setCalendarState }: CalendarPageProps) {
     await saveReportsToStorage(updatedReports);
   };
 
-  // Function to get reports for a specific date
   const getReportsForDate = (date: Date): Report[] => {
-    const dateString = formatDate(date); // 'YYYY-MM-DD'
+    const dateString = formatDate(date);
     return reports.filter((report) => report.date === dateString);
   };  
 
-  // Function to get reports for a specific month
   const getReportsForMonth = (month: number, year: number): Report[] => {
     return reports.filter((report) => {
       const [reportYear, reportMonth] = report.date.split('-').map(Number);
-      return reportYear === year && reportMonth === month + 1; // months are zero-indexed
+      return reportYear === year && reportMonth === month + 1;
     });
   };
   
