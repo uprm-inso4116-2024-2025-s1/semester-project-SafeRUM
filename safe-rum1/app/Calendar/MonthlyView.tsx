@@ -189,9 +189,6 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
               reportsForSelectedDate.map((report) => (
                 <View key={report.id} style={styles.reportItem}>
                   <Text style={styles.reportText}>{report.title}</Text>
-                  <Text style={styles.reportDate}>
-                    {new Date(report.date).toLocaleString()}
-                  </Text>
                   <View style={styles.reportActions}>
                     <TouchableOpacity
                       onPress={() => {
@@ -262,15 +259,12 @@ const MonthlyView: React.FC<MonthlyViewProps> = ({
             data={reportsForMonth}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              // Replace this line:
-              // const date = new Date(item.date);
-              // With this line:
               const date = parseDateStringToLocalDate(item.date);
               const formattedDate = date.toLocaleDateString();
 
               return (
                 <View style={styles.reportItem}>
-                  <Text style={styles.reportDate}>{date.getMonth()} {date.getDay()+1} {date.getFullYear()}</Text>
+                  <Text style={styles.reportDate}>{formattedDate}</Text>
                   <Text style={styles.reportText}>{item.title}</Text>
                 </View>
               );
@@ -399,6 +393,7 @@ const styles = StyleSheet.create({
   reportDate: {
     fontSize: 14,
     color: '#555',
+    fontWeight: 'bold',
   },
   reportActions: {
     flexDirection: 'row',
