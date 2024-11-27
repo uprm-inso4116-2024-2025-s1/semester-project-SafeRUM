@@ -51,7 +51,7 @@ const DummyLogout: React.FC = () => {
   // Handle logout
   const handleLogout = () => {
     setToken(null);  // Clear the token from state
-    Alert.alert('Logged out', 'You have been logged out.');
+    Alert.alert('Logged out', 'You have been logged out, due to inactivity for security reasons. Please log in again to continue.');
     router.push('/Authentication');  // Redirect to the login screen or wherever necessary
   };
 
