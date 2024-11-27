@@ -194,18 +194,24 @@ export default function Index({ goBack }: { goBack: () => void }) {
   };
 
   const handleSubmitReport = () => {
+    console.assert(viewGuidelines === false, "User is already viewing report guidelines");
+
     if (reportText.trim() === "" || reportTitle.trim() === "") {
       Alert.alert("Error", "Report title and description cannot be empty");
+      return;
     } else if (!location) {
       Alert.alert("Error", "Please select a location on the map");
-    } else {
-      // TODO: When the reports are fully implemented, the guidelines should **only** be shown to
-      // the user for their first report.
-      setViewGuidelines(true);
+      return;
     }
+
+    // TODO: When the reports are fully implemented, the guidelines should **only** be shown to
+    // the user for their first report.
+    setViewGuidelines(true);
   };
 
   const handleTermsAccepted = () => {
+    console.assert(viewGuidelines, "Guidelines cannot be accepted if user wasn't viewing them");
+
     const timestamp = new Date().toLocaleString();
     console.log(`Report Type: ${ReportType.Report}`);
     console.log("Category:", selectedCategory);
@@ -214,11 +220,14 @@ export default function Index({ goBack }: { goBack: () => void }) {
     console.log("Location:", location);
     console.log("Time:", timestamp);
     console.log("\n");
+
     Alert.alert("Success", "Report and location submitted");
+
     setReportTitle("");
     setReportText("");
     setLocation(null);
     setIsWriting(false);
+    setViewGuidelines(false);
   };
 
   const handleCancel = () => {
@@ -233,33 +242,31 @@ export default function Index({ goBack }: { goBack: () => void }) {
     setLocation({ latitude, longitude });
   };
 
-  const handleCancel = () => {
-    setIsWriting(false);
-    setSelectedReport(null);
-    setReportTitle("");
-    setReportText("");
-    setLocation(null);
+  const handleSOSPress = () => {
+    setLocation({ latitude: 18.211005502415397, longitude: -67.14156653443999 });
+    setSosActive(true);
   };
 
-  // const handleSOSAction = (sosAction: SOSAction) => {
-  //   const timestamp = new Date().toLocaleString();
-  //   sosAction.handleSOS({ location, timestamp });
-  //   setSosActive(false);
-  // };
+  const handleConfirmSOS = (sosType: string) => {
+    console.assert(sosActive, "Cannot confirm SOS if report isn't SOS");
 
-  const handleSubmitReport = () => {
-    const validationError = validateReport(reportTitle, reportText, location);
-    if (validationError) {
-      Alert.alert("Error", validationError);
+    if (!location) {
+      Alert.alert("Error", "Please select a location before sending SOS.");
       return;
     }
+
+    const timestamp = new Date().toLocaleString();
+    console.log(`Report Type: ${ReportType.SOS}`);
+    console.log(`Report: ${sosType}`);
+    console.log("Location:", location);
+    console.log("Time:", timestamp);
+    console.log("\n");
+    Alert.alert("SOS Sent", `Your emergency and current location has been sent.`);
     setSosActive(false);
-    setConfirmEnabled(false);
   };
 
   const handleCancelSOS = () => {
     setSosActive(false);
-    setConfirmEnabled(false);
   };
 
   return (
