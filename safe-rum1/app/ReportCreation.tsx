@@ -207,23 +207,19 @@ export default function Index({ goBack }: { goBack: () => void }) {
     setLocation(null);
   };
 
-  // const handleSOSAction = (sosAction: SOSAction) => {
-  //   const timestamp = new Date().toLocaleString();
-  //   sosAction.handleSOS({ location, timestamp });
-  //   setSosActive(false);
-  // };
-
   const handleSubmitReport = () => {
+    console.assert(viewGuidelines === false, "User is already viewing report guidelines");
     const validationError = validateReport(reportTitle, reportText, location);
     if (validationError) {
       Alert.alert("Error", validationError);
       return;
     }
     if (selectedReport) {
+      // TODO: When the reports are fully implemented, the guidelines should **only** be shown to
+      // the user for their first report.
       setViewGuidelines(true);
       const timestamp = createTimestamp();
       selectedReport.handleSubmit({ location, title: reportTitle, description: reportText, timestamp });
-      // handleCancel();
     }
   };
 
@@ -236,6 +232,9 @@ export default function Index({ goBack }: { goBack: () => void }) {
   const renderDefaultScreen = () => (
     <>
       <Text style={styles.headerText}>Select a Category:</Text>
+      <TouchableOpacity style={styles.helpButton} onPress={openHelpModal}>
+        <Text style={styles.buttonText}>Help</Text>
+      </TouchableOpacity>
       {reportActions.map((action) => (
         <ActionButton
           key={action.title}
@@ -307,9 +306,6 @@ export default function Index({ goBack }: { goBack: () => void }) {
       <ScrollView contentContainerStyle={styles.container}>
       
         {!isWriting && !sosActive && renderDefaultScreen()}
-        <TouchableOpacity style={styles.helpButton} onPress={openHelpModal}>
-          <Text style={styles.buttonText}>Help</Text>
-        </TouchableOpacity>
         {isWriting && renderReportForm()}
         {sosActive && renderSOSActions()}
         {viewGuidelines && <ReportGuidelines

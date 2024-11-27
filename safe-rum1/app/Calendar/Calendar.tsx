@@ -1,47 +1,111 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import YearlyView from './YearlyView';
 import MonthlyView from './MonthlyView';
+
+interface Report {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+}
 
 interface CalendarPageProps {
   setCalendarState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CalendarPage({setCalendarState} : CalendarPageProps) {
+export default function CalendarPage({ setCalendarState }: CalendarPageProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [currentView, setCurrentView] = useState('yearly'); // 'yearly' or 'monthly'
+  const [currentView, setCurrentView] = useState('monthly'); // 'yearly' or 'monthly'
   const [selectedMonth, setSelectedMonth] = useState(selectedDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(selectedDate.getFullYear());
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(false);
 
+  const REPORTS_STORAGE_KEY = '@reports_key';
 
-  // Sample reports data
-  const reportsData: { [key: string]: string[] } = {
-    '2024-10-21': ['Report 1', 'Report 2'],
-    '2024-10-22': ['Report 3'],
-    // Add more dates and reports as needed
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   };
 
-  // Function to get reports for a specific date
-  const getReportsForDate = (date: Date): string[] => {
-    const dateString = date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
-    return reportsData[dateString] || [];
-  };
-
-  const getReportsForMonth = (month: number, year: number): { date: Date; reports: string[] }[] => {
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const reportsForMonth = [];
-  
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      const reports = getReportsForDate(date);
-      if (reports.length > 0) {
-        reportsForMonth.push({ date, reports });
-      }
+  const saveReportsToStorage = async (reports: Report[]) => {
+    try {
+      const jsonValue = JSON.stringify(reports);
+      await AsyncStorage.setItem(REPORTS_STORAGE_KEY, jsonValue);
+    } catch (e) {
+      console.error('Failed to save reports to storage:', e);
     }
-  
-    return reportsForMonth;
+  };
+
+  const loadReportsFromStorage = async () => {
+    setLoading(true);
+    try {
+      const jsonValue = await AsyncStorage.getItem(REPORTS_STORAGE_KEY);
+      if (jsonValue != null) {
+        setReports(JSON.parse(jsonValue));
+      }
+    } catch (e) {
+      console.error('Failed to load reports from storage:', e);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadReportsFromStorage();
+  }, []);
+
+  const addReport = async (date: Date, title: string, description: string) => {
+    const newReport: Report = {
+      id: Date.now().toString(),
+      date: formatDate(date),
+      title,
+      description,
+    };
+    const updatedReports = [...reports, newReport];
+    setReports(updatedReports);
+    await saveReportsToStorage(updatedReports);
   };
   
+
+  const editReport = async (id: string, title: string, description: string) => {
+    const updatedReports = reports.map((report) =>
+      report.id === id ? { ...report, title, description } : report
+    );
+    setReports(updatedReports);
+    await saveReportsToStorage(updatedReports);
+  };
+
+  const deleteReport = async (id: string) => {
+    const updatedReports = reports.filter((report) => report.id !== id);
+    setReports(updatedReports);
+    await saveReportsToStorage(updatedReports);
+  };
+
+  const getReportsForDate = (date: Date): Report[] => {
+    const dateString = formatDate(date);
+    return reports.filter((report) => report.date === dateString);
+  };  
+
+  const getReportsForMonth = (month: number, year: number): Report[] => {
+    return reports.filter((report) => {
+      const [reportYear, reportMonth] = report.date.split('-').map(Number);
+      return reportYear === year && reportMonth === month + 1;
+    });
+  };
+  
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#337137" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {currentView === 'yearly' && (
@@ -51,7 +115,7 @@ export default function CalendarPage({setCalendarState} : CalendarPageProps) {
           setSelectedDate={setSelectedDate}
           setSelectedMonth={setSelectedMonth}
           setCurrentView={setCurrentView}
-          setCalendarState={setCalendarState} 
+          setCalendarState={setCalendarState}
         />
       )}
       {currentView === 'monthly' && (
@@ -61,9 +125,12 @@ export default function CalendarPage({setCalendarState} : CalendarPageProps) {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           setCurrentView={setCurrentView}
-          getReportsForDate={getReportsForDate} 
+          getReportsForDate={getReportsForDate}
           getReportsForMonth={getReportsForMonth}
-          addReport={getReportsForDate}
+          addReport={addReport}
+          editReport={editReport}
+          deleteReport={deleteReport}
+          reports={reports}
         />
       )}
     </View>
@@ -74,6 +141,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#f9f9f9',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

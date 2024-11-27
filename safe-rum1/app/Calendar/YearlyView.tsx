@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-
 
 interface YearlyViewProps {
   selectedYear: number;
@@ -10,7 +8,7 @@ interface YearlyViewProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
-  setCalendarState: React.Dispatch<React.SetStateAction<boolean>>; // Add this line
+  setCalendarState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const YearlyView: React.FC<YearlyViewProps> = ({
@@ -19,17 +17,12 @@ const YearlyView: React.FC<YearlyViewProps> = ({
   setSelectedDate,
   setSelectedMonth,
   setCurrentView,
-  setCalendarState
+  setCalendarState,
 }) => {
-
   const months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
-
-  const getDaysInMonth = (month: number, year: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
 
   return (
     <View style={styles.yearView}>
@@ -51,37 +44,6 @@ const YearlyView: React.FC<YearlyViewProps> = ({
             >
               <Text style={styles.monthText}>{month}</Text>
             </TouchableOpacity>
-            {/* Render days for each month */}
-            <FlatList
-              data={[...Array(getDaysInMonth(index, selectedYear)).keys()].map(
-                (day) => day + 1
-              )}
-              keyExtractor={(item) => item.toString()}
-              renderItem={({ item }) => {
-                const isSelected =
-                  selectedDate.getDate() === item &&
-                  selectedDate.getMonth() === index &&
-                  selectedDate.getFullYear() === selectedYear;
-
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelectedMonth(index);
-                      setCurrentView('monthly');
-                    }}
-                  >
-                    <View style={styles.dayContainer}>
-                      <View style={isSelected ? styles.selectedDay : null}>
-                        <Text style={isSelected ? styles.selectedDayText : styles.dayText}>
-                          {item}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                );
-              }}
-              numColumns={7}
-            />
           </View>
         ))}
       </View>
@@ -91,21 +53,12 @@ const YearlyView: React.FC<YearlyViewProps> = ({
 
 export default YearlyView;
 
-
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-  },
-  backButton: {
-    fontSize: 16,
-    color: '#337137',
-    marginBottom: 5,
-  },
   yearView: {
     marginBottom: 20,
+  },
+  backButton: {
+    padding: 10,
   },
   yearText: {
     fontSize: 36,
@@ -119,7 +72,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     borderTopWidth: 0.5,
-    borderTopColor: '#337137'
+    borderTopColor: '#337137',
   },
   monthContainer: {
     width: '32%',
@@ -130,29 +83,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     textAlign: 'center',
-  },
-  dayText: {
-    fontSize: 12,
-    margin: 0.5,
-    textAlign: 'center',
-  },
-  selectedDayText: {
-    fontSize: 12,
-    margin: 0.5,
-    textAlign: 'center',
-    color: '#337137',
-    fontWeight: 'bold'
-  },
-  selectedDay: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 19,
-    width: 25,
-  },
-  dayContainer: {
-    width: 17,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
