@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,44 +9,46 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
-interface AddReportModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onAddReport: (date: Date, title: string, description: string) => void;
+interface Report {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
 }
 
-const AddReportModal: React.FC<AddReportModalProps> = ({
+interface EditReportModalProps {
+  visible: boolean;
+  onClose: () => void;
+  report: Report;
+  onEditReport: (title: string, description: string) => void;
+}
+
+const EditReportModal: React.FC<EditReportModalProps> = ({
   visible,
   onClose,
-  onAddReport,
+  report,
+  onEditReport,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [title, setTitle] = useState(report.title);
+  const [description, setDescription] = useState(report.description);
 
-  const handleAddReport = () => {
+  useEffect(() => {
+    if (report) {
+      setTitle(report.title);
+      setDescription(report.description);
+    }
+  }, [report]);
+
+  const handleEditReport = () => {
     if (title.trim() === '' || description.trim() === '') {
       Alert.alert('Validation Error', 'Please enter a title and description.');
       return;
     }
 
-    onAddReport(date, title, description);
-
-    setTitle('');
-    setDescription('');
-    setDate(new Date());
+    onEditReport(title, description);
 
     onClose();
-  };
-
-  const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (event.type === 'set' && selectedDate) {
-      setDate(selectedDate);
-    }
   };
 
   return (
@@ -59,25 +61,11 @@ const AddReportModal: React.FC<AddReportModalProps> = ({
       <View style={styles.addReportModalContainer}>
         <View style={styles.addReportModalContent}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Add New Report</Text>
+            <Text style={styles.modalTitle}>Edit Report</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <Icon name="close" size={24} color="#337137" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => setShowDatePicker(true)}
-            style={styles.dateButton}
-          >
-            <Text style={styles.dateButtonText}>{date.toLocaleString()}</Text>
-          </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              value={date}
-              mode="datetime"
-              display="default"
-              onChange={onChangeDate}
-            />
-          )}
           <TextInput
             style={styles.input}
             placeholder="Title"
@@ -96,11 +84,8 @@ const AddReportModal: React.FC<AddReportModalProps> = ({
             <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleAddReport}
-              style={styles.submitButton}
-            >
-              <Text style={styles.buttonText}>Add Report</Text>
+            <TouchableOpacity onPress={handleEditReport} style={styles.submitButton}>
+              <Text style={styles.buttonText}>Save Changes</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -109,7 +94,7 @@ const AddReportModal: React.FC<AddReportModalProps> = ({
   );
 };
 
-export default AddReportModal;
+export default EditReportModal;
 
 const styles = StyleSheet.create({
   addReportModalContainer: {
@@ -137,16 +122,6 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     padding: 10,
-  },
-  dateButton: {
-    padding: 10,
-    backgroundColor: '#eee',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  dateButtonText: {
-    fontSize: 16,
-    color: '#333',
   },
   input: {
     borderWidth: 1,
