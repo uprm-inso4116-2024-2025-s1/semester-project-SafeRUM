@@ -5,13 +5,13 @@ import React from "react";
 export default () => {
     return (
         <Tabs>
-            <Tabs.Screen name="ReportMap" 
+            <Tabs.Screen name="Alert_Map" 
             options={{
                 headerShown: false,
               }}
             />
 
-            <Tabs.Screen name="ReportViewing" 
+            <Tabs.Screen name="View_Reports" 
             options={{
                 headerShown: false,
               }}

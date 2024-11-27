@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
+import ProfileHeader from './ProfileHeader';
 
 interface EditPageProps {
   setEditState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,21 +39,16 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.profileHeader}>
-        <TouchableOpacity onPress={handleCancel}>
-          <Image
-            source={require('../assets/images/arrowLeft.png')}
-            style={styles.arrowIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Edit Profile</Text>
-      </View>
+      {/* Profile Header */}
+      <ProfileHeader onCancel={handleCancel} />
 
       {/* Profile Image Section */}
       <View style={styles.profileSection}>
         <Image source={require('../assets/images/no-profile.png')} style={styles.profileImage} />
-        <Text style={styles.profileName}>{`${firstName} ${lastName}`}</Text>
-        <Text style={styles.profileRole}>{userProfile.role}</Text>
+        <View>
+          <Text style={styles.profileName}>{`${firstName} ${lastName}`}</Text>
+          <Text style={styles.profileRole}>{userProfile.role}</Text>
+        </View>
       </View>
 
       {/* Input fields for profile info */}
@@ -92,46 +88,32 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#337137', // green background
     paddingHorizontal: 20,
   },
-  title: {
-    position: 'relative',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 20,
-    paddingVertical: 20,
-  },
-  profileHeader: {
-    flexDirection: 'row',
-  },
   profileSection: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
   profileImage: {
     width: 55,
     height: 55,
     borderRadius: 40,
-    marginBottom: -10,
+    marginRight: 10,
   },
   profileName: {
     fontSize: 18,
     fontWeight: '500',
-    left: 5,
-    marginTop: 8,
   },
   profileRole: {
-    position: 'absolute',
     fontSize: 16,
     color: '#000',
     opacity: 0.5,
-    marginVertical: 25,
-    left: 60,
   },
   inputSection: {
     marginBottom: 15,
@@ -143,12 +125,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
     color: '#333',
-  },
-  passwordHint: {
-    fontSize: 12,
-    color: '#000',
-    opacity: 0.50,
-    marginBottom: 15,
   },
   buttonSection: {
     flexDirection: 'row',
@@ -178,10 +154,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-  },
-  arrowIcon: {
-    marginTop: 20,
-    width: 36,
-    height: 28,
   },
 });
