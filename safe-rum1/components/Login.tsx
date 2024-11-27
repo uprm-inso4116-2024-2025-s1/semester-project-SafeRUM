@@ -23,7 +23,7 @@ const auth = getAuth(app);
 
 // Predefined list of admin emails with temporary passwords
 const adminList: { [key: string]: string } = {
-  'admin1@upr.edu': 'temp1234',
+  'Robert.rodriguez11@upr.edu': 'Temp1234',
   'admin2@upr.edu': 'temp5678',
 };
 
