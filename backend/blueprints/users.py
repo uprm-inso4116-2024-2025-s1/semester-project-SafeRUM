@@ -1,12 +1,20 @@
 # blueprints/users.py
 
 from backend.firebase import admin_required
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
+from flask_autodoc.autodoc import Autodoc
 from models import db, User
 
 users_bp = Blueprint("users", __name__)
+auto = Autodoc()
 
 
+@users_bp.before_app_first_request
+def init_autodoc():
+    auto.init_app(current_app)  # Attach to the current app inside the context
+
+
+@auto.doc()
 @users_bp.route("/profile/<int:user_id>", methods=["GET"])
 def profile(user_id):
     """Get a specific user (by their id)."""
@@ -17,6 +25,7 @@ def profile(user_id):
     return jsonify({"error": "User not found"}), 404
 
 
+@auto.doc()
 @users_bp.route("/profile/<int:user_id>", methods=["PUT"])
 def update(user_id):
     """ " Update a specific user (by their id)."""
@@ -54,6 +63,7 @@ def update(user_id):
 
 
 @admin_required
+@auto.doc()
 @users_bp.route("/all", methods=["GET"])
 def get_users():
     """ADMIN-EXCLUSIVE: Get all users."""
@@ -65,6 +75,7 @@ def get_users():
     return result
 
 
+@auto.doc()
 @users_bp.route("/delete/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
     """Delete a user's account."""
@@ -77,3 +88,8 @@ def delete_user(user_id):
         return jsonify({"message": f"User {user_id} deleted successfully"}), 200
 
     return jsonify({"message": f"User {user_id} not found"}), 200
+
+
+@users_bp.route("/docs")
+def documentation():
+    return auto.html()
