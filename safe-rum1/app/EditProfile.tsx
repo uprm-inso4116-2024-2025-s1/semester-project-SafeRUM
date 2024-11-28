@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity, Text, SafeAreaView } from 'react-native';
 import ProfileHeader from './ProfileHeader';
 import ProfileDetails from './ProfileDetails';
 import ProfileInput from './ProfileInput';
+import styles from './styles/EditProfile.styles';
 
 interface EditPageProps {
   setEditState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -85,38 +86,3 @@ export default function EditPage({ setEditState, userProfile, setUserProfile }: 
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#337137', // green background
-    paddingHorizontal: 20,
-  },
-  inputSection: {
-    marginBottom: 15,
-  },
-  buttonSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cancelButton: {
-    backgroundColor: '#fff',
-    paddingVertical: 12,
-    paddingHorizontal: 70,
-    borderRadius: 5,
-  },
-  saveButton: {
-    backgroundColor: '#000',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 5,
-  },
-  cancelText: {
-    fontSize: 16,
-    color: '#000',
-  },
-  saveText: {
-    fontSize: 16,
-    color: '#fff',
-  },
-});
