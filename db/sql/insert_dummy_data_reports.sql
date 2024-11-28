@@ -23,7 +23,7 @@ INSERT INTO "reports" (
     ),
     (
         2,
-        3,
+        2,
         'Broken Streetlight',
         'The streetlight near the main entrance is not working',
         'Main Entrance',

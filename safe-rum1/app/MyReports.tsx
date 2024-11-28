@@ -1,30 +1,37 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
+import React from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 
 // Define RootStackParamList for navigation types
 type RootStackParamList = {
-  ReportScreen: undefined;
-  ReportCreation: undefined;
-  MyReports: undefined; 
-};
-
-type ReportScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ReportScreen'>;
-
-const ReportScreen = () => {
-  const navigation = useNavigation<ReportScreenNavigationProp>();
-
-  const handleCreateReportPress = () => {
-    navigation.navigate('ReportCreation');
-  };
-
-  const handleMyReportsPress = () => {
-    navigation.navigate('MyReports');
+    ReportScreen: undefined;
+    ReportCreation: undefined;
+    MyReports: undefined;
   };
   
-  // Dummy data for reports
-  const [reports, setReports] = useState([
+  type MyReportsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MyReports'>;
+  
+  const MyReportsScreen = () => {
+    const navigation = useNavigation<MyReportsScreenNavigationProp>();
+  
+    const handleCreateReportPress = () => {
+      navigation.navigate('ReportCreation');
+    };
+  
+    const handleAllReportsPress = () => {
+      navigation.navigate('ReportScreen');
+    };
+
+  const reports = [
     {
       id: 1,
       title: 'Suspicious Activity',
@@ -34,7 +41,6 @@ const ReportScreen = () => {
       category: 'General',
       priority: true,
       helpfulScore: 1,
-      voted: false,
     },
     {
       id: 2,
@@ -45,31 +51,8 @@ const ReportScreen = () => {
       category: 'Maintenance',
       priority: false,
       helpfulScore: 22,
-      voted: false,
     },
-    {
-      id: 3,
-      title: 'Vandalism',
-      location: 'Cafeteria',
-      description: 'Graffiti found on the side wall of the cafeteria',
-      status: 'Pending',
-      category: 'Security',
-      priority: true,
-      helpfulScore: 4,
-      voted: false,
-    },
-    {
-      id: 4,
-      title: 'Water Leak',
-      location: 'Parking Lot',
-      description: 'Water leaking from the pipe near the parking lot',
-      status: 'Resolved',
-      category: 'Maintenance',
-      priority: false,
-      helpfulScore: 2,
-      voted: false,
-    },
-  ]);
+  ];
 
   const handleExpandPress = (report: { id: number; title: string; location: string; description: string; status: string; category: string; priority: boolean; helpfulScore: number; }) => {
     Alert.alert(
@@ -92,26 +75,12 @@ Helpful Commends: ${report.helpfulScore}`,
     );
   };
 
-  const handleHelpfulPress = (id: number) => {
-    setReports(prevReports =>
-      prevReports.map(report => {
-        if (report.id === id) {
-          if (report.voted) {
-            return { ...report, helpfulScore: report.helpfulScore - 1, voted: false };
-          } else {
-            return { ...report, helpfulScore: report.helpfulScore + 1, voted: true };
-          }
-        }
-        return report;
-      })
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with "Create Report" and "My Reports" buttons */}
+      {/* Header with "Create Report" and "All Reports" buttons */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Reports</Text>
+        <Text style={styles.headerTitle}>My Reports</Text>
         <View style={styles.headerButtons}>
           <TouchableOpacity
             style={styles.headerButton}
@@ -121,34 +90,26 @@ Helpful Commends: ${report.helpfulScore}`,
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.headerButton, { marginLeft: 10 }]}
-            onPress={handleMyReportsPress}
+            onPress={handleAllReportsPress}
           >
-            <Text style={styles.headerButtonText}>My Reports</Text>
+            <Text style={styles.headerButtonText}>All Reports</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Main Content */}
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Green square cards with Title, Location, Expand button, and Helpful button */}
+        {/* Green square cards with Title, Location, and Expand button */}
         {reports.map((report) => (
           <View key={report.id} style={styles.card}>
             <Text style={styles.cardText}>Title: {report.title}</Text>
             <Text style={styles.cardText}>Location: {report.location}</Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.expandButton}
-                onPress={() => handleExpandPress(report)}
-              >
-                <Text style={styles.expandButtonText}>Expand</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.helpfulButton}
-                onPress={() => handleHelpfulPress(report.id)}
-              >
-                <Text style={styles.helpfulButtonText}>{report.voted ? 'Unmark Helpful' : 'Mark Helpful'}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.expandButton}
+              onPress={() => handleExpandPress(report)}
+            >
+              <Text style={styles.expandButtonText}>Expand</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
@@ -156,7 +117,7 @@ Helpful Commends: ${report.helpfulScore}`,
   );
 };
 
-export default ReportScreen;
+export default MyReportsScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -206,10 +167,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   expandButton: {
     backgroundColor: '#FFFFFF',
     paddingVertical: 8,
@@ -218,17 +175,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   expandButtonText: {
-    color: '#337137',
-    fontSize: 16,
-  },
-  helpfulButton: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  helpfulButtonText: {
     color: '#337137',
     fontSize: 16,
   },
