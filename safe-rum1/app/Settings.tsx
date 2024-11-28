@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import AppGuidelines from "./AppGuidelines";
 
 // Define the props interface for the SettingsPage component
 interface SettingsPageProps {
@@ -25,7 +24,6 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
   const [panicAlert, setPanicAlert] = useState(false);
   const [immediateHelp, setImmediateHelp] = useState(false);
   const [responseTime, setResponseTime] = useState(false);
-  const [guidelinesVisible, setGuidelinesVisible] = useState(false); 
 
   // State variables for modal visibility and info text
   const [infoVisible, setInfoVisible] = useState(false);
@@ -70,51 +68,52 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
         <View style={styles.gearIcon}>
           <FontAwesome name="gear" size={30} color="black" />
         </View>
-  
+
         {/* Background Image */}
         <Image
-          source={require("../assets/images/UPRM-logo.png")}
+          source={require('../assets/images/UPRM-logo.png')}
           style={styles.backgroundImage}
         />
-  
+
         {/* Profile Card */}
         <View style={styles.profileCard}>
           {/* Profile Header with Paw Icons */}
           <View style={styles.profileHeader}>
             <Image
-              source={require("../assets/images/UPRM-paw.png")}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
             <Image
-              source={require("../assets/images/UPRM-paw.png")}
+              source={require('../assets/images/UPRM-paw.png')}
               style={styles.pawIcon}
             />
           </View>
-  
+
           {/* Profile Image */}
           <Image
-            source={require("../assets/images/no-profile.png")}
+            source={require('../assets/images/no-profile.png')}
             style={styles.profileImage}
           />
-  
+
           {/* Profile Information */}
           <Text style={styles.profileName}>Yadriel Calderon Montalvo</Text>
           <Text style={styles.profileRole}>General Supervisor</Text>
           <Text style={styles.profileEmail}>yadriel.calderon@upr.edu</Text>
           <View style={styles.buttonContainer}>
+
             {/* Edit Profile Button */}
             <View style={styles.editButton}>
-              <Image source={require("../assets/images/pencil-icon.png")} />
+              <Image source={require('../assets/images/pencil-icon.png')} />
               <Text style={styles.editButtonText}> Edit profile</Text>
             </View>
-            <View style={styles.calendarButton}>
-              <Image source={require("../assets/images/Vector-3.png")} />
-              <Text style={styles.calendarButtonText}> Calendar</Text>
-            </View>
+            <View style={styles.calendarButton}><Image
+              source={require('../assets/images/Vector-3.png')}
+            />
+              <Text style={styles.calendarButtonText}> Calendar</Text></View>
           </View>
         </View>
       </View>
-  
+
       {/* Settings Section */}
       <View style={styles.settingsSection}>
         {/* Settings Header */}
@@ -128,11 +127,11 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
               color="#fff"
             />
           </TouchableOpacity>
-  
+
           {/* Gear Icon and Title */}
           <FontAwesome style={styles.settingsGear} name="gear" size={25} color="#fff" />
           <Text style={styles.settingsTitle}>Settings</Text>
-  
+
           {/* Close Icon */}
           <TouchableOpacity onPress={() => setSettingsState((prev) => !prev)}>
             <FontAwesome
@@ -143,62 +142,48 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
             />
           </TouchableOpacity>
         </View>
-  
+
         {/* Setting Toggles */}
         <View style={styles.settingRow}>
           <Text style={styles.settingLabel}>SOS</Text>
           <TouchableOpacity
-            onPress={() => handleToggle("sos")}
+            onPress={() => handleToggle('sos')}
             style={[styles.toggleButton, sos ? styles.on : styles.off]}
           >
-            <Text style={styles.buttonText}>{sos ? "ON" : "OFF"}</Text>
+            <Text style={styles.buttonText}>{sos ? 'ON' : 'OFF'}</Text>
           </TouchableOpacity>
         </View>
-  
+
         <View style={styles.settingRow}>
           <Text style={styles.settingLabel}>Panic Alert</Text>
           <TouchableOpacity
-            onPress={() => handleToggle("panicAlert")}
+            onPress={() => handleToggle('panicAlert')}
             style={[styles.toggleButton, panicAlert ? styles.on : styles.off]}
           >
-            <Text style={styles.buttonText}>{panicAlert ? "ON" : "OFF"}</Text>
+            <Text style={styles.buttonText}>{panicAlert ? 'ON' : 'OFF'}</Text>
           </TouchableOpacity>
         </View>
-  
+
         <View style={styles.settingRow}>
           <Text style={styles.settingLabel}>Immediate Help</Text>
           <TouchableOpacity
-            onPress={() => handleToggle("immediateHelp")}
+            onPress={() => handleToggle('immediateHelp')}
             style={[styles.toggleButton, immediateHelp ? styles.on : styles.off]}
           >
-            <Text style={styles.buttonText}>{immediateHelp ? "ON" : "OFF"}</Text>
+            <Text style={styles.buttonText}>{immediateHelp ? 'ON' : 'OFF'}</Text>
           </TouchableOpacity>
         </View>
-  
+
         <View style={styles.settingRow}>
           <Text style={styles.settingLabel}>Response Time</Text>
           <TouchableOpacity
-            onPress={() => handleToggle("responseTime")}
+            onPress={() => handleToggle('responseTime')}
             style={[styles.toggleButton, responseTime ? styles.on : styles.off]}
           >
-            <Text style={styles.buttonText}>{responseTime ? "ON" : "OFF"}</Text>
+            <Text style={styles.buttonText}>{responseTime ? 'ON' : 'OFF'}</Text>
           </TouchableOpacity>
         </View>
-  
-        {/* Button to View App Guidelines */}
-        <TouchableOpacity
-          style={styles.guidelinesButton}
-          onPress={() => setGuidelinesVisible(true)}
-        >
-          <Text style={styles.guidelinesButtonText}>View App Guidelines</Text>
-        </TouchableOpacity>
-  
-        {/* App Guidelines Modal */}
-        <AppGuidelines
-          visible={guidelinesVisible}
-          onClose={() => setGuidelinesVisible(false)}
-        />
-  
+
         {/* Authentication and Logout Buttons */}
         <View style={styles.authButtonRow}>
           <TouchableOpacity style={styles.authButton}>
@@ -209,7 +194,7 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
           </TouchableOpacity>
         </View>
       </View>
-  
+
       {/* Information Modal */}
       {infoVisible && (
         <Modal transparent animationType="fade">
@@ -224,7 +209,7 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
         </Modal>
       )}
     </SafeAreaView>
-  );  
+  );
 }
 
 // Stylesheet for the component
@@ -336,7 +321,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     marginTop: 30,
-    flex: 1,
+    height: 270,
   },
   // Settings title text
   settingsTitle: {
@@ -489,20 +474,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 5,
 
-  },guidelinesButton: {
-    backgroundColor: "#ffffff", 
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-    alignSelf: "center", 
-    elevation: 3, 
   },
-  guidelinesButtonText: {
-    fontSize: 16,
-    color: "#337137", 
-    fontWeight: "bold",
-  },
-  
 });
