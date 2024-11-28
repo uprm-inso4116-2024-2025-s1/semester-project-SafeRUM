@@ -1,11 +1,19 @@
 # blueprints/admins.py
 
-from flask import Blueprint, request, jsonify
-from models import db, Admin
+from flask import Blueprint, current_app, jsonify, request
+from flask_autodoc.autodoc import Autodoc
+from models import Admin, db
 
 admins_bp = Blueprint("admins", __name__)
+auto = Autodoc()
 
 
+@admins_bp.before_app_first_request
+def init_autodoc():
+    auto.init_app(current_app)  # Attach to the current app inside the context
+
+
+@auto.doc()
 @admins_bp.route("/new", methods=["POST"])
 def create_admin():
     """Create a new admin."""
@@ -29,6 +37,7 @@ def create_admin():
     )
 
 
+@auto.doc()
 @admins_bp.route("/all", methods=["GET"])
 def get_admins():
     """Get all admins."""
@@ -40,6 +49,7 @@ def get_admins():
     return result
 
 
+@auto.doc()
 @admins_bp.route("/<int:admin_id>", methods=["GET"])
 def get_admin(admin_id):
     """Get an admin (by their id)."""
@@ -51,6 +61,7 @@ def get_admin(admin_id):
     return jsonify({"error": "Admin not found"}), 404
 
 
+@auto.doc()
 @admins_bp.route("/<int:admin_id>", methods=["PUT"])
 def update_admin(admin_id):
     """Update an admin (by their id)."""
@@ -71,6 +82,7 @@ def update_admin(admin_id):
     return jsonify({"message": f"Admin {admin_id} not found"}), 200
 
 
+@auto.doc()
 @admins_bp.route("/<int:admin_id>", methods=["DELETE"])
 def delete_admin(admin_id):
     """Delete an admin (by their id)."""
@@ -83,3 +95,8 @@ def delete_admin(admin_id):
         return jsonify({"message": f"Admin {admin_id} deleted successfully"}), 200
 
     return jsonify({"message": f"Admin {admin_id} not found"}), 200
+
+
+@admins_bp.route("/docs")
+def documentation():
+    return auto.html()
