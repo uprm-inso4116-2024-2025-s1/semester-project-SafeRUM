@@ -8,7 +8,7 @@ const DummyLogout: React.FC = () => {
   const [token, setToken] = useState<string | null>('dummy_token');  // Simple token in state
   const navigation = useNavigation();
   const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null);  // Ref to store inactivity timeout
-  const INACTIVITY_TIME = 1 * 60 * 1000;  // Set inactivity time limit (e.g., 5 minutes)
+  const INACTIVITY_TIME = 1 * 60 * 1000000;  // Set inactivity time limit (e.g., 5 minutes)
 
   // Start the inactivity timer
   useEffect(() => {
