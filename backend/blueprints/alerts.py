@@ -1,11 +1,19 @@
 # blueprints/alerts.py
 
-from flask import Blueprint, request, jsonify
-from models import db, Alert
+from flask import Blueprint, current_app, jsonify, request
+from flask_autodoc.autodoc import Autodoc
+from models import Alert, db
 
 alerts_bp = Blueprint("alerts", __name__)
+auto = Autodoc()
 
 
+@alerts_bp.before_app_first_request
+def init_autodoc():
+    auto.init_app(current_app)  # Attach to the current app inside the context
+
+
+@auto.doc()
 @alerts_bp.route("/new", methods=["POST"])
 def create_alert():
     """Create a new alert."""
@@ -37,6 +45,7 @@ def create_alert():
     )
 
 
+@auto.doc()
 @alerts_bp.route("/all", methods=["GET"])
 def get_alerts():
     """Get all alerts."""
@@ -48,6 +57,7 @@ def get_alerts():
     return result
 
 
+@auto.doc()
 @alerts_bp.route("/<int:alert_id>", methods=["GET"])
 def get_alert(alert_id):
     """Get an alert (by its id)."""
@@ -59,6 +69,7 @@ def get_alert(alert_id):
     return jsonify({"error": "Alert not found"}), 404
 
 
+@auto.doc()
 @alerts_bp.route("/<int:alert_id>", methods=["PUT"])
 def update_alert(alert_id):
     """Update an alert (by its id)."""
@@ -94,6 +105,7 @@ def update_alert(alert_id):
     return jsonify({"message": f"Alert {alert_id} not found"}), 200
 
 
+@auto.doc()
 @alerts_bp.route("/<int:alert_id>", methods=["DELETE"])
 def delete_alert(alert_id):
     """Delete an alert (by its id)."""
@@ -106,3 +118,8 @@ def delete_alert(alert_id):
         return jsonify({"message": f"Alert {alert_id} deleted successfully"}), 200
 
     return jsonify({"message": f"Alert {alert_id} not found"}), 200
+
+
+@alerts_bp.route("/docs")
+def documentation():
+    return auto.html()

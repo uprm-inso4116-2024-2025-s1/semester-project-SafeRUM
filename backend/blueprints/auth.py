@@ -1,9 +1,16 @@
 # blueprints/auth.py
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
+from flask_autodoc.autodoc import Autodoc
 from models import db, User
 
 auth_bp = Blueprint("auth", __name__)
+auto = Autodoc()
+
+
+@auth_bp.before_app_first_request
+def init_autodoc():
+    auto.init_app(current_app)  # Attach to the current app inside the context
 
 
 # TODO: Validate @upr.edu email address & email format
@@ -16,6 +23,7 @@ def is_valid_password(password):
     return password
 
 
+@auto.doc()
 # Create a new user account
 @auth_bp.route("/register", methods=["POST"])
 def register():
@@ -92,6 +100,11 @@ def register():
         ),
         201,
     )
+
+
+@auth_bp.route("/docs")
+def documentation():
+    return auto.html()
 
 
 # TODO: User login and session opening

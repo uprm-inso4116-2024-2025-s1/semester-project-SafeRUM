@@ -1,6 +1,5 @@
 from blueprints.admins import admins_bp
 from blueprints.alerts import alerts_bp
-
 from blueprints.auth import auth_bp
 from blueprints.reports import reports_bp
 from blueprints.users import users_bp
