@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from 'expo-router';
 import MapView, { Circle } from "react-native-maps";
 import {
   StyleSheet,
@@ -12,6 +13,9 @@ import * as Location from "expo-location";
 import Pin from "@/components/Pin";
 import * as geolib from 'geolib';
 // Sample data for pinned locations
+
+const router = useRouter();
+
 const uprm_main_locations = [
   {
     id: 1,
@@ -134,6 +138,12 @@ export default function App() {
     setImageValue((imageValue+1)%3) // Cycles through 1, 2, and 3
   };
 
+  const change_to_report = () => {
+    router.push('/ReportCreation')
+  }
+
+
+
   const status_idx = 0
 
   const [imageValue, setImageValue] = useState(0); // The value that determines which image to display
@@ -248,8 +258,9 @@ export default function App() {
           disabled={isLoading}
         />
         <Button
-          title={"Change status (DEBUG)"}
-          onPress={handleChangeImage}
+          title={"Create Report"}
+          // onPress={handleChangeImage}
+          onPress={change_to_report}
           disabled={isLoading}
         />
         {isLoading && <ActivityIndicator style={styles.loader} />}
