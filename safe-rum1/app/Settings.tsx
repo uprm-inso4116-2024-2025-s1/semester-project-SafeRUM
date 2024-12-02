@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
+import { handleLogout } from './admins/Session_Management';
 
 // Define the props interface for the SettingsPage component
 interface SettingsPageProps {
@@ -18,6 +20,8 @@ interface SettingsPageProps {
 
 export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
   const navigation = useNavigation();
+  const router = useRouter(); // Para redirigir
+  const [token, setToken] = useState<string | null>('dummy_token'); // Simula el estado del token
 
   // State variables for toggle switches
   const [sos, setSos] = useState(false);
@@ -189,7 +193,9 @@ export default function SettingsPage({ setSettingsState }: SettingsPageProps) {
           <TouchableOpacity style={styles.authButton}>
             <Text style={styles.authButtonText}>2-Factor Auth</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.logoutButton}>
+          <TouchableOpacity 
+          onPress={() => handleLogout(router, setToken) }
+          style={styles.logoutButton}>
             <Text style={styles.logoutButtonText}>Log Out</Text>
           </TouchableOpacity>
         </View>

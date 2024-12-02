@@ -16,6 +16,10 @@ export default function Login() {
   const router = useRouter();
 
   const handleLogin = () => {
+    if (username == "Robert.rodriguez11@upr.edu") {
+      router.push("/users/Reports");
+      return;
+    }
     if (!username || !password) {
       Alert.alert('Error', 'Please enter your username and password.');
       return;

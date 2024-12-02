@@ -4,6 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { AppState } from 'react-native';  // To monitor app state (background/foreground)
 import { router } from 'expo-router';
 
+
+// Handle logout
+export const handleLogout = (router: any, setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
+  setToken(null); // Limpia el token
+  Alert.alert('Logged out', 'You have been logged out, due to inactivity for security reasons. Please log in again to continue.');
+  router.push('/Authentication'); // Redirige al inicio de sesión
+};
+
 const DummyLogout: React.FC = () => {
   const [token, setToken] = useState<string | null>('dummy_token');  // Simple token in state
   const navigation = useNavigation();
@@ -46,13 +54,6 @@ const DummyLogout: React.FC = () => {
       clearTimeout(inactivityTimeoutRef.current);
     }
     startInactivityTimer();  // Restart the timer
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    setToken(null);  // Clear the token from state
-    Alert.alert('Logged out', 'You have been logged out, due to inactivity for security reasons. Please log in again to continue.');
-    router.push('/Authentication');  // Redirect to the login screen or wherever necessary
   };
 
   return (
